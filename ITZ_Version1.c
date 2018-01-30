@@ -28,7 +28,7 @@
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
 #define drivethreshhold 10
-#define drivelimit 127
+double drivelimit= 127;
 static float  pid_Kp = 0.5;
 //static float  pidRequestedValue;
 //---------------------------------------------------------------------------//
@@ -121,33 +121,33 @@ void auton_DriveForward(int degrees){
 }
 
 void auton_MogoOut(int degrees){
-while (SensorValue [mogo] < degrees){		//Need to check the encoddr value
-mogo_Out(127);
-}
-mogo_Out(0);
-SensorValue[mogo] = 0;
+	while (SensorValue [mogo] < degrees){		//Need to check the encoddr value
+		mogo_Out(127);
+	}
+	mogo_Out(0);
+	SensorValue[mogo] = 0;
 }
 
 void auton_MogoIn( int degrees){
-while (SensorValue [mogo] > -degrees){		//Need to check the encoder value
-mogo_In(127);
-}
-mogo_In(0);
-SensorValue[mogo] = 0;
+	while (SensorValue [mogo] > -degrees){		//Need to check the encoder value
+		mogo_In(127);
+	}
+	mogo_In(0);
+	SensorValue[mogo] = 0;
 }
 void auton_TurnRight( int rotations){
-	while (SensorValue [drive_Right] < rotations){
+	while (SensorValue [drive_Left] < rotations){
 		turn_Right(127); // Test this, it may be the other way around
 	}
 	turn_Right(0);
-	SensorValue[drive_RightSensor] = 0;
+	SensorValue[drive_LeftSensor] = 0;
 }
 void auton_TurnLeft( int rotations){
-	while (SensorValue [drive_LeftSensor] < rotations){
+	while (SensorValue [drive_RightSensor] < rotations){
 		turn_Left(127); // Test this, it may be the other way around (it is, same with lift)
 	}
 	turn_Left(0);
-	SensorValue[drive_LeftSensor] = 0;
+	SensorValue[drive_RightSensor] = 0;
 }
 void auton_DriveBackwards(int degrees){
 
@@ -162,6 +162,13 @@ void resetSensors(){
 	SensorValue[drive_Left] = 0;
 	SensorValue[drive_Right] = 0;
 
+}
+task noTipPlease()
+{
+	while(SensorValue[Left_Arm] > 20){
+		drivelimit = 90;
+
+}
 }
 task pidController()
 {
@@ -185,43 +192,56 @@ task pidController()
 			pidArm = (-127);
 
 		// send to motor
-		motor[lift_Left ] = pidArm;
+		motor[lift_Right] = motor[lift_Left ] = pidArm;
 
 		// Don't hog cpu
 		wait1Msec( 25 );
 	}
 }
-	void stack_ArmUp (int rotations){
-  		while (SensorValue [lift_Left] < rotations){
+void stack_ArmUp (int rotations){
+	while (SensorValue [lift_Left] < rotations){
 		arm_Up(127); // Test this, it may be the other way around (it is, same with lift)
 	}
 	arm_Up(0);
 	SensorValue[lift_Left] = 0;
 
 }
+
 void testFunction(int rotations){
-// if this function is called the thing raises according to a value in an array.
+// if this function is called the lift raises according to a value in an array.
 //everytime the button is pressed a counter variable is incremented
 // the counter variable will index the array to determine certain height raised
 
-int heights [] = {10}; //figure out the predetermined heights
-//Don't know which part is being used//
+	int heights[15];
+		heights[1] = 0;
+		heights[2] =20;
+		heights[3] =30;
+		heights[4] =40;
+		heights[5] =50;
+		heights[6] = 60;
+		heights[7] = 70;
+		heights[8] =80;
+		heights[9] =90;
+		heights[10] =100;
+		heights[11] =110;
+		heights[12] = 120;
+		heights[13] =130;
+//figure out the predetermined heights
 
 while(SensorValue[Lift_Left] <heights[countx]){
-	arm_Down(127);
+arm_Down(127);
 }
+arm_Down(0);
 wait1Msec(25);
 
 //Manual control to allign the cone needs to somehow be implemented
-claw_Open(1);claw_Close(1);
-while(SensorValue[Lift_Left] <heights[countx -1]){
-	arm_Up(127);
-}
-	//I assume that dropping it down to the previous height is suitable
-wait1Msec(25);
-motor [lift_Left] = heights[countx +1] //This will raise the thing high enough
-wait1Msec(25);
-motor [lift_Left] = 0; //resets the thing back down
+claw_Open(127);
+fourBar_Backwards(127);
+
+wait10Msec(35);
+claw_Open(0);
+fourBar_Backwards(0);
+motor [lift_Left] = 0; //resets the lift back down
 countx++;//Not sure if this is what you want but I got down the basic logic
 }
 void pre_auton()
@@ -250,8 +270,150 @@ void pre_auton()
 /---------------------------------------------------------------------------*/
 
 task autonomous()
-{
-	/*    claw_Close(127);
+{/*AutonSkills
+	fourBar_Forward(127);
+	wait10Msec(15);
+	fourBar_Forward(0);
+	arm_Down(127);
+	wait10Msec(150)
+	arm_Down(0);
+
+	auton_DriveForward(300);
+	claw_Close(127)
+	wait10Msec(60);
+	claw_Close(0);
+	auton_DriveBackwards(50);
+	auton_TurnLeft(23);
+	mogo_In(127);
+	wait10Msec(115);
+	mogo_In(0);
+	auton_DriveForward(688);
+	fourBar_Forward(127);
+	wait10Msec(180);
+	claw_Open(127);
+	arm_Up(127);
+	wait10Msec(170);
+	claw_Open(0);
+	arm_Up(0);
+	auton_TurnLeft(41);
+	auton_DriveForward(430);
+	mogo_Out(127);
+	wait10Msec(150);
+	mogo_Out(0);
+	auton_TurnLeft(563);
+	auton_DriveForward(1280);
+	mogo_In(127);
+	wait10Msec(150);
+	mogo_In(0);
+	drive_Backward(127);
+	wait10Msec(190);
+	drive_Backward(0);
+	auton_TurnLeft(450);
+	mogo_In(127);
+	wait10Msec(150);
+	mogo_In(0);
+	auton_DriveForward(1400);
+	mogo_Out(127);
+	wait10Msec(150);
+	mogo_Out(0);
+	auton_TurnRight(563);
+	auton_DriveForward(1450);
+	mogo_In(127);
+	wait10Msec(150);
+	mogo_In(0);
+	auton_DriveBackwards(200);
+
+	*/
+	/*Auton Numero Uno
+	resetSensors();
+	//
+	arm_Down(127);
+	wait10Msec(115);
+	arm_Down(0);
+	//
+	fourBar_Backwards(127);
+	wait10Msec(15);
+	fourBar_Backwards(0);
+	//
+	mogo_In(127);
+	wait10Msec(115);
+	mogo_In(0);
+	//
+	auton_DriveForward(1318);
+	resetSensors();
+	//
+	mogo_Out(127);
+	wait10Msec(115);
+	mogo_Out(0);
+	//
+	claw_Close(127);
+	wait10Msec(60);
+	claw_Close(0);
+	//
+	auton_DriveBackwards(1250);
+	resetSensors();
+	//
+	auton_TurnLeft(1620);
+	resetSensors();
+	//
+	mogo_In(127);
+	wait10Msec(115);
+	mogo_In(0);
+	//
+	auton_DriveBackwards(196);
+	resetSensors();
+	*/
+	claw_Close(45);
+
+	arm_Down(127);
+	wait10Msec(150);
+	arm_Down(0);
+	fourBar_Forward(90);
+	wait10Msec(58);
+	fourBar_Forward(0);
+	auton_DriveForward(87);
+	wait10Msec(55);
+	claw_Close(0);
+	claw_Open(100);
+	wait10Msec(160);
+	claw_Open(0);
+	auton_DriveBackwards(15);
+	/*
+	auton_TurnLeft(-33);
+	mogo_In(-127);
+	wait10Msec(115);
+	mogo_In(0);
+	auton_DriveForward(-688);
+	fourBar_Forward(-127);
+	wait10Msec(180);
+	claw_Close(-127);
+	arm_Up(-127);
+	wait10Msec(170);
+	claw_Close(0);
+	arm_Up(0);
+	auton_TurnLeft(41);
+	auton_DriveForward(430);
+	mogo_Out(127);
+	wait10Msec(150);
+	mogo_Out(0);
+	auton_TurnLeft(563);
+	auton_DriveForward(1280);
+	mogo_In(127);
+	wait10Msec(150);
+	mogo_In(0);
+	drive_Backward(127);
+	wait10Msec(190);
+	drive_Backward(0);
+//Blocking Auton
+	//drive_Forward(127);
+
+
+
+
+
+
+
+	/*claw_Close(127);
 	wait10Msec(100);
 	claw_Close(80);
 	arm_Down(127);
@@ -270,46 +432,9 @@ task autonomous()
 	resetSensors();
 	*/
 	//Cleared the sensor values
-	/*
-	resetSensors();
-	//
-	arm_Down(127);
-	wait10Msec(115);
-	arm_Down(0);
-	//
-	fourBar_Backwards(127);
-	wait10Msec(115);
-	fourBar_Backwards(0);
-	//
-	mogo_In(127);
-	wait10Msec(115);
-	mogo_In(0);
-	//
-	auton_DriveForward(803);
-	resetSensors();
-	//
-	mogo_Out(127);
-	wait10Msec(115);
-	mogo_Out(0);
-	//
-	auton_TurnRight(250);
-	resetSensors();
-	//
-	auton_DriveForward(3409);
-	resetSensors();
-	//
-	auton_TurnLeft(100);
-	resetSensors();
-	//
-	mogo_In(127);
-	wait10Msec(115);
-	mogo_In(0);
-	//
-	auton_DriveBackwards(196);
-	resetSensors();
 
 	//Stop the mobile goal intake
-	*/
+	/*
 	/* Auton Two
 	auton_MogoOut(510);
 	auton_DriveForward(1380);
@@ -319,7 +444,7 @@ task autonomous()
 	auton_MogoOut(510);
 	auton_DriveBackwards(690);
 
-	*/
+	*//*
 	arm_Down(127);
 	wait10Msec(50);
 	arm_Down(0);
@@ -332,9 +457,9 @@ task autonomous()
 	mogo_Out(127);
 	wait10Msec(155);
 	mogo_Out(0);
-  fourBar_Backwards(127);
-  wait10Msec(15);
-  fourBar_Backwards(0);
+	fourBar_Backwards(127);
+	wait10Msec(15);
+	fourBar_Backwards(0);
 	claw_Open(127);
 	wait10Msec(115);
 	claw_Open(0);
@@ -364,11 +489,11 @@ task autonomous()
 	drive_Backward(0);*/
 
 }
-	// ..........................................................................
-	// Insert user code here.
-	// ..........................................................................
+// ..........................................................................
+// Insert user code here.
+// ..........................................................................
 
-	// Remove this function call once you have "real" code.
+// Remove this function call once you have "real" code.
 
 
 //---------------------------------------------------------------------------//
@@ -383,68 +508,79 @@ task autonomous()
 
 task usercontrol()
 {
+	startTask(noTipPlease);
 	while(true) {
-	if(vexRT[Btn6UXmtr2]) {   //Claw stuffs
+	if(vexRT[Btn6D]) {   //Claw stuffs
 		arm_Down(127);
-		} else if(vexRT[Btn6DXmtr2]) {
+		} else if(vexRT[Btn6U]) {
 		arm_Up(127);
-	}
-	else{
+		}
+		else{
 		arm_Down(0);
-	}
-	if(vexRT[Btn6D]){
-		mogo_In(127);
-	}
-	else if(vexRT[Btn6U]){
-		mogo_Out(127);
-	}
-	else{
-		mogo_In(0);
-	}
+		}/*
+		if(vexRT[Btn6DXmtr2]){
+			mogo_In(127);
+		}
+		else if(vexRT[Btn6UXmtr2]){
+			mogo_Out(127);
+		}
+		else{
+			mogo_In(0);
+		}*/
 
-	if(vexRT[Btn5DXmtr2]){
+		if(vexRT[Btn7L]){
+			claw_close(127);
+		}
+		else if(vexRT[Btn7D]){
+			claw_Close(-127);
+		}
+		else{
+			claw_Close(20);
+		}
+
+		/*
+		if(vexRT[Btn6U]){
 		fourBar_Forward(127);
-	}
-	else if(vexRT[Btn5UXmtr2]){
+		}
+		else if(vexRT[Btn6D]){
 		fourBar_Forward(-127);
-	}
-	else{
+		}
+		else{
 		fourBar_Forward(0);
-	}
-/*
-	if(vexRT[Btn7U]){
-		fourBar_Backwards(127);
-	}
-	else if(vexRT[Btn7R]){
-		fourBar_Forward(127);
-	}
-	else{
-		fourBar_Forward(0);
-	}*/
-	if(vexRT[Btn5D]) {   //Claw stuffs
-		claw_Close(0);
-		} else if(vexRT[Btn5U]) {
-		claw_Open(127);
-	}
-	else{
-		claw_Close(127);
+		}*/
 
-	}
-  if(vexRT[Btn8DXmtr2]){//Claw stuffs
-	mogo_Out(127);
+		if(vexRT[Btn5D]){
+		mogo_Out(-127);
+		}
+		else if(vexRT[Btn5U]){
+		mogo_Out(127);
+		}
+		else{
+		mogo_Out(0);
+		}
+		if(vexRT[Btn8R]) {   //Claw stuffs
+			fourBar_Backwards(127);
+			} else if(vexRT[Btn8D]) {
+			fourBar_Forward(127);
+		}
+		else{
+			fourBar_Backwards(0);
+
+		}/*
+		if(vexRT[Btn8DXmtr2]){//Claw stuffs
+		mogo_Out(127);
 		} else if(vexRT[Btn8RXmtr2]) {
 		mogo_In(127);
+		}
+		*/
+
+
+		motor[drive_Left]  = -(abs(vexRT[Ch2])> drivethreshhold)?((vexRT[Ch2]>drivelimit)?drivelimit:((vexRT[Ch2]<(-drivelimit))?-drivelimit:vexRT[Ch2])):0;  //Driving Stuffs I need to figure out (is that a ternary inside of a ternary?)
+		motor[drive_Right]  = (abs(vexRT[Ch3])> drivethreshhold)?((vexRT[Ch3]>drivelimit)?drivelimit:((vexRT[Ch3]<(-drivelimit))?-drivelimit:vexRT[Ch3])):0;/*
+
+		motor[lift_Left]=motor[lift_Right]  = -(abs(vexRT[Ch2])> drivethreshhold)?((vexRT[Ch2]>drivelimit)?drivelimit:((vexRT[Ch2]<(-drivelimit))?-drivelimit:vexRT[Ch2])):0;  //Driving Stuffs I need to figure out (is that a ternary inside of a ternary?)
+		motor[fourBar_Left] = motor[fourBar_Right] =- (abs(vexRT[Ch3])> drivethreshhold)?((vexRT[Ch3]>drivelimit)?drivelimit:((vexRT[Ch3]<(-drivelimit))?-drivelimit:vexRT[Ch3])):0;
+
+*/
 	}
-	else{
-		mogo_Out(0);
-
-	}
-
-
-	motor[drive_Left]  = -(abs(vexRT[Ch2])> drivethreshhold)?((vexRT[Ch2]>drivelimit)?drivelimit:((vexRT[Ch2]<(-drivelimit))?-drivelimit:vexRT[Ch2])):0;  //Driving Stuffs I need to figure out (is that a ternary inside of a ternary?)
-	motor[drive_Right]  = (abs(vexRT[Ch3])> drivethreshhold)?((vexRT[Ch3]>drivelimit)?drivelimit:((vexRT[Ch3]<(-drivelimit))?-drivelimit:vexRT[Ch3])):0;
-
-
-
-}
 }
