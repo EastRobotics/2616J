@@ -17,14 +17,14 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 605
+#define turn 615
 #define forward1 1250
 #define backward1 1200
 #define forward2 365
 #define forward3 350
-#define turnf 100
-#define forward4 50
-#define forward5 -1600
+#define turnf 115
+#define forward4 100
+#define forward5 -4850
 
 
 void set_motors(int speed) {
@@ -166,9 +166,14 @@ set_motors(0);
  delay(500);
   motor_tare_position(10);
   wait_motor_move_ac(10, forward4, 127, 200);
-  delay(500);
-  wait_motor_move_ac(10, forward5, -127, 200);
   delay(1000);
+  set_motors(0);
+  motor_tare_position(10);
+  wait_motor_move_ac(10, forward5, -127, 200);
+//   motor_move(MOTOR_INTAKE, 0);
+  while (motor_get_position(10)>forward5+15){}
+  set_motors(0);
+  delay(2000);
 //while(motor_get_target_position(10) > motor_get_position(10))
 // {
 //  printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
