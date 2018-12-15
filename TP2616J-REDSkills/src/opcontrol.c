@@ -118,9 +118,9 @@ void opcontrol() {
 			motor_move(MOTOR_INTAKE, 0);
 
 		if (indexerForward == 1)
-			motor_move(MOTOR_INDEXER, indexerForward * 100);
+			motor_move(MOTOR_INDEXER, indexerForward * 127);
 		else if (indexerBackward == 1)
-			motor_move(MOTOR_INDEXER, indexerBackward * -100);
+			motor_move(MOTOR_INDEXER, indexerBackward * -127);
 		else
 			motor_move(MOTOR_INDEXER, 0);
        /**

@@ -19,18 +19,18 @@
 
 #define turn 615
 #define forward1 1250
-#define backward1 1200
-#define forward2 365
+#define backward1 1220
+#define forward2 355
 #define forward3 350
-#define turnf 115
-#define forward4 100
-#define forward5 -3800
+#define turnf 100
+#define forward4 300
+#define forward5 -2780
 
-#define turnt 620
+#define turnt 600
 
 //#define turn2 620
 //#define forward6 1250
-#define backward2 1500
+#define backward2 5550
 // #define forward7 425
 // #define forward8 80
 // #define turn3 100
@@ -67,6 +67,21 @@ void wait_motor_move_p_ac(int motor, int ticks, float p, int actime) {
   }
 }
 
+void wait_motor_move_ac_ust(int motor, int ticks, float p, int actime) {
+
+  int st = millis();
+  int  ft = st + actime;
+  adi_port_set_config ('A',E_ADI_DIGITAL_IN);
+
+  int sp = (int)motor_get_position(motor);
+      printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);  //avgFilter_ult() > WALLDISTANCE  --&& adi_digital_read(1)
+  while (((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10  && !adi_digital_read('A')) ){ // 10 = threshold, change to change where stop
+    motor_move_p(motor, ticks, (millis() > ft )? p :  (p<0)?-50:50  );
+      printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
+    delay(20);
+  }
+}
+
 void wait_motor_move_ac(int motor, int ticks, float p, int actime) {
   int st = millis();
   int  ft = st + actime;
@@ -94,7 +109,16 @@ void wait_motor_move_rel_ac(int motor, int ticks, float p, int actime) {
 // Move `ticks` forward from the current position using p for speed
 void flywheel_go(float speed);
 
-
+void set_motors_distance(int dist, int speed){
+  motor_move_absolute(MOTOR_DRIVE_FRONT_LEFT,dist,speed);
+  motor_move_absolute(MOTOR_DRIVE_FRONT_RIGHT,dist,speed);
+  motor_move_absolute(MOTOR_DRIVE_BACK_RIGHT,dist,speed);
+  motor_move_absolute(MOTOR_DRIVE_BACK_LEFT,dist,speed);
+  delay(100);
+  while(!motor_is_stopped(10))
+  {
+    delay(10);
+  }}
 void autonomous() {
   double posit, dest;
   motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
@@ -168,40 +192,57 @@ set_motors(0);
 
  delay(1000);
  motor_move(MOTOR_FLYWHEEL, 0); // flywheel starts
- motor_move(MOTOR_INTAKE, 0);
+
  motor_move_relative(10, turnf, 127);
  motor_move_relative(4, -turnf, -127);
  motor_move_relative(8, turnf, 127);
  motor_move_relative(2, -turnf, -127);
  delay(500);
-  motor_tare_position(10);
-  wait_motor_move_ac(10, forward4, 127, 200);
-  delay(1000);
-  set_motors(0);
-  motor_tare_position(10);
+ motor_tare_position(10);
+ wait_motor_move_ac_ust(10, forward4, 90, 200);
+ while(adi_digital_read('A')==0){}
+ delay(250);
+ set_motors(0);
+ delay(1000);
+    motor_tare_position(10);
+//    set_motors_distance(forward5, 90);
   wait_motor_move_ac(10, forward5, -127, 200);
-//   motor_move(MOTOR_INTAKE, 0);
-  while (motor_get_position(10)>forward5+15){}
-  set_motors(0);
-
-
-  delay(2250);
- /////////////////////////////////////////////////////
-  motor_move_relative(10, turnt, 127);
-  motor_move_relative(4, -turnt, -127);
-  motor_move_relative(8, turnt, 127);
-  motor_move_relative(2, -turnt, -127);
   while(!motor_is_stopped(10))
   {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
   delay(10);
   }
+  set_motors(0);
+  delay(1000);
+//   motor_move(MOTOR_INTAKE, 0);
+///  while (!motor_is_stopped(10)){}
+//  set_motors(0);
+
+
+//  delay(1000);
+ /////////////////////////////////////////////////////
+
+  motor_tare_position(10);
+  motor_move_relative(10, turnt, 127);
+  motor_move_relative(4, -turnt, -127);
+  motor_move_relative(8, turnt, 127);
+  motor_move_relative(2, -turnt, -127);
+    printf("back turn \n\r");
+    delay(1000);
+  while(!motor_is_stopped(10))
+  {
+  printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
+  delay(10);
+  }
+  wait_motor_move_ac_ust(10, forward4, 90, 200);
+  while(adi_digital_read('A')==0){}
+  set_motors(0);
 ///////////////////////////////////////////////////////
   // delay(1000);
   //
   // wait_motor_move_ac(10, forward1, 127, 200);
   //
-  // set_motors(0);
+
   // delay(1000);
   motor_tare_position(10);
 

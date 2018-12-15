@@ -29,6 +29,9 @@
   motor_set_vel_pid(9, pid);
   motor_move_velocity(9,speed);
 }
+// extern   adi_ultrasonic_t ult;
+//
+// extern int avgFilter_ult();
 
 
 void opcontrol() {
@@ -61,7 +64,7 @@ void opcontrol() {
 // if(atSpeed == 1)
 // {controller_rumble(CONTROLLER_MASTER, "-.-");}
 
-
+  //ult = adi_ultrasonic_init(1, 2);
 	motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
 	motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
 	motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
@@ -118,9 +121,9 @@ void opcontrol() {
 			motor_move(MOTOR_INTAKE, 0);
 
 		if (indexerForward == 1)
-			motor_move(MOTOR_INDEXER, indexerForward * 100);
+			motor_move(MOTOR_INDEXER, indexerForward * 127);
 		else if (indexerBackward == 1)
-			motor_move(MOTOR_INDEXER, indexerBackward * -100);
+			motor_move(MOTOR_INDEXER, indexerBackward * -127);
 		else
 			motor_move(MOTOR_INDEXER, 0);
        /**
@@ -137,7 +140,7 @@ void opcontrol() {
 
 			if (!(count % 50)) {
 	      // Only print every 50ms, the controller text update rate is slow
-				sprintf(rpm, "RPM: %.2f    ", motor_get_actual_velocity(9));
+				sprintf(rpm, "RPM: %.2f ", motor_get_actual_velocity(9));// ,avgFilter_ult()
 				printf("%s\n",rpm);
 				controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
 				delay(0);
