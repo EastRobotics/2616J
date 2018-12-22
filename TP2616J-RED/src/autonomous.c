@@ -24,6 +24,7 @@
 #define forward3 350
 #define turnf 100
 #define forward4 300
+#define STOPTIP 200
 
 #define WALLDISTANCE 3
   adi_ultrasonic_t ult;
@@ -83,6 +84,8 @@ return(ultout/5);
 
 }
 
+extern int accelZ_init;
+
 void wait_motor_move_ac_ust(int motor, int ticks, float p, int actime) {
 
   int st = millis();
@@ -91,7 +94,7 @@ void wait_motor_move_ac_ust(int motor, int ticks, float p, int actime) {
 
   int sp = (int)motor_get_position(motor);
       printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);  //avgFilter_ult() > WALLDISTANCE  --&& adi_digital_read(1)
-  while (((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10  && !adi_digital_read('A')) ){ // 10 = threshold, change to change where stop
+  while (((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10  && !adi_digital_read('A')  && (adi_analog_read_calibrated(ACCELEROMETER_Z) - accelZ_init) < STOPTIP) ){ // 10 =, change to change where stop
     motor_move_p(motor, ticks, (millis() > ft )? p :  (p<0)?-50:50  );
       printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
     delay(20);
@@ -115,6 +118,7 @@ void flywheel_go(float speed);
 
 void autonomous() {
   double posit, dest;
+  char rpm[20];
 
   //ult = adi_ultrasonic_init(1, 2);
   motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
@@ -199,10 +203,29 @@ set_motors(0);
  delay(100);
   motor_tare_position(10);
   wait_motor_move_ac_ust(10, forward4, 90, 200);
-  while(adi_digital_read('A')==0){}
+  sprintf(rpm, "AccelZ: %d ",  (abs(adi_analog_read_calibrated(ACCELEROMETER_Z)) - accelZ_init));// ,avgFilter_ult()p
+  printf("%s\n",rpm);
+  controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
+  while(adi_digital_read('A')==0 &&  (abs(adi_analog_read_calibrated(ACCELEROMETER_Z)) - accelZ_init) < STOPTIP)
+  {
+    sprintf(rpm, "AccelZ: %d ",  (abs(adi_analog_read_calibrated(ACCELEROMETER_Z)) - accelZ_init));// ,avgFilter_ult()p
+    printf("%s\n",rpm);
+    controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
+
+  }
+  sprintf(rpm, "AccelZ: %d ",  (abs(adi_analog_read_calibrated(ACCELEROMETER_Z)) - accelZ_init));// ,avgFilter_ult()p
+  printf("%s\n",rpm);
+  controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
   set_motors(0);
 
 
+wait_motor_move_ac(10, -550, -127, 200);
+  delay(1000);
+  motor_move_relative(10, -turnf, -127);
+  motor_move_relative(4, turnf, 127);
+  motor_move_relative(8, -turnf, -127);
+  motor_move_relative(2, turnf, 127);
+  delay(100);
   // while(true){
   //   printf("Pushbutton - %d\r\n",adi_digital_read('A'));
   // }
