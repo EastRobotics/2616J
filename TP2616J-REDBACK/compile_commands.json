@@ -148,11 +148,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/slewRate.c.o",
-            "src\\slewRate.c"
+            "bin/initialize.c.o",
+            "src\\initialize.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-RedBack",
-        "file": "src\\slewRate.c"
+        "file": "src\\initialize.c"
     },
     {
         "arguments": [
@@ -179,11 +179,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/opcontrol.c.o",
-            "src\\opcontrol.c"
+            "bin/slewRate.c.o",
+            "src\\slewRate.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-RedBack",
-        "file": "src\\opcontrol.c"
+        "file": "src\\slewRate.c"
     },
     {
         "arguments": [
@@ -241,10 +241,10 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/initialize.c.o",
-            "src\\initialize.c"
+            "bin/opcontrol.c.o",
+            "src\\opcontrol.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-RedBack",
-        "file": "src\\initialize.c"
+        "file": "src\\opcontrol.c"
     }
 ]

@@ -19,12 +19,13 @@
 
 #define turn 615
 #define forward1 1250
-#define backward1 1250
-#define forward2 355
+#define backward1 1220
+#define forward2 335
 #define forward3 350
 #define turnf 100
 #define forward4 300
-#define STOPTIP 200
+#define STOPTIP 100
+#define turnb 100
 
 #define WALLDISTANCE 3
   adi_ultrasonic_t ult;
@@ -217,9 +218,14 @@ set_motors(0);
   printf("%s\n",rpm);
   controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
   set_motors(0);
+delay(200);
+  motor_move_relative(10, turnb, 127);
+  motor_move_relative(4, -turnb, -127);
+  motor_move_relative(8, turnb, 127);
+  motor_move_relative(2, -turnb, -127);
+  delay(100);
 
-
-wait_motor_move_ac(10, -550, -127, 200);
+wait_motor_move_ac(10, -900, -127, 200);
   delay(1000);
   motor_move_relative(10, -turnf, -127);
   motor_move_relative(4, turnf, 127);

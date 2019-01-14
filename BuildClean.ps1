@@ -19,5 +19,9 @@ cd \Users\bstar\documents\github\2616j\tp2616j-RedSkills
 prosv5 make clean
 prosv5 make
 prosv5 upload --slot 5 --name Skills  --no-run-after
+cd \Users\bstar\documents\github\2616j\tp2616j-blueplat
+prosv5 make clean
+prosv5 make
+prosv5 upload --slot 6 --name BPlat  --no-run-after
 stop-transcript
 invoke-item \Users\bstar\documents\github\2616j\build.log

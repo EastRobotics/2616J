@@ -44,7 +44,7 @@ void index_until_shot(){
   taskindexeron = 1;
   motor_move(MOTOR_INDEXER,127);
   motor_move(MOTOR_INTAKE,127);
-  while(adi_analog_read_calibrated('F')>BALLFIRE && ((millis() - intakerun) < 3000 ) ){
+  while(adi_analog_read_calibrated('F')>BALLFIRE && ((millis() - intakerun) < 1500 ) ){
   //  printf("%d\r\n",adi_analog_read_calibrated('F'));
   printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
    delay(5);

@@ -179,11 +179,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/initialize.c.o",
-            "src\\initialize.c"
+            "bin/slewRate.c.o",
+            "src\\slewRate.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\initialize.c"
+        "file": "src\\slewRate.c"
     },
     {
         "arguments": [
@@ -241,10 +241,10 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/slewRate.c.o",
-            "src\\slewRate.c"
+            "bin/initialize.c.o",
+            "src\\initialize.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\slewRate.c"
+        "file": "src\\initialize.c"
     }
 ]

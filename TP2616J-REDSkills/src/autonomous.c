@@ -22,15 +22,15 @@
 #define backward1 1220
 #define forward2 355
 #define forward3 350
-#define turnf 100
+#define turnf 125
 #define forward4 300
-#define forward5 -2780
+#define forward5 -3175
 
 #define turnt 600
 
 //#define turn2 620
 //#define forward6 1250
-#define backward2 5550
+#define backward2 5830
 // #define forward7 425
 // #define forward8 80
 // #define turn3 100
@@ -234,6 +234,8 @@ set_motors(0);
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
   delay(10);
   }
+motor_move(MOTOR_INTAKE, 0);
+
   wait_motor_move_ac_ust(10, forward4, 90, 200);
   while(adi_digital_read('A')==0){}
   set_motors(0);
