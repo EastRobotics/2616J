@@ -1,4 +1,6 @@
 #include "main.h"
+#include "2616J.hpp"
+#include "shooter.hpp"
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -15,17 +17,17 @@ using namespace okapi;
 
 void autonomous() {
 
-     okapi::Motor m1(MOTOR_DRIVE_FRONT_RIGHT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-     okapi::Motor m2(MOTOR_DRIVE_BACK_RIGHT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-     okapi::Motor m3(MOTOR_DRIVE_FRONT_LEFT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-     okapi::Motor m4(MOTOR_DRIVE_BACK_LEFT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+     Motor m1(MOTOR_DRIVE_FRONT_RIGHT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+     Motor m2(MOTOR_DRIVE_BACK_RIGHT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+     Motor m3(MOTOR_DRIVE_FRONT_LEFT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+     Motor m4(MOTOR_DRIVE_BACK_LEFT, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
-    okapi::Motor IntakeM(MOTOR_INTAKE, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-    okapi::Motor IndexerM(MOTOR_INDEXER, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-    okapi::Motor FlywheelM(MOTOR_FLYWHEEL, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
-    okapi::Motor DescorerM(MOTOR_DESCORER, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+    Motor IntakeM(MOTOR_INTAKE, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+    Motor IndexerM(MOTOR_INDEXER, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+    Motor FlywheelM(MOTOR_FLYWHEEL, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
+    Motor DescorerM(MOTOR_DESCORER, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
-
+    Shooter shooter(MOTOR_INTAKE,MOTOR_INDEXER,MOTOR_FLYWHEEL,6);
 
     MotorGroup mgleft = MotorGroup({m1, m2});
     MotorGroup mgrght = MotorGroup({m3, m4});
@@ -35,7 +37,9 @@ void autonomous() {
         AbstractMotor::gearset::green,
         {4.25_in, 9.5_in});
 
-    drive.setTurnsMirrored(FALSE);
+    pros::ADIAnalogIn BallFireDetect (6);
+
+    drive.setTurnsMirrored(false);
 
     FlywheelM.set_brake_mode(MOTOR_BRAKE_COAST);
     FlywheelM.moveVelocity(10800);
@@ -45,7 +49,7 @@ void autonomous() {
     drive.setMaxVelocity(160);  // Set chassis speed to 80%
     
     drive.moveDistance(46.3_in);  // Move forard and retreive ball from under cap
-    drive.moveDistance(45.25_in);  // Move back to starting position
+    drive.moveDistance(-45.25_in);  // Move back to starting position
     drive.turnAngle(-90_deg);   //  Turn to face flag
     drive.moveDistance(12.5_in);
     //fire ball
