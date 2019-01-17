@@ -24,13 +24,13 @@
 #define forward3 350
 #define turnf 125
 #define forward4 300
-#define forward5 -2500
+#define forward5 -3175
 
 #define turnt 600
 
 //#define turn2 620
 //#define forward6 1250
-#define backward2 5830
+#define backward2 4000
 // #define forward7 425
 // #define forward8 80
 // #define turn3 100
@@ -146,12 +146,12 @@ void autonomous() {
   wait_motor_move_ac(10, forward1, 127, 200);
 
   set_motors(0);
-  delay(1000);
+  delay(500);
 
   wait_motor_move_ac(10, -backward1, -127, 200);
   set_motors(0);
 
-  delay(250);
+  delay(1000);
 ///  motor_tare_position(10);
   motor_move_relative(10,turn, 127);
   motor_move_relative(4, -turn, -127);
@@ -162,7 +162,7 @@ void autonomous() {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
   delay(10);
 }
-delay(250);
+delay(1000);
 
 // wait_motor_move_ac(10, 650, 127, 100);
 // motor_move_relative(10, 600, 127);
@@ -179,18 +179,18 @@ motor_tare_position(10);
 wait_motor_move_ac(10, forward2, 127, 200);
   set_motors(0);
   printf("shoot\r\n");
-delay(250);
+delay(500);
  motor_move_relative(MOTOR_INDEXER, 1000, 127);//(MOTOR_INDEXER, 127);
- delay(250);
+ delay(500);
  motor_tare_position(10);
  wait_motor_move_ac(10, forward3, 127, 200);
 set_motors(0);
 
- delay(250);
+ delay(500);
 
  motor_move_relative(MOTOR_INDEXER, 1000, 127);//(MOTOR_INDEXER, 127);
 
- delay(1000);
+ delay(500);
  motor_move(MOTOR_FLYWHEEL, 0); // flywheel starts
 
  motor_move_relative(10, turnf, 127);
@@ -203,7 +203,7 @@ set_motors(0);
  while(adi_digital_read('A')==0){}
  delay(250);
  set_motors(0);
- delay(250);
+ delay(500);
     motor_tare_position(10);
 //    set_motors_distance(forward5, 90);
   wait_motor_move_ac(10, forward5, -127, 200);
@@ -213,7 +213,7 @@ set_motors(0);
   delay(10);
   }
   set_motors(0);
-  delay(250);
+  delay(1000);
 //   motor_move(MOTOR_INTAKE, 0);
 ///  while (!motor_is_stopped(10)){}
 //  set_motors(0);
@@ -228,7 +228,7 @@ set_motors(0);
   motor_move_relative(8, turnt, 127);
   motor_move_relative(2, -turnt, -127);
     printf("back turn \n\r");
-    delay(250);
+    delay(500);
   while(!motor_is_stopped(10))
   {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
@@ -251,7 +251,7 @@ motor_move(MOTOR_INTAKE, 0);
   wait_motor_move_ac(10, -backward2, -127, 200);
   set_motors(0);
 
-  delay(250);
+  delay(1000);
 // ///  motor_tare_position(10);
 //   motor_move_relative(10,turn, 127);
 //   motor_move_relative(4, -turn, -127);
