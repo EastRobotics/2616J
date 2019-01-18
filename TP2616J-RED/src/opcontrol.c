@@ -4,8 +4,7 @@
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
  * the Field Management System or the VEX Competition Switch in the operator
- * control mode.
- *
+OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO *
  * If no competition control is connected, this function will run immediately
  * following initialize()
  *
@@ -20,22 +19,48 @@
  #define KP 1.0f
  #define KI 0.001f
  #define KD 0.1f
- #define BALLFIRE 1500
+ #define BALLFIRE 2000
   unsigned int intakerun;
 
 //#define desired 89
 int taskindexeron;
-
+extern void make_motor_move_ac(int,int,float,int);
 void controller_update_task(){
   char rpm[20];
+  char temp[20];
   controller_print(E_CONTROLLER_MASTER, 1, 0, "RPM: ");
+  controller_print(E_CONTROLLER_MASTER, 1, 0, "Temp: ");
 while(true){
     // Only print every 50ms, the controller text update rate is slow
     sprintf(rpm, "%.0f", motor_get_actual_velocity(9));// ,avgFilter_ult()p
+    sprintf(temp, "%.0f", motor_get_temperature(9));
     //printf("%s\n",rpm);
     controller_print(E_CONTROLLER_MASTER, 1, 6, rpm);
+      controller_print(E_CONTROLLER_MASTER, 2, 6, temp);
     delay(250);
 
+  }
+}
+void set_motorso(int speed) {
+  motor_move(MOTOR_DRIVE_FRONT_LEFT,speed);
+  motor_move(MOTOR_DRIVE_FRONT_RIGHT,-speed);
+  motor_move(MOTOR_DRIVE_BACK_RIGHT,-speed);
+  motor_move(MOTOR_DRIVE_BACK_LEFT,speed);
+}
+
+// Set motor to speed based on distance from `ticks`
+void motor_move_po(int motor, int ticks, float p) {
+    set_motorso(p);
+}
+void wait_motor_move_aco(int motor, int ticks, float p, int actime) {
+  int st = millis();
+  int  ft = st + actime;
+  int sp = (int)motor_get_position(motor);
+      printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
+  while ((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10) { // 10 = threshold, change to change where stop
+    motor_move_po(motor, ticks, (millis() > ft )? p :  (p<0)?-50:50  );
+      printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
+    delay(20);
   }
 }
 
@@ -44,38 +69,56 @@ void index_until_shot(){
   taskindexeron = 1;
   motor_move(MOTOR_INDEXER,127);
   motor_move(MOTOR_INTAKE,127);
-  while(adi_analog_read_calibrated('F')>BALLFIRE && ((millis() - intakerun) < 1500 ) ){
-  //  printf("%d\r\n",adi_analog_read_calibrated('F'));
-  printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
+  while(adi_analog_read('F')>BALLFIRE && ((millis() - intakerun) < 1500 ) ){
+   printf("%d\r\n",adi_analog_read('F'));
+//  printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
    delay(5);
   }
   motor_move(MOTOR_INDEXER,0);
   motor_move(MOTOR_INTAKE,0);
   taskindexeron = 0;
   }
+void double_shot(){
+  index_until_shot();
+  wait_motor_move_aco(10, 250, 127, 200);
+  index_until_shot();
+  set_motorso(0);
+  motor_move(MOTOR_INTAKE,0);
+  motor_move(MOTOR_INDEXER,0);
+}
 
 void indexerTask(){
   bool indexerForward;
   bool indexerBackward;
-
+  bool prevFindexer=false;
+  bool prevBindexer=false;
+  int count = 0;
 
 while (true){
   indexerForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
   indexerBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
-
+  if(prevFindexer == false  && prevBindexer == false){
   if (indexerForward == 1){
     intakerun = millis();
     index_until_shot();
+    count=0;
 //			motor_move(MOTOR_INDEXER, indexerForward * 127);
   }
   else if (indexerBackward == 1){
-    motor_move(MOTOR_INDEXER, indexerBackward * -127);
+  //  motor_move(MOTOR_INDEXER, indexerBackward * -127);
+    double_shot();
+    count=0;
   }
   else{
     motor_move(MOTOR_INDEXER, 0);
+
 }
+
+}
+prevFindexer = indexerForward;
+prevBindexer = indexerBackward;
   // if(millis() - intakerun > 3000 && abs(motor_get_power(MOTOR_INTAKE))>60.0){
-  //    motor_move(MOTOR_INTAKE,0);
+  //    motor_move(MOTOR_INTAKE,0);forw
   //  }
 
   //   printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
@@ -107,7 +150,7 @@ void opcontrol() {
 	int intakeBackward;
 
 	bool indexerForward;
-	bool indexerBackward;
+	bool L1;
 
 	bool flywheelIncrease;
 	bool flywheelDecrease;
@@ -197,6 +240,10 @@ void opcontrol() {
 			motor_move(MOTOR_INTAKE, intakeBackward * -127);
 		 else if (taskindexeron != 1)
 		 	motor_move(MOTOR_INTAKE, 0);
+
+      while(controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2) == 1){}
+
+
 
 // 		if (indexerForward == 1){
 // index_until_shot();

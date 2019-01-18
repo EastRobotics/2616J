@@ -15,7 +15,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-adi_analog_calibrate('F');
+//adi_analog_calibrate('F');
   adi_analog_calibrate(ACCELEROMETER_X); //calibrates the x axis input
   adi_analog_calibrate(ACCELEROMETER_Y); //calibrates the y axis input
   adi_analog_calibrate(ACCELEROMETER_Z); //calibrates the z axis input
@@ -23,7 +23,7 @@ adi_analog_calibrate('F');
   accelX_init = adi_analog_read_calibrated(ACCELEROMETER_X);
   accelY_init = adi_analog_read_calibrated(ACCELEROMETER_Y);
   accelZ_init = adi_analog_read_calibrated(ACCELEROMETER_Z);
-  line_init = adi_analog_read_calibrated('F');
+  line_init = adi_analog_read('F');
   printf("Init %d", accelZ_init);
   adi_port_set_config('F', E_ADI_ANALOG_IN);
   	// pros::ADIAnalogIn sensore ('E');

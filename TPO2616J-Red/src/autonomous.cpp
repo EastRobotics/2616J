@@ -27,15 +27,15 @@ void autonomous() {
     Motor FlywheelM(MOTOR_FLYWHEEL, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
     Motor DescorerM(MOTOR_DESCORER, false, AbstractMotor::gearset::green, AbstractMotor::encoderUnits::degrees);
 
-    Shooter shooter(MOTOR_INTAKE,MOTOR_INDEXER,MOTOR_FLYWHEEL,6);
+    //Shooter shooter(MOTOR_INTAKE,MOTOR_INDEXER,MOTOR_FLYWHEEL,6);
 
     MotorGroup mgleft = MotorGroup({m1, m2});
     MotorGroup mgrght = MotorGroup({m3, m4});
-
+    mgleft.setReversed(true);
         auto drive = ChassisControllerFactory::create(
         mgleft, mgrght,
         AbstractMotor::gearset::green,
-        {4.25_in, 9.5_in});
+        {4.25_in, 11.5_in});
 
     pros::ADIAnalogIn BallFireDetect (6);
 
@@ -47,20 +47,20 @@ void autonomous() {
     IntakeM.moveVelocity(12000);
 
     drive.setMaxVelocity(160);  // Set chassis speed to 80%
-    
+
     drive.moveDistance(46.3_in);  // Move forard and retreive ball from under cap
     drive.moveDistance(-45.25_in);  // Move back to starting position
-    drive.turnAngle(-90_deg);   //  Turn to face flag
+    drive.turnAngle(90_deg);   //  Turn to face flag
     drive.moveDistance(12.5_in);
     //fire ball
-
+//     shooter.fire();
     drive.moveDistance(13.0_in);
     //fire ball
 
     drive.turnAngle(-5_deg);
     drive.moveDistance(12_in);
 
-    drive.moveDistance(6_ft);
+    drive.moveDistance(-6_ft);
 
 
 

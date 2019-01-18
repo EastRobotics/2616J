@@ -1,6 +1,6 @@
-
+#include "main.h"
 class Shooter
-{ 
+{
 okapi::Motor IntakeM;
 okapi::Motor IndexerM;
 okapi::Motor FlywheelM;

@@ -179,11 +179,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/slewRate.c.o",
-            "src\\slewRate.c"
+            "bin/autonomous.c.o",
+            "src\\autonomous.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\slewRate.c"
+        "file": "src\\autonomous.c"
     },
     {
         "arguments": [
@@ -210,11 +210,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/autonomous.c.o",
-            "src\\autonomous.c"
+            "bin/slewRate.c.o",
+            "src\\slewRate.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\autonomous.c"
+        "file": "src\\slewRate.c"
     },
     {
         "arguments": [
