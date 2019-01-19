@@ -1,12 +1,12 @@
 ﻿**********************
 Windows PowerShell transcript start
-Start time: 20190117190848
+Start time: 20190118214608
 Username: RAZERBLADE\bstar
 RunAs User: RAZERBLADE\bstar
 Configuration Name: 
 Machine: RAZERBLADE (Microsoft Windows NT 10.0.17134.0)
 Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\Users\bstar\Documents\GitHub\2616J\Build.ps1'
-Process ID: 15000
+Process ID: 8244
 PSVersion: 5.1.17134.407
 PSEdition: Desktop
 PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17134.407
@@ -26,7 +26,7 @@ Adding timestamp [OK]
 Linking project with okapilib,libpros [OK]
 Section sizes:
    text    data     bss   total     hex filename
-192.84KB  2.83KB  2.58MB  2.78MB  2c5568 bin/output.elf
+193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
 Uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 device on COM3 as Red-Front to slot 1
@@ -64,7 +64,7 @@ Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/outp
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [######################---------
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#######################--------
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [########################-------
-Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########################------
+Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [########################-------
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########################------
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##########################-----
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###########################----
@@ -80,10 +80,10 @@ Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/outp
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################
 Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################
+Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################
 #####] 100%
 Uploading slot_1.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 on COM3
-Cleaning project
 Transcript started, output file is build.log
 Cleaning project
 Compiling src/autonomous.c [OK]
@@ -94,7 +94,7 @@ Adding timestamp [OK]
 Linking project with okapilib,libpros [OK]
 Section sizes:
    text    data     bss   total     hex filename
-192.84KB  2.83KB  2.58MB  2.78MB  2c5568 bin/output.elf
+193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
 Uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 device on COM3 as Red-Front to slot 1
@@ -123,7 +123,7 @@ ing slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin
 b\2616j\tp2616j-red\bin/output.bin) [######################---------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########
 #############---------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#######################--------Uploading slot_1.bin (C:
 \Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [########################-------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-re
-d\bin/output.bin) [#########################------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########################--
+d\bin/output.bin) [########################-------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########################--
 ----Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##########################-----Uploading slot_1.bin (C:\Users\bstar\docum
 ents\github\2616j\tp2616j-red\bin/output.bin) [###########################----Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin)
 [###########################----Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [############################---Uploading slot
@@ -134,7 +134,7 @@ star\documents\github\2616j\tp2616j-red\bin/output.bin) [#######################
 tput.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################Uplo
 ading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\git
 hub\2616j\tp2616j-red\bin/output.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#######
-#############################] 100%
+########################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [####################################] 100%
 Uploading slot_1.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 on COM3
 Cleaning project
@@ -146,7 +146,7 @@ Adding timestamp [OK]
 Linking project with okapilib,libpros [OK]
 Section sizes:
    text    data     bss   total     hex filename
-192.84KB  2.83KB  2.58MB  2.78MB  2c5568 bin/output.elf
+193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
 Uploading C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin to v5 device on COM3 as Blue-Front to slot 2
@@ -162,7 +162,7 @@ Adding timestamp [OK]
 Linking project with okapilib,libpros [OK]
 Section sizes:
    text    data     bss   total     hex filename
-191.95KB  2.83KB  2.58MB  2.77MB  2c51d8 bin/output.elf
+192.55KB  2.83KB  2.58MB  2.78MB  2c5438 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
 Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin to v5 device on COM3 as Red-Back to slot 3
@@ -178,34 +178,64 @@ Adding timestamp [OK]
 Linking project with okapilib,libpros [OK]
 Section sizes:
    text    data     bss   total     hex filename
-191.90KB  2.83KB  2.58MB  2.77MB  2c51a8 bin/output.elf
+192.49KB  2.83KB  2.58MB  2.78MB  2c5408 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin to v5 device on COM3 as Blue-Black to slot 4
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin to v5 device on COM3 as Blue-Back to slot 4
 Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [####################################] 100%
 Uploading slot_4.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin to v5 on COM3
-Compiling src/test.c [WARNINGS]
-src/test.c:194:1: error: stray '\302' in program
- Â© 2018 GitHub, Inc.
- ^
-src/test.c:194:2: error: stray '\251' in program
- Â© 2018 GitHub, Inc.
-  ^
-src/test.c:194:4: error: expected identifier or '(' before numeric constant
- Â© 2018 GitHub, Inc.
-    ^~~~
+Cleaning project
+Compiling src/autonomous.c [OK]
+Compiling src/initialize.c [OK]
+Compiling src/opcontrol.c [OK]
+Compiling src/slewRate.c [OK]
 Adding timestamp [OK]
-Linking project with okapilib,libpros [ERRORS]
-arm-none-eabi-g++.exe: error: bin/test.c.o: No such file or directory
-make: *** [Makefile:78: bin/output.elf] Error 1
+Linking project with okapilib,libpros [OK]
+Section sizes:
+   text    data     bss   total     hex filename
+193.42KB  2.83KB  2.58MB  2.78MB  2c57b8 bin/output.elf
+Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
-Error: Failed to build
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin to v5 device on COM3 as Skills to slot 5
-Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [####################################] 100%
-Uploading slot_5.ini [####################################] 100%
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin to v5 device on COM3 as Skills to slot 7
+Uploading slot_7.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [####################################] 100%
+Uploading slot_7.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin to v5 on COM3
+Cleaning project
+Compiling src/autonomous.c [OK]
+Compiling src/initialize.c [OK]
+Compiling src/opcontrol.c [OK]
+Compiling src/slewRate.c [OK]
+Adding timestamp [OK]
+Linking project with okapilib,libpros [OK]
+Section sizes:
+   text    data     bss   total     hex filename
+193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
+Creating bin/output.bin for VEX EDR V5 [DONE]
+Capturing metadata for PROS Editor...
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedFPlat\bin/output.bin to v5 device on COM3 as RedFPlat to slot 5
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedFPlat\bin/output.bin) [####################################] 100%
+Uploading slot_5.ini [####################################] 100%
+Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedFPlat\bin/output.bin to v5 on COM3
+Cleaning project
+rm: cannot remove './bin/_pros_ld_timestamp.o': Device or resource busy
+make: [Makefile:69: clean] Error 1 (ignored)
+Compiling src/autonomous.c [OK]
+Compiling src/initialize.c [OK]
+Compiling src/opcontrol.c [OK]
+Compiling src/slewRate.c [OK]
+Adding timestamp [OK]
+Linking project with okapilib,libpros [OK]
+Section sizes:
+   text    data     bss   total     hex filename
+193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
+Creating bin/output.bin for VEX EDR V5 [DONE]
+Capturing metadata for PROS Editor...
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-BluePlat\bin/output.bin to v5 device on COM3 as BluePlat to slot 6
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BluePlat\bin/output.bin) [####################################] 100%
+Uploading slot_6.ini [####################################] 100%
+Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-BluePlat\bin/output.bin to v5 on COM3
 **********************
 Windows PowerShell transcript end
-End time: 20190117191012
+End time: 20190118214753
 **********************

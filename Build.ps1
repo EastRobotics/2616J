@@ -14,9 +14,18 @@ prosv5 upload --slot 3 --name Red-Back  --no-run-after
 cd \Users\bstar\documents\github\2616j\tp2616j-BlueBack
 prosv5 make clean
 prosv5 make
-prosv5 upload --slot 4 --name Blue-Black  --no-run-after
+prosv5 upload --slot 4 --name Blue-Back  --no-run-after
 cd \Users\bstar\documents\github\2616j\tp2616j-RedSkills
+prosv5 make clean
 prosv5 make
-prosv5 upload --slot 5 --name Skills  --no-run-after
+prosv5 upload --slot 7 --name Skills  --no-run-after
+cd \Users\bstar\documents\github\2616j\tp2616j-RedFPlat
+prosv5 make clean
+prosv5 make
+prosv5 upload --slot 5 --name RedFPlat --no-run-after
+cd \Users\bstar\documents\github\2616j\tp2616j-BluePlat
+prosv5 make clean
+prosv5 make
+prosv5 upload --slot 6 --name BluePlat --no-run-after
 stop-transcript
 invoke-item \Users\bstar\documents\github\2616j\build.log

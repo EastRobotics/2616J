@@ -17,20 +17,21 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn -615
+#define turn 615
 #define forward1 1250
 #define backward1 1220
 #define forward2 355
 #define forward3 350
-#define turnf -125
+#define turnf 125
 #define forward4 300
-#define forward5 -3225
+#define forward5 -3175
+#define STOPTIP 100
 
-#define turnt -600
+#define turnt 600
 
 //#define turn2 620
 //#define forward6 1250
-#define backward2 2600
+#define backward2 5830
 // #define forward7 425
 // #define forward8 80
 // #define turn3 100
@@ -66,7 +67,7 @@ void wait_motor_move_p_ac(int motor, int ticks, float p, int actime) {
     delay(20);
   }
 }
-
+extern int accelZ_init;
 void wait_motor_move_ac_ust(int motor, int ticks, float p, int actime) {
 
   int st = millis();
@@ -75,12 +76,13 @@ void wait_motor_move_ac_ust(int motor, int ticks, float p, int actime) {
 
   int sp = (int)motor_get_position(motor);
       printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);  //avgFilter_ult() > WALLDISTANCE  --&& adi_digital_read(1)
-  while (((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10  && !adi_digital_read('A')) ){ // 10 = threshold, change to change where stop
+  while (((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10  && !adi_digital_read('A')  && (adi_analog_read_calibrated(ACCELEROMETER_Z) - accelZ_init) < STOPTIP) ){ // 10 =, change to change where stop
     motor_move_p(motor, ticks, (millis() > ft )? p :  (p<0)?-50:50  );
       printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
     delay(20);
   }
 }
+
 
 void wait_motor_move_ac(int motor, int ticks, float p, int actime) {
   int st = millis();
@@ -146,17 +148,17 @@ void autonomous() {
   wait_motor_move_ac(10, forward1, 127, 200);
 
   set_motors(0);
-  delay(500);
+  delay(1000);
 
   wait_motor_move_ac(10, -backward1, -127, 200);
   set_motors(0);
 
   delay(1000);
 ///  motor_tare_position(10);
-  motor_move_relative(10,turn, 127);
-  motor_move_relative(4, -turn, -127);
-  motor_move_relative(8, turn, 127);
-  motor_move_relative(2, -turn, -127);
+  motor_move_relative(10,-turn, -127);
+  motor_move_relative(4, turn, 127);
+  motor_move_relative(8, -turn, -127);
+  motor_move_relative(2, turn, 127);
   while(motor_get_target_position(10) > motor_get_position(10))
 {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
@@ -179,31 +181,31 @@ motor_tare_position(10);
 wait_motor_move_ac(10, forward2, 127, 200);
   set_motors(0);
   printf("shoot\r\n");
-delay(500);
+delay(1000);
  motor_move_relative(MOTOR_INDEXER, 1000, 127);//(MOTOR_INDEXER, 127);
  delay(1000);
  motor_tare_position(10);
  wait_motor_move_ac(10, forward3, 127, 200);
 set_motors(0);
 
- delay(500);
+ delay(1000);
 
  motor_move_relative(MOTOR_INDEXER, 1000, 127);//(MOTOR_INDEXER, 127);
 
- delay(500);
+ delay(1000);
  motor_move(MOTOR_FLYWHEEL, 0); // flywheel starts
 
- motor_move_relative(10, turnf, 127);
- motor_move_relative(4, -turnf, -127);
- motor_move_relative(8, turnf, 127);
- motor_move_relative(2, -turnf, -127);
+ motor_move_relative(10, -turnf, -127);
+ motor_move_relative(4, turnf, 127);
+ motor_move_relative(8, -turnf, -127);
+ motor_move_relative(2, turnf, 127);
  delay(500);
  motor_tare_position(10);
  wait_motor_move_ac_ust(10, forward4, 90, 200);
  while(adi_digital_read('A')==0){}
  delay(250);
  set_motors(0);
- delay(500);
+ delay(1000);
     motor_tare_position(10);
 //    set_motors_distance(forward5, 90);
   wait_motor_move_ac(10, forward5, -127, 200);
@@ -213,7 +215,7 @@ set_motors(0);
   delay(10);
   }
   set_motors(0);
-  delay(500);
+  delay(1000);
 //   motor_move(MOTOR_INTAKE, 0);
 ///  while (!motor_is_stopped(10)){}
 //  set_motors(0);
@@ -223,10 +225,10 @@ set_motors(0);
  /////////////////////////////////////////////////////
 
   motor_tare_position(10);
-  motor_move_relative(10, turnt, 127);
-  motor_move_relative(4, -turnt, -127);
-  motor_move_relative(8, turnt, 127);
-  motor_move_relative(2, -turnt, -127);
+  motor_move_relative(10, -turnt, -127);
+  motor_move_relative(4, turnt, 127);
+  motor_move_relative(8, -turnt, -127);
+  motor_move_relative(2, turnt, 127);
     printf("back turn \n\r");
     delay(1000);
   while(!motor_is_stopped(10))
@@ -251,7 +253,7 @@ motor_move(MOTOR_INTAKE, 0);
   wait_motor_move_ac(10, -backward2, -127, 200);
   set_motors(0);
 
-  delay(500);
+  delay(1000);
 // ///  motor_tare_position(10);
 //   motor_move_relative(10,turn, 127);
 //   motor_move_relative(4, -turn, -127);

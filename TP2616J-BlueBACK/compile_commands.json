@@ -148,37 +148,6 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/opcontrol.c.o",
-            "src\\opcontrol.c"
-        ],
-        "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\opcontrol.c"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-target",
-            "armv7ar-none-none-eabi",
-            "-fno-ms-extensions",
-            "-fno-ms-compatibility",
-            "-fno-delayed-template-parsing",
-            "-isystemc:\\users\\bstar\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-            "-isystemc:\\users\\bstar\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-            "-isystemc:\\users\\bstar\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-            "-iquote./include",
-            "-iquote./include/./",
-            "-mcpu=cortex-a9",
-            "-mfpu=neon-fp16",
-            "-mfloat-abi=softfp",
-            "-D_POSIX_THREADS",
-            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
-            "-Os",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-fdiagnostics-color",
-            "--std=gnu11",
-            "-o",
             "bin/autonomous.c.o",
             "src\\autonomous.c"
         ],
@@ -210,11 +179,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/slewRate.c.o",
-            "src\\slewRate.c"
+            "bin/initialize.c.o",
+            "src\\initialize.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\slewRate.c"
+        "file": "src\\initialize.c"
     },
     {
         "arguments": [
@@ -241,10 +210,41 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/initialize.c.o",
-            "src\\initialize.c"
+            "bin/opcontrol.c.o",
+            "src\\opcontrol.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
-        "file": "src\\initialize.c"
+        "file": "src\\opcontrol.c"
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-target",
+            "armv7ar-none-none-eabi",
+            "-fno-ms-extensions",
+            "-fno-ms-compatibility",
+            "-fno-delayed-template-parsing",
+            "-isystemc:\\users\\bstar\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
+            "-isystemc:\\users\\bstar\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
+            "-isystemc:\\users\\bstar\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
+            "-iquote./include",
+            "-iquote./include/./",
+            "-mcpu=cortex-a9",
+            "-mfpu=neon-fp16",
+            "-mfloat-abi=softfp",
+            "-D_POSIX_THREADS",
+            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
+            "-Os",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fdiagnostics-color",
+            "--std=gnu11",
+            "-o",
+            "bin/slewRate.c.o",
+            "src\\slewRate.c"
+        ],
+        "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-BlueBack",
+        "file": "src\\slewRate.c"
     }
 ]

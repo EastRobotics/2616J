@@ -117,10 +117,10 @@ void autonomous() {
 
   delay(1000);
 ///  motor_tare_position(10);
-  motor_move_relative(10,turn, 127);
-  motor_move_relative(4, -turn, -127);
-  motor_move_relative(8, turn, 127);
-  motor_move_relative(2, -turn, -127);
+  motor_move_relative(10,-turn, -127);
+  motor_move_relative(4, turn, 127);
+  motor_move_relative(8, -turn, -127);
+  motor_move_relative(2, turn, 127);
   while(motor_get_target_position(10) > motor_get_position(10))
 {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
@@ -146,10 +146,10 @@ wait_motor_move_ac(10, forward2, 127, 200);
 delay(1000);
 ///  motor_tare_position(10);
 motor_tare_position(10);
-  motor_move_relative(10,turn, 127);
-  motor_move_relative(4, -turn, -127);
-  motor_move_relative(8, turn, 127);
-  motor_move_relative(2, -turn, -127);
+  motor_move_relative(10,-turn, -127);
+  motor_move_relative(4, turn, 127);
+  motor_move_relative(8, -turn, -127);
+  motor_move_relative(2, turn, 127);
 //   while(motor_get_target_position(10)-20 > motor_get_position(10))
 // {
 //   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));

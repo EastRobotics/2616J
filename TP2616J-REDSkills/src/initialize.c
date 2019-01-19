@@ -1,5 +1,10 @@
 #include "main.h"
 
+
+int accelX_init;
+int accelY_init;
+int accelZ_init;
+int line_init;
 void on_center_button() {
 
 }
@@ -10,7 +15,23 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+//adi_analog_calibrate('F');
+  adi_analog_calibrate(ACCELEROMETER_X); //calibrates the x axis input
+  adi_analog_calibrate(ACCELEROMETER_Y); //calibrates the y axis input
+  adi_analog_calibrate(ACCELEROMETER_Z); //calibrates the z axis input
 
+  accelX_init = adi_analog_read_calibrated(ACCELEROMETER_X);
+  accelY_init = adi_analog_read_calibrated(ACCELEROMETER_Y);
+  accelZ_init = adi_analog_read_calibrated(ACCELEROMETER_Z);
+  line_init = adi_analog_read('F');
+  printf("Init %d", accelZ_init);
+  adi_port_set_config('F', E_ADI_ANALOG_IN);
+  	// pros::ADIAnalogIn sensore ('E');
+    // pros::ADIAnalogIn sensorc ('C');
+    // pros::ADIAnalogIn sensord ('D');
+    // sensore.calibrate();
+    // sensorc.calibrate();
+    // sensord.calibrate();
 }
 
 /**
