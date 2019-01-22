@@ -22,11 +22,14 @@
 #define backward1 1220
 #define forward2 335
 #define forward3 350
-#define turnf 100
+#define turnf 780
 #define forward4 300
 #define STOPTIP 100
 #define turnb 100
-
+#define backcap  -240
+#define fwdcap2  450
+#define cflagturn 280
+#define bflag2 300
 #define WALLDISTANCE 3
   adi_ultrasonic_t ult;
 
@@ -168,16 +171,7 @@ void autonomous() {
 }
 delay(1000);
 
-// wait_motor_move_ac(10, 650, 127, 100);
-// motor_move_relative(10, 600, 127);
-// motor_move_relative(4, 600, 127);
-// motor_move_relative(8, 600, 127);
-// motor_move_relative(2, 600, 127);
-// while(motor_get_target_position(10) > motor_get_position(10))
-// {
-//   delay(3000);
-// }
-//
+
 printf("turn\r\n");
 motor_tare_position(10);
 wait_motor_move_ac(10, forward2, 127, 200);
@@ -224,14 +218,38 @@ delay(200);
   motor_move_relative(8, turnb, 127);
   motor_move_relative(2, -turnb, -127);
   delay(100);
+printf(" before move\n");
 
-wait_motor_move_ac(10, -900, -127, 200);
-  delay(1000);
+wait_motor_move_ac(10, backcap, -127,10);
+  delay(130);
+    set_motors(0);
+  delay(600);
   motor_move_relative(10, -turnf, -127);
   motor_move_relative(4, turnf, 127);
   motor_move_relative(8, -turnf, -127);
-  motor_move_relative(2, turnf, 127);
-  delay(100);
+  motor_move_relative(2, turnf,127);
+
+  delay(500);
+
+  motor_move(MOTOR_INTAKE, -127);
+  wait_motor_move_ac(10, fwdcap2, 80,10);
+    delay(130);
+      set_motors(0);
+delay(200);
+motor_move_relative(10, cflagturn, 127);
+motor_move_relative(4, -cflagturn, -127);
+motor_move_relative(8, cflagturn, 127);
+motor_move_relative(2, -cflagturn, -127);
+delay(100);
+motor_move_relative(MOTOR_INDEXER, 1000, 127);
+delay(100);
+motor_set_brake_mode(10, MOTOR_BRAKE_BRAKE);
+motor_set_brake_mode(4, MOTOR_BRAKE_BRAKE);
+motor_set_brake_mode(8, MOTOR_BRAKE_BRAKE);
+motor_set_brake_mode(2, MOTOR_BRAKE_BRAKE);
+wait_motor_move_ac(10, fwdcap2, 80,10);
+  delay(2000);
+  //   set_motors(0);
   // while(true){
   //   printf("Pushbutton - %d\r\n",adi_digital_read('A'));
   // }

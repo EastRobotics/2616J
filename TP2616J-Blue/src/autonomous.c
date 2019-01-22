@@ -17,12 +17,12 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn -615
+#define turn -645
 #define forward1 1250
 #define backward1 1220
 #define forward2 335
 #define forward3 350
-#define turnf -100
+#define turnf -105
 #define forward4 300
 #define STOPTIP 100
 #define turnb -100

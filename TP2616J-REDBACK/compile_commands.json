@@ -148,11 +148,11 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/autonomous.c.o",
-            "src\\autonomous.c"
+            "bin/initialize.c.o",
+            "src\\initialize.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-RedBack",
-        "file": "src\\autonomous.c"
+        "file": "src\\initialize.c"
     },
     {
         "arguments": [
@@ -241,10 +241,10 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/initialize.c.o",
-            "src\\initialize.c"
+            "bin/autonomous.c.o",
+            "src\\autonomous.c"
         ],
         "directory": "C:\\Users\\bstar\\documents\\github\\2616j\\tp2616j-RedBack",
-        "file": "src\\initialize.c"
+        "file": "src\\autonomous.c"
     }
 ]

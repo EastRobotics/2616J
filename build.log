@@ -1,12 +1,12 @@
 ﻿**********************
 Windows PowerShell transcript start
-Start time: 20190118214608
+Start time: 20190119132900
 Username: RAZERBLADE\bstar
 RunAs User: RAZERBLADE\bstar
 Configuration Name: 
 Machine: RAZERBLADE (Microsoft Windows NT 10.0.17134.0)
-Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\Users\bstar\Documents\GitHub\2616J\Build.ps1'
-Process ID: 8244
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -Command if((Get-ExecutionPolicy ) -ne 'AllSigned') { Set-ExecutionPolicy -Scope Process Bypass }; & 'C:\Users\bstar\Documents\GitHub\2616J\BuildClean.ps1'
+Process ID: 65204
 PSVersion: 5.1.17134.407
 PSEdition: Desktop
 PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.17134.407
@@ -84,7 +84,6 @@ Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/outp
 #####] 100%
 Uploading slot_1.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 on COM3
-Transcript started, output file is build.log
 Cleaning project
 Compiling src/autonomous.c [OK]
 Compiling src/initialize.c [OK]
@@ -94,63 +93,63 @@ Adding timestamp [OK]
 Linking project with okapilib,libpros [OK]
 Section sizes:
    text    data     bss   total     hex filename
-193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
-Creating bin/output.bin for VEX EDR V5 [DONE]
-Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 device on COM3 as Red-Front to slot 1
-Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [-------------------------------Uploading slot_1.bin (C:\Users\bstar\documents
-\github\2616j\tp2616j-red\bin/output.bin) [-------------------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#--
-----------------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##-----------------------------Uploading slot_1.b
-in (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##-----------------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp26
-16j-red\bin/output.bin) [###----------------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [####-----------------
-----------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#####--------------------------Uploading slot_1.bin (C:\Users\bstar
-\documents\github\2616j\tp2616j-red\bin/output.bin) [#####--------------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output
-.bin) [######-------------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#######------------------------Uploadin
-g slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [########-----------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\
-2616j\tp2616j-red\bin/output.bin) [########-----------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########--
---------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##########---------------------Uploading slot_1.bin (C:\U
-sers\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###########--------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\
-bin/output.bin) [###########--------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [############-----------------
---Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#############------------------Uploading slot_1.bin (C:\Users\bstar\documen
-ts\github\2616j\tp2616j-red\bin/output.bin) [#############------------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#
-#############-----------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############----------------Uploading slot_1
-.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [################---------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp
-2616j-red\bin/output.bin) [################---------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#################--
-------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##################-------------Uploading slot_1.bin (C:\Users\bst
-ar\documents\github\2616j\tp2616j-red\bin/output.bin) [###################------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/outp
-ut.bin) [###################------------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [####################-----------Upload
-ing slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#####################----------Uploading slot_1.bin (C:\Users\bstar\documents\githu
-b\2616j\tp2616j-red\bin/output.bin) [######################---------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########
-#############---------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#######################--------Uploading slot_1.bin (C:
-\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [########################-------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-re
-d\bin/output.bin) [########################-------Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#########################--
-----Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [##########################-----Uploading slot_1.bin (C:\Users\bstar\docum
-ents\github\2616j\tp2616j-red\bin/output.bin) [###########################----Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin)
-[###########################----Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [############################---Uploading slot
-_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#############################--Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\
-tp2616j-red\bin/output.bin) [##############################-Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#################
-#############-Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################Uploading slot_1.bin (C:\Users\b
-star\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/ou
-tput.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################Uplo
-ading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\git
-hub\2616j\tp2616j-red\bin/output.bin) [###############################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [#######
-########################Uploading slot_1.bin (C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin) [####################################] 100%
-Uploading slot_1.ini [####################################] 100%
-Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-red\bin/output.bin to v5 on COM3
-Cleaning project
-Compiling src/autonomous.c [OK]
-Compiling src/initialize.c [OK]
-Compiling src/opcontrol.c [OK]
-Compiling src/slewRate.c [OK]
-Adding timestamp [OK]
-Linking project with okapilib,libpros [OK]
-Section sizes:
-   text    data     bss   total     hex filename
-193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
+193.46KB  2.83KB  2.58MB  2.78MB  2c57e8 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
 Uploading C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin to v5 device on COM3 as Blue-Front to slot 2
-Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [####################################] 100%
+
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [------------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [------------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#-----------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##----------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##----------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###---------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [####--------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#####-------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#####-------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [######------------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#######-----------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [########----------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [########----------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#########---------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##########--------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###########-------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###########-------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [############------------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#############-----------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#############-----------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############----------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###############---------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [################--------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [################--------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#################-------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##################------------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###################-----------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###################-----------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [####################----------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#####################---------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [######################--------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [######################--------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#######################-------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [########################------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [########################------
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#########################-----
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##########################----
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###########################---
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [###########################---
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [############################--
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [#############################-
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+Uploading slot_2.bin (C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin) [##############################
+######] 100%
 Uploading slot_2.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-Blue\bin/output.bin to v5 on COM3
 Cleaning project
@@ -165,8 +164,59 @@ Section sizes:
 192.55KB  2.83KB  2.58MB  2.78MB  2c5438 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin to v5 device on COM3 as Red-Back to slot 3
-Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [####################################] 100%
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin to v5 device on COM3 as Red-Back to slot
+3
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [---------------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [---------------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#--------------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##-------------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##-------------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###------------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [####-----------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#####----------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#####----------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [######---------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#######--------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [########-------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [########-------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#########------------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##########-----------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########----------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########----------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [############---------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#############--------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##############-------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##############-------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###############------------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [################-----------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [################-----------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#################----------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##################---------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###################--------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###################--------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [####################-------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#####################------
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [######################-----
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [######################-----
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#######################----
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [########################---
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#########################--
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [#########################--
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [##########################-
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+Uploading slot_3.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin) [###########################
+#########] 100%
 Uploading slot_3.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedBack\bin/output.bin to v5 on COM3
 Cleaning project
@@ -181,8 +231,59 @@ Section sizes:
 192.49KB  2.83KB  2.58MB  2.78MB  2c5408 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin to v5 device on COM3 as Blue-Back to slot 4
-Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [####################################] 100%
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin to v5 device on COM3 as Blue-Black to sl
+ot 4
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [--------------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [--------------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#-------------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##------------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##------------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [###-----------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [####----------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#####---------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#####---------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [######--------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#######-------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [########------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [########------------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#########-----------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########----------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [###########---------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [###########---------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [############--------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#############-------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##############------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##############------------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [###############-----------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [################----------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [################----------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#################---------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##################--------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [###################-------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [###################-------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [####################------
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#####################-----
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [######################----
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [######################----
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#######################---
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [########################--
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#########################-
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [#########################-
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+Uploading slot_4.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin) [##########################
+##########] 100%
 Uploading slot_4.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-BlueBack\bin/output.bin to v5 on COM3
 Cleaning project
@@ -197,9 +298,61 @@ Section sizes:
 193.42KB  2.83KB  2.58MB  2.78MB  2c57b8 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin to v5 device on COM3 as Skills to slot 7
-Uploading slot_7.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [####################################] 100%
-Uploading slot_7.ini [####################################] 100%
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin to v5 device on COM3 as Skills to slot
+5
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [-------------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [-------------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#------------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [##-----------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [##-----------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [###----------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [####---------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#####--------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#####--------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [######-------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#######------------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [########-----------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [########-----------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########----------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [##########---------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [###########--------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [###########--------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [############-------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#############------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#############------------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [##############-----------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [###############----------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [################---------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [################---------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#################--------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [##################-------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [###################------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [###################------
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [####################-----
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#####################----
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [######################---
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [######################---
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#######################--
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [########################-
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [########################-
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin) [#########################
+###########] 100%
+Uploading slot_5.ini [####################################] 100%
 Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedSkills\bin/output.bin to v5 on COM3
 Cleaning project
 Compiling src/autonomous.c [OK]
@@ -213,29 +366,62 @@ Section sizes:
 193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
 Creating bin/output.bin for VEX EDR V5 [DONE]
 Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedFPlat\bin/output.bin to v5 device on COM3 as RedFPlat to slot 5
-Uploading slot_5.bin (C:\Users\bstar\documents\github\2616j\tp2616j-RedFPlat\bin/output.bin) [####################################] 100%
-Uploading slot_5.ini [####################################] 100%
-Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-RedFPlat\bin/output.bin to v5 on COM3
-Cleaning project
-rm: cannot remove './bin/_pros_ld_timestamp.o': Device or resource busy
-make: [Makefile:69: clean] Error 1 (ignored)
-Compiling src/autonomous.c [OK]
-Compiling src/initialize.c [OK]
-Compiling src/opcontrol.c [OK]
-Compiling src/slewRate.c [OK]
-Adding timestamp [OK]
-Linking project with okapilib,libpros [OK]
-Section sizes:
-   text    data     bss   total     hex filename
-193.45KB  2.83KB  2.58MB  2.78MB  2c57d8 bin/output.elf
-Creating bin/output.bin for VEX EDR V5 [DONE]
-Capturing metadata for PROS Editor...
-Uploading C:\Users\bstar\documents\github\2616j\tp2616j-BluePlat\bin/output.bin to v5 device on COM3 as BluePlat to slot 6
-Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-BluePlat\bin/output.bin) [####################################] 100%
+Uploading C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin to v5 device on COM3 as BPlat to slot 6
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [--------------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [--------------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#-------------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##------------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##------------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [###-----------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [####----------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#####---------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#####---------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [######--------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#######-------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [########------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [########------------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#########-----------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########----------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [###########---------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [###########---------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [############--------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#############-------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#############-------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##############------------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [###############-----------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [################----------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [################----------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#################---------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##################--------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [###################-------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [###################-------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [####################------
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#####################-----
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [######################----
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [######################----
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#######################---
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [########################--
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [########################--
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [#########################-
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+Uploading slot_6.bin (C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin) [##########################
+##########] 100%
 Uploading slot_6.ini [####################################] 100%
-Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-BluePlat\bin/output.bin to v5 on COM3
+Finished uploading C:\Users\bstar\documents\github\2616j\tp2616j-blueplat\bin/output.bin to v5 on COM3
 **********************
 Windows PowerShell transcript end
-End time: 20190118214753
+End time: 20190119133015
 **********************
