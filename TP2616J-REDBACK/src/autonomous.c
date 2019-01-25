@@ -175,7 +175,7 @@ motor_move_relative(2, turntoplatform, 127);
  motor_move(MOTOR_INTAKE, 0);
   wait_motor_move2(10, 450, 60,200);
   delay(1000);
-  wait_motor_move2(10, -4200, -127, 200);
+  wait_motor_move2(10, -3900, -127, 200);
     //intake starts
 //   motor_tare_position(10);
 //   motor_move_relative(10,turn, 127);
