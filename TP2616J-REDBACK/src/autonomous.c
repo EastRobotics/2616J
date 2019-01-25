@@ -18,12 +18,18 @@
 #define KD 0.1f
 
 #define turn 620
-#define forward1 1250
-#define backward1 1200
-#define forward2 425
-#define forward3 80
+#define forward1 2700
+#define backward1 2350
+#define cflagturn 570
+#define backwardcorner 820
+#define scndturn 530
+#define forwardback 2500
+#define snugcorner 100
+#define turntoplatform 550
 #define turnf 100
+#define backalign 300
 #define forward4 -1200
+
 
 void set_motors(int speed) {
   motor_move(MOTOR_DRIVE_FRONT_LEFT,speed);
@@ -66,7 +72,19 @@ void wait_motor_move_ac(int motor, int ticks, float p, int actime) {
     delay(20);
   }
 }
-
+void wait_motor_move2(int motor, int ticks, float p, int actime){
+  int st = millis();
+  int  ft = st + actime;
+   motor_tare_position(motor);
+  int sp = (int)motor_get_position(motor);
+  while ((abs(ticks)-abs(((int)motor_get_position(motor)))) > 10) { // 10 = threshold, change to change where stop
+    motor_move_p(motor, ticks, p );
+    printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
+   // printf("looping\n\r");
+    delay(20);
+  }
+  set_motors(0);
+}
 
 // Move `ticks` forward from the current position using p for speed
 void wait_motor_move_p_rel(int motor, int ticks, float p) {
@@ -100,33 +118,76 @@ void autonomous() {
   motor_set_reversed(10, 1);
   motor_set_reversed(8, 1);
 
-   motor_move(MOTOR_FLYWHEEL, 0); // flywheel starts
+   motor_move(MOTOR_FLYWHEEL, 127); // flywheel starts
    motor_move(MOTOR_INTAKE, 127);//intake starts
 
   posit = motor_get_position(10);
   dest = posit + 9000.0;
   printf("start motors\r\n");
 
-  wait_motor_move_ac(10, forward1, 127, 200);
+  wait_motor_move2(10, forward1, 90, 200);
+  delay(200);
+  wait_motor_move2(10, -backward1, -90, 200);
 
-  set_motors(0);
-  delay(1000);
-
-  wait_motor_move_ac(10, -backward1, -127, 200);
-  set_motors(0);
-
-  delay(1000);
-///  motor_tare_position(10);
-  motor_move_relative(10,turn, 127);
-  motor_move_relative(4, -turn, -127);
-  motor_move_relative(8, turn, 127);
-  motor_move_relative(2, -turn, -127);
-  while(motor_get_target_position(10) > motor_get_position(10))
-{
-  printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
+motor_tare_position(10);
+motor_move_relative(10, cflagturn, 127);
+motor_move_relative(4, -cflagturn, -127);
+motor_move_relative(8, cflagturn, 127);
+motor_move_relative(2, -cflagturn, -127);
+  while(cflagturn>(abs(motor_get_position(10))+10))
+   {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
   delay(10);
-}
-delay(1000);
+  }
+  delay(250);
+  wait_motor_move2(10, backwardcorner, -90, 200);
+  delay(1000);
+  motor_move_relative(MOTOR_INDEXER, 1000, 127);
+  delay(750);
+    
+    
+    motor_move_relative(MOTOR_INDEXER, 2000, 127);
+
+    delay(2000);
+ //wait_motor_move2(10, -snugcorner, -127, 200);
+ //delay(250);
+    motor_tare_position(10);
+motor_move_relative(10, -scndturn, -127);
+motor_move_relative(4, scndturn, 127);
+motor_move_relative(8, -scndturn, -127);
+motor_move_relative(2, scndturn, 127);
+  while(scndturn>(abs(motor_get_position(10))+10))
+   {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
+  delay(10);
+  }
+   // wait_motor_move2(10, -backalign, -90, 200);
+    motor_move(MOTOR_INTAKE, -127);
+    delay(250);
+    wait_motor_move2(10, forwardback, 80, 200);
+        motor_tare_position(10);
+motor_move_relative(10, -turntoplatform, -127);
+motor_move_relative(4, turntoplatform, 127);
+motor_move_relative(8, -turntoplatform, -127);
+motor_move_relative(2, turntoplatform, 127);
+  while(turntoplatform>(abs(motor_get_position(10))+10))
+   {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
+  delay(10);
+  }
+ motor_move(MOTOR_INTAKE, 0);
+  wait_motor_move2(10, 450, 60,200);
+  delay(1000);
+  wait_motor_move2(10, -4200, -127, 200);
+    //intake starts
+//   motor_tare_position(10);
+//   motor_move_relative(10,turn, 127);
+//   motor_move_relative(4, -turn, -127);
+//   motor_move_relative(8, turn, 127);
+//   motor_move_relative(2, -turn, -127);
+//   while(motor_get_target_position(10) > motor_get_position(10))
+// {
+//   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
+//   delay(10);
+// }
+// delay(1000);
 
 // wait_motor_move_ac(10, 650, 127, 100);
 // motor_move_relative(10, 600, 127);
@@ -138,33 +199,33 @@ delay(1000);
 //   delay(3000);
 // }
 //
-printf("turn\r\n");
-motor_tare_position(10);
-wait_motor_move_ac(10, forward2, 127, 200);
-  set_motors(0);
-  printf("shoot\r\n");
-delay(1000);
-///  motor_tare_position(10);
-motor_tare_position(10);
-  motor_move_relative(10,turn, 127);
-  motor_move_relative(4, -turn, -127);
-  motor_move_relative(8, turn, 127);
-  motor_move_relative(2, -turn, -127);
-//   while(motor_get_target_position(10)-20 > motor_get_position(10))
-// {
-//   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
-//   delay(10);
-// }
-   motor_move(MOTOR_INTAKE, 0);
-delay(1000);
+// printf("turn\r\n");
+// motor_tare_position(10);
+// wait_motor_move_ac(10, forward2, 127, 200);
+//   set_motors(0);
+//   printf("shoot\r\n");
+// delay(1000);
+// ///  motor_tare_position(10);
+// motor_tare_position(10);
+//   motor_move_relative(10,turn, 127);
+//   motor_move_relative(4, -turn, -127);
+//   motor_move_relative(8, turn, 127);
+//   motor_move_relative(2, -turn, -127);
+// //   while(motor_get_target_position(10)-20 > motor_get_position(10))
+// // {
+// //   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
+// //   delay(10);
+// // }
+//    motor_move(MOTOR_INTAKE, 0);
+// delay(1000);
 
-motor_tare_position(10);
-wait_motor_move_ac(10, forward3, 127, 200);
-delay(1000);
-motor_tare_position(10);
-wait_motor_move_ac(10, forward4, -200, 200);
-delay(1000);
-set_motors(0);
+// motor_tare_position(10);
+// wait_motor_move_ac(10, forward3, 127, 200);
+// delay(1000);
+// motor_tare_position(10);
+// wait_motor_move_ac(10, forward4, -200, 200);
+// delay(1000);
+// set_motors(0);
 
 // motor_move_relative(MOTOR_INDEXER, 1000, 127);//(MOTOR_INDEXER, 127);
 //  delay(1000);
