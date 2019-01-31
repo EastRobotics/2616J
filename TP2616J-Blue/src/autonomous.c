@@ -17,23 +17,23 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 640
+#define turn 630
 #define forward1 1250
-#define backward1 1220
-#define forward2 335
+#define backward1 1235
+#define forward2 320
 #define forward3 350
 #define turnf 700
 #define forward4 300
 #define STOPTIP 100
 #define turnb 100
-#define backcap  -1950
+#define backcap  -1850
 #define td -1
 
 
 #define turnf2 650
 #define fwdcap2  1200
 #define cflagturn 300
-#define bflag2 2100
+#define bflag2 2300
 #define lfturn 300
 
 
@@ -244,7 +244,7 @@ motor_set_brake_mode(10, MOTOR_BRAKE_BRAKE);
 motor_set_brake_mode(4, MOTOR_BRAKE_BRAKE);
 motor_set_brake_mode(8, MOTOR_BRAKE_BRAKE);
 motor_set_brake_mode(2, MOTOR_BRAKE_BRAKE);
-wait_motor_move2(10, backcap, -127,10);
+wait_motor_move2(10, backcap, -110,10);
   delay(130);
     set_motors(0);
   delay(600);

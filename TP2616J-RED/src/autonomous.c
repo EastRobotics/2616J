@@ -17,23 +17,23 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 615
+#define turn 625
 #define forward1 1250
-#define backward1 1220
-#define forward2 335
+#define backward1 1235
+#define forward2 310
 #define forward3 350
 #define turnf 700
 #define forward4 300
 #define STOPTIP 100
 #define turnb 100
-#define backcap  -1950
+#define backcap  -1850
 
 
 #define turnf2 650
 #define fwdcap2  1200
 #define cflagturn 300
-#define bflag2 2100
-#define lfturn 300
+#define bflag2 2480
+#define lfturn 270
 
 
 #define WALLDISTANCE 3
@@ -243,7 +243,7 @@ motor_set_brake_mode(10, MOTOR_BRAKE_BRAKE);
 motor_set_brake_mode(4, MOTOR_BRAKE_BRAKE);
 motor_set_brake_mode(8, MOTOR_BRAKE_BRAKE);
 motor_set_brake_mode(2, MOTOR_BRAKE_BRAKE);
-wait_motor_move2(10, backcap, -127,10);
+wait_motor_move2(10, backcap, -110,10);
   delay(130);
     set_motors(0);
   delay(600);
@@ -252,7 +252,7 @@ wait_motor_move2(10, backcap, -127,10);
   motor_move_relative(4, turnf2, 127);
   motor_move_relative(8, -turnf2, -127);
   motor_move_relative(2, turnf2,127);
-  while(turnf2>(abs(motor_get_position(10))+10))
+  while(turnf2>(fabs(motor_get_position(10))+10))
    {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
   delay(10);}
 // delay(500);10
@@ -266,7 +266,7 @@ motor_move_relative(10, cflagturn, 127);
 motor_move_relative(4, -cflagturn, -127);
 motor_move_relative(8, cflagturn, 127);
 motor_move_relative(2, -cflagturn, -127);
-  while(cflagturn>(abs(motor_get_position(10))+10))
+  while(cflagturn>(fabs(motor_get_position(10))+10))
    {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
   delay(10);}
 // delay(500);10
@@ -279,7 +279,7 @@ motor_move_relative(10, lfturn, 127);
 motor_move_relative(4, -lfturn, -127);
 motor_move_relative(8, lfturn, 127);
 motor_move_relative(2, -lfturn, -127);
-  while(lfturn>(abs(motor_get_position(10))+10))
+  while(lfturn>(fabs(motor_get_position(10))+10))
    {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
   delay(10);}
   delay(100);

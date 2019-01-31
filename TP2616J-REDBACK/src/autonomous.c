@@ -20,8 +20,8 @@
 #define turn 620
 #define forward1 2700
 #define backward1 2350
-#define cflagturn 570
-#define backwardcorner 820
+#define cflagturn 600
+#define backwardcorner 780
 #define scndturn 530
 #define forwardback 2500
 #define snugcorner 100
@@ -162,8 +162,9 @@ motor_move_relative(2, scndturn, 127);
    // wait_motor_move2(10, -backalign, -90, 200);
     motor_move(MOTOR_INTAKE, -127);
     delay(250);
-    wait_motor_move2(10, forwardback, 80, 200);
+    wait_motor_move2(10, forwardback, 60, 200);
         motor_tare_position(10);
+    delay(50);
 motor_move_relative(10, -turntoplatform, -127);
 motor_move_relative(4, turntoplatform, 127);
 motor_move_relative(8, -turntoplatform, -127);
@@ -173,7 +174,10 @@ motor_move_relative(2, turntoplatform, 127);
   delay(10);
   }
  motor_move(MOTOR_INTAKE, 0);
-  wait_motor_move2(10, 450, 60,200);
+ set_motors(80);
+ delay(100);
+ set_motors(0);
+  //wait_motor_move2(10, 450, 60,200);
   delay(1000);
   wait_motor_move2(10, -3900, -127, 200);
     //intake starts

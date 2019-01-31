@@ -17,10 +17,10 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 615
+#define turn 630
 #define forward1 1250
-#define backward1 1220
-#define forward2 355
+#define backward1 1235
+#define forward2 310
 #define forward3 350
 #define turnf 125
 #define forward4 300
@@ -157,7 +157,7 @@ void autonomous() {
   motor_move_relative(4, -turn, -127);
   motor_move_relative(8, turn, 127);
   motor_move_relative(2, -turn, -127);
-  while(motor_get_target_position(10) > motor_get_position(10))
+  while(motor_get_target_position(10) > motor_get_position(10)+25)
 {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
   delay(10);
