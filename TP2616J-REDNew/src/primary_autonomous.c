@@ -1,7 +1,6 @@
 #include "main.h"
 #include "sharedautonfunctions.h"
 
-
 #define KF 0
 #define KP 1.0f
 #define KI 0.001f
@@ -9,26 +8,9 @@
 
 // #define timeout(start, tout) ((tout + start) < millis())
 
-#define turn 520
-#define forward1 2500  // 1250
-#define backward1 2470 //1235
-#define forward2 310
-#define forward3 350
-#define turnf 700
-#define forward4 300
-#define STOPTIP 100
-#define turnb 100
-#define backcap -1850
-#define turnf2 650
-#define fwdcap2 1200
-#define cflagturn 300
-#define bflag2 2480
-#define lfturn 270
 
-#define WALLDISTANCE 3
 #define mirror 1
 adi_ultrasonic_t ult;
-
 
 void flywheel_go(float speed);
 
@@ -40,7 +22,7 @@ void primary_autonomous()
 
   // Forward to First Ball Under Cap and get ball
   //chassis_move_absolute(-2500, -127);
-  
+
   wait_move(2500, 160);
   delay(500);
 
@@ -57,7 +39,7 @@ void primary_autonomous()
   delay(500);
 
   // Fire the first ball at the top flag
- index_until_shota();
+  index_until_shota();
   delay(1000);
 
   // Forward to second ball fire position
@@ -105,8 +87,8 @@ void primary_autonomous()
   wait_move(2600, 110);
 
   // Turn into the lower flag
-  
-  wait_turn(lfturn, 127, mirror, 800);
+
+  wait_turn(270, 127, mirror, 800);
 
   delay(100);
 

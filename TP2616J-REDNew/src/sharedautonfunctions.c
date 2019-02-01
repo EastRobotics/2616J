@@ -1,12 +1,10 @@
 #include "main.h"
 
 #define timeout(start, tout) ((tout + start) < millis())
- #define BALLFIREA 2000
+#define BALLFIREA 2000
 
 int left_mg[] = {MOTOR_DRIVE_FRONT_LEFT, MOTOR_DRIVE_BACK_LEFT};
 int right_mg[] = {MOTOR_DRIVE_FRONT_RIGHT, MOTOR_DRIVE_BACK_RIGHT};
-
-
 
 void chassis_move(int velo)
 {
@@ -26,24 +24,22 @@ void chassis_move_absolute(double posit, int velo)
 
 void chassis_tare(void)
 {
- motor_tare_position(left_mg[0]);
+  motor_tare_position(left_mg[0]);
   motor_tare_position(left_mg[1]);
-   motor_tare_position(right_mg[0]);
-    motor_tare_position(right_mg[1]);
-
+  motor_tare_position(right_mg[0]);
+  motor_tare_position(right_mg[1]);
 }
 
 void wait_move(int ticks, float p)
 {
   int starttime = millis();
   chassis_tare();
- // int sp = (int)motor_get_position(left_mg[0]);
+  // int sp = (int)motor_get_position(left_mg[0]);
   chassis_move_absolute(ticks, p);
-  while (fabs(motor_get_position(left_mg[0])) < fabs((float) (ticks)) && !timeout(starttime, 3000))
+  while (fabs(motor_get_position(left_mg[0])) < fabs((float)(ticks)) && !timeout(starttime, 3000))
   {
     delay(20);
   }
- 
 }
 
 extern int accelZ_init;
@@ -58,7 +54,7 @@ void wait_turn(int trn, int speed, int dir, int tout)
   motor_move_absolute(right_mg[1], dir * trn, dir * speed);
   motor_move_absolute(left_mg[1], dir * -trn, dir * -speed);
 
-  while (fabs(motor_get_position(left_mg[0])) < fabs((float) (trn)) && !timeout(starttime, 1000))
+  while (fabs(motor_get_position(left_mg[0])) < fabs((float)(trn)) && !timeout(starttime, 1000))
   {
     delay(20);
   }
@@ -95,23 +91,25 @@ void setup_ops(void)
 
 void fire_ball(void)
 {
-  
+
   motor_move_relative(MOTOR_INDEXER, 1500, 127);
 }
 
-void stop_intake(void){
-motor_move(MOTOR_INTAKE, 127);
+void stop_intake(void)
+{
+  motor_move(MOTOR_INTAKE, 127);
 }
 
-void index_until_shota(){
-   int starttime = millis();
-  motor_move(MOTOR_INDEXER,127);
-  motor_move(MOTOR_INTAKE,127);
-  while(adi_analog_read('F')>BALLFIREA && !timeout(starttime,1500) ) {
-//  printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
-   delay(5);
+void index_until_shota()
+{
+  int starttime = millis();
+  motor_move(MOTOR_INDEXER, 127);
+  motor_move(MOTOR_INTAKE, 127);
+  while (adi_analog_read('F') > BALLFIREA && !timeout(starttime, 1500))
+  {
+    //  printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
+    delay(5);
   }
-  motor_move(MOTOR_INDEXER,0);
-  motor_move(MOTOR_INTAKE,0);
- 
-  }
+  motor_move(MOTOR_INDEXER, 0);
+  motor_move(MOTOR_INTAKE, 0);
+}
