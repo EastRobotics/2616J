@@ -1,4 +1,4 @@
-#include <main.h>
+#include "main.h"
 #ifndef _TEAMFUNCTIONS
 #define _TEAMFUNCTIONS
 
@@ -10,7 +10,9 @@ void wait_turn(int trn, int speed, int dir, int tout);
 void setup_chassis(void);
 void setup_ops(void);
 void fire_ball(void);
-
+void chassis_tare(void);
+void stop_intake(void);
 void matchmanager(void);
-
+void index_until_shota(void);
+ #define BALLFIRE 2000
 #endif //_TEAMFUNCTIONS

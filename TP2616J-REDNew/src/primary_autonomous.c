@@ -39,68 +39,73 @@ void primary_autonomous()
   setup_ops();
 
   // Forward to First Ball Under Cap and get ball
-  wait_move(forward1, 100);
+  //chassis_move_absolute(-2500, -127);
+  
+  wait_move(2500, 160);
   delay(500);
 
   // Return Back to Starting Position
-  wait_move(-backward1, -127);
+  wait_move(-2580, -160);
   delay(500);
 
   // Turn to Face Flags
-  wait_turn(turn, 127, mirror, 1000);
-  delay(200);
+  wait_turn(650, 127, mirror, 1000);
+  delay(500);
 
   // Move forward to first fire position
-  wait_move(forward2, 127);
-  delay(200);
+  wait_move(1200, 127);
+  delay(500);
 
   // Fire the first ball at the top flag
-  fire_ball();
-  delay(200);
+ index_until_shota();
+  delay(1000);
 
   // Forward to second ball fire position
-  wait_move(forward3, 127);
+  wait_move(1200, 127);
+  delay(200);
 
   // Fire the second ball at the middle flag
-  fire_ball(); //(MOTOR_INDEXER, 127);
-  delay(100);
+  index_until_shota(); //(MOTOR_INDEXER, 127);
+  delay(200);
 
   // Turn Slightly to miss post
-  wait_turn(turnb, 127, mirror, 1000);
-  delay(100);
+  wait_turn(120, 127, mirror, 1000);
+  delay(200);
 
   // Forward to turn the bottom flag
-  wait_move(forward4, 90); // Need to check accellormeter
+  wait_move(1250, 90); // Need to check accellormeter
   delay(200);
 
   // turn slightly before backing out
-  wait_turn(turnb, 127, mirror, 800);
-  delay(100);
+  // wait_turn(200, 127, mirror, 800);
+  // delay(100);
 
   // Back Out to forward cap position
-  wait_move(backcap, -110);
+  wait_move(-1850, -110);
   delay(130);
 
   // Turn to face cap
-  wait_turn(turnf2, 127, mirror, 800);
+  wait_turn(-650, 127, mirror, 800);
 
   // Reverse the intake to flip cap
   motor_move(MOTOR_INTAKE, -127);
 
   // Forward to flip cap
-  wait_move(fwdcap2, 110);
+  wait_move(1200, 110);
 
   // Turn Towards the center flags
-  wait_turn(cflagturn, 127, mirror, 800);
+  wait_turn(300, 127, mirror, 800);
 
   // Shoot ball if we have any
-  fire_ball();
+  //index_until_shota();
   delay(100);
 
+  stop_intake();
   // move forward to hit the lower flag
   wait_move(2600, 110);
 
   // Turn into the lower flag
+  
   wait_turn(lfturn, 127, mirror, 800);
 
   delay(100);
