@@ -17,14 +17,14 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 630
+#define turn 625
 #define forward1 1250
 #define backward1 1235
-#define forward2 310
-#define forward3 350
+#define forward2 305
+#define forward3 355
 #define turnf 125
 #define forward4 300
-#define forward5 -3175
+#define forward5 -3225
 
 #define turnt 600
 
@@ -161,7 +161,7 @@ void autonomous() {
 {
   printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
   delay(10);
-}
+} 
 delay(1000);
 
 // wait_motor_move_ac(10, 650, 127, 100);
@@ -203,7 +203,7 @@ set_motors(0);
  while(adi_digital_read('A')==0){}
  delay(250);
  set_motors(0);
- delay(1000);
+ delay(500);
     motor_tare_position(10);
 //    set_motors_distance(forward5, 90);
   wait_motor_move_ac(10, forward5, -127, 200);
@@ -248,7 +248,7 @@ motor_move(MOTOR_INTAKE, 0);
   // delay(1000);
   motor_tare_position(10);
 
-  wait_motor_move_ac(10, -backward2, -127, 200);
+  wait_motor_move_ac(10, -backward2, -120, 200);
   set_motors(0);
 
   delay(1000);

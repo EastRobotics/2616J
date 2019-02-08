@@ -17,7 +17,7 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 625
+#define turn 618
 #define forward1 1250
 #define backward1 1235
 #define forward2 310
@@ -32,8 +32,8 @@
 #define turnf2 650
 #define fwdcap2  1200
 #define cflagturn 300
-#define bflag2 2480
-#define lfturn 270
+#define bflag2 2500
+#define lfturn 273
 
 
 #define WALLDISTANCE 3

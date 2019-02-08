@@ -169,10 +169,10 @@ motor_move_relative(10, -turntoplatform, -127);
 motor_move_relative(4, turntoplatform, 127);
 motor_move_relative(8, -turntoplatform, -127);
 motor_move_relative(2, turntoplatform, 127);
-  while(turntoplatform>(abs(motor_get_position(10))+10))
-   {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
-  delay(10);
-  }
+  //while(turntoplatform>(abs(motor_get_position(10))+10))
+  // {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
+  //delay(10);
+  //}
  motor_move(MOTOR_INTAKE, 0);
  set_motors(80);
  delay(100);

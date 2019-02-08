@@ -145,6 +145,7 @@ void opcontrol() {
 
 	int descorerForward;
 	int descorerBackward;
+	int killswitch;
 
 	int intakeForward;
 	int intakeBackward;
@@ -214,6 +215,8 @@ void opcontrol() {
 
 		flywheelIncrease = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP);
 		flywheelDecrease = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN);
+		killswitch = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_LEFT);
+
 
 		if(controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)) {
 			driveMult = 1;
@@ -226,6 +229,13 @@ void opcontrol() {
 		motor_move(MOTOR_DRIVE_FRONT_RIGHT, -1 * right * driveMult);
 		motor_move(MOTOR_DRIVE_BACK_LEFT, left * driveMult);
 		motor_move(MOTOR_DRIVE_BACK_RIGHT, -1 * right * driveMult);
+
+		if (killswitch == 1)
+		{
+			task_delete(indexerTsk);
+			task_t indexerTsk = task_create(indexerTask, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+				TASK_STACK_DEPTH_DEFAULT, "indexerTask");
+		}
 
 		if (descorerForward == 1)
 			motor_move(MOTOR_DESCORER, descorerForward * 127);

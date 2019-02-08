@@ -19,7 +19,7 @@
 
 #define turn 630
 #define forward1 1250
-#define backward1 1235
+#define backward1 1275
 #define forward2 320
 #define forward3 350
 #define turnf 700
@@ -30,11 +30,11 @@
 #define td -1
 
 
-#define turnf2 650
-#define fwdcap2  1200
-#define cflagturn 300
-#define bflag2 2300
-#define lfturn 300
+#define turnf2 0
+#define fwdcap2  0
+#define cflagturn 0
+#define bflag2 0
+#define lfturn 0
 
 
 #define WALLDISTANCE 3
