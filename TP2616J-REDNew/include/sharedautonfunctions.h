@@ -14,5 +14,6 @@ void chassis_tare(void);
 void stop_intake(void);
 void matchmanager(void);
 void index_until_shota(void);
+void tune_turn(int);
  #define BALLFIRE 2000
 #endif //_TEAMFUNCTIONS

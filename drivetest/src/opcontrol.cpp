@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/vision.h"
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -17,6 +18,24 @@
 using namespace pros;
 void opcontrol()
 {
+
+
+  pros::ADIGyro gyro('A');
+    pros::Vision vis (4);
+  
+ pros::vision_color_code_t redflag = vis.create_color_code(1, 3);
+ // pros::vision_signature_s_t bfg = vis.create_sig(2, 3);
+  while (true) {
+   
+    vision_object_s_t rtn = vis.get_by_code(0, redflag);
+    vision_object_s_t rtn2 = vis.get_by_sig(0, 3);
+    vis.clear_led();
+    // Get the gyro heading
+   std::cout << "Red X-" << rtn.x_middle_coord << "Red Y-" << rtn.y_middle_coord << "RedS X-" << rtn2.x_middle_coord << "Reds Y-" << rtn2.y_middle_coord <<"\n";
+
+   // std::cout << "Distance: " << gyro.get_value() << "\n";
+    pros::delay(1000);
+  }
 
   pros::Motor motor1(10);
   pros::Motor motor2(2);

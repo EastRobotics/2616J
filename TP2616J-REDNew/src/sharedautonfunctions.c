@@ -113,3 +113,17 @@ void index_until_shota()
   motor_move(MOTOR_INDEXER, 0);
   motor_move(MOTOR_INTAKE, 0);
 }
+
+void tune_turn(int degrees){
+  int speed = 80;
+  int dir = 1;
+ printf("Degrees %f\r\n",adi_gyro_get('B'));
+while(adi_gyro_get('B')<(degrees*10)+10 && adi_gyro_get('B')>(degrees*10)-10){
+  printf("Degrees %f\r\n",adi_gyro_get('B'));
+  motor_move(right_mg[0], dir * speed);
+  motor_move(left_mg[0], dir * -speed);
+  motor_move(right_mg[1], dir * speed);
+  motor_move(left_mg[1], dir * -speed);
+  }
+  chassis_move(0);
+}
