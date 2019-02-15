@@ -14,160 +14,172 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO *
 
  */
 
-
- #define KF 0
- #define KP 1.0f
- #define KI 0.001f
- #define KD 0.1f
- #define BALLFIRE 2000
-  unsigned int intakerun;
+#define KF 0
+#define KP 1.0f
+#define KI 0.001f
+#define KD 0.1f
+#define BALLFIRE 2000
+unsigned int intakerun;
 
 //#define desired 89
 int taskindexeron;
-extern void make_motor_move_ac(int,int,float,int);
-void controller_update_task(){
+extern void make_motor_move_ac(int, int, float, int);
+void controller_update_task()
+{
   char rpm[20];
   char temp[20];
   controller_print(E_CONTROLLER_MASTER, 1, 0, "RPM: ");
   controller_print(E_CONTROLLER_MASTER, 1, 0, "Temp: ");
-while(true){
+  while (true)
+  {
     // Only print every 50ms, the controller text update rate is slow
-    sprintf(rpm, "%.0f", motor_get_actual_velocity(9));// ,avgFilter_ult()p
+    sprintf(rpm, "%.0f", motor_get_actual_velocity(9)); // ,avgFilter_ult()p
     sprintf(temp, "%.0f", motor_get_temperature(9));
     //printf("%s\n",rpm);
     controller_print(E_CONTROLLER_MASTER, 1, 6, rpm);
-      controller_print(E_CONTROLLER_MASTER, 2, 6, temp);
+    controller_print(E_CONTROLLER_MASTER, 2, 6, temp);
     delay(250);
-
   }
 }
-void set_motorso(int speed) {
-  motor_move(MOTOR_DRIVE_FRONT_LEFT,speed);
-  motor_move(MOTOR_DRIVE_FRONT_RIGHT,-speed);
-  motor_move(MOTOR_DRIVE_BACK_RIGHT,-speed);
-  motor_move(MOTOR_DRIVE_BACK_LEFT,speed);
+void set_motorso(int speed)
+{
+  motor_move(MOTOR_DRIVE_FRONT_LEFT, speed);
+  motor_move(MOTOR_DRIVE_FRONT_RIGHT, -speed);
+  motor_move(MOTOR_DRIVE_BACK_RIGHT, -speed);
+  motor_move(MOTOR_DRIVE_BACK_LEFT, speed);
 }
 
 // Set motor to speed based on distance from `ticks`
-void motor_move_po(int motor, int ticks, float p) {
-    set_motorso(p);
+void motor_move_po(int motor, int ticks, float p)
+{
+  set_motorso(p);
 }
-void wait_motor_move_aco(int motor, int ticks, float p, int actime) {
+void wait_motor_move_aco(int motor, int ticks, float p, int actime)
+{
   int st = millis();
-  int  ft = st + actime;
+  int ft = st + actime;
   int sp = (int)motor_get_position(motor);
-      printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
-  while ((abs(ticks)-abs(((int)motor_get_position(motor))-sp)) > 10) { // 10 = threshold, change to change where stop
-    motor_move_po(motor, ticks, (millis() > ft )? p :  (p<0)?-50:50  );
-      printf("ticks - %d pos - %d sp - %d\n\r",ticks,(int)motor_get_position(motor),sp);
+  printf("ticks - %d pos - %d sp - %d\n\r", ticks, (int)motor_get_position(motor), sp);
+  while ((abs(ticks) - abs(((int)motor_get_position(motor)) - sp)) > 10)
+  { // 10 = threshold, change to change where stop
+    motor_move_po(motor, ticks, (millis() > ft) ? p : (p < 0) ? -50 : 50);
+    printf("ticks - %d pos - %d sp - %d\n\r", ticks, (int)motor_get_position(motor), sp);
     delay(20);
   }
 }
 
-void index_until_shot(){
+void index_until_shot()
+{
   intakerun = millis();
   taskindexeron = 1;
-  motor_move(MOTOR_INDEXER,127);
-  motor_move(MOTOR_INTAKE,127);
-  while(adi_analog_read('F')>BALLFIRE && ((millis() - intakerun) < 1500 ) ){
-   printf("%d\r\n",adi_analog_read('F'));
-//  printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
-   delay(5);
+  motor_move(MOTOR_INDEXER, 127);
+  motor_move(MOTOR_INTAKE, 127);
+  while (adi_analog_read('F') > BALLFIRE && ((millis() - intakerun) < 1500))
+  {
+    printf("%d\r\n", adi_analog_read('F'));
+    //  printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
+    delay(5);
   }
-  motor_move(MOTOR_INDEXER,0);
-  motor_move(MOTOR_INTAKE,0);
+  motor_move(MOTOR_INDEXER, 0);
+  motor_move(MOTOR_INTAKE, 0);
   taskindexeron = 0;
-  }
-void double_shot(){
+}
+void double_shot()
+{
   index_until_shot();
   wait_motor_move_aco(10, 250, 127, 200);
   index_until_shot();
   set_motorso(0);
-  motor_move(MOTOR_INTAKE,0);
-  motor_move(MOTOR_INDEXER,0);
+  motor_move(MOTOR_INTAKE, 0);
+  motor_move(MOTOR_INDEXER, 0);
 }
 
-void indexerTask(){
+void indexerTask()
+{
   bool indexerForward;
   bool indexerBackward;
-  bool prevFindexer=false;
-  bool prevBindexer=false;
+  bool prevFindexer = false;
+  bool prevBindexer = false;
   int count = 0;
 
-while (true){
-  indexerForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
-  indexerBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
-  if(prevFindexer == false  && prevBindexer == false){
-  if (indexerForward == 1){
-    intakerun = millis();
-    index_until_shot();
-    count=0;
-//			motor_move(MOTOR_INDEXER, indexerForward * 127);
-  }
-  else if (indexerBackward == 1){
-  //  motor_move(MOTOR_INDEXER, indexerBackward * -127);
-    double_shot();
-    count=0;
-  }
-  else{
-    motor_move(MOTOR_INDEXER, 0);
+  while (true)
+  {
+    indexerForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
+    indexerBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
+    if (prevFindexer == false && prevBindexer == false)
+    {
+      if (indexerForward == 1)
+      {
+        intakerun = millis();
+        index_until_shot();
+        count = 0;
+        //			motor_move(MOTOR_INDEXER, indexerForward * 127);
+      }
+      else if (indexerBackward == 1)
+      {
+        //  motor_move(MOTOR_INDEXER, indexerBackward * -127);
+        double_shot();
+        count = 0;
+      }
+      else
+      {
+        motor_move(MOTOR_INDEXER, 0);
+      }
+    }
+    prevFindexer = indexerForward;
+    prevBindexer = indexerBackward;
+    // if(millis() - intakerun > 3000 && abs(motor_get_power(MOTOR_INTAKE))>60.0){
+    //    motor_move(MOTOR_INTAKE,0);forw
+    //  }
 
-}
-
-}
-prevFindexer = indexerForward;
-prevBindexer = indexerBackward;
-  // if(millis() - intakerun > 3000 && abs(motor_get_power(MOTOR_INTAKE))>60.0){
-  //    motor_move(MOTOR_INTAKE,0);forw
-  //  }
-
-  //   printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
+    //   printf("%d %f\r\n",millis() - intakerun,motor_get_power(MOTOR_INTAKE) );
     delay(20);
   }
-  }
+}
 
- void flywheel_go(float speed){
-  motor_set_gearing(9,E_MOTOR_GEARSET_36);
+void flywheel_go(float speed)
+{
+  motor_set_gearing(9, E_MOTOR_GEARSET_36);
   motor_pid_s_t pid = motor_convert_pid(KF, KP, KI, KD);
   motor_set_vel_pid(9, pid);
-  motor_move_velocity(9,speed);
+  motor_move_velocity(9, speed);
 }
 // extern   adi_ultrasonic_t ult;
 //
 // extern int avgFilter_ult();
 extern int accelZ_init;
 
-void opcontrol() {
+void opcontrol()
+{
 
-	int left;
-	int right;
-	double driveMult = 1;
+  int left;
+  int right;
+  double driveMult = 1;
 
-	int descorerForward;
-	int descorerBackward;
+  int descorerForward;
+  int descorerBackward;
 
-	int intakeForward;
-	int intakeBackward;
+  int intakeForward;
+  int intakeBackward;
 
-	bool indexerForward;
-	bool L1;
+  bool indexerForward;
+  bool L1;
 
-	bool flywheelIncrease;
-	bool flywheelDecrease;
+  bool flywheelIncrease;
+  bool flywheelDecrease;
 
   //bool atSpeed;
 
-	int count = 0;
+  int count = 0;
 
+  //  char rpm[10] = "";
+  task_t indexerTsk = task_create(indexerTask, (void *)"PROS", TASK_PRIORITY_DEFAULT,
+                                  TASK_STACK_DEPTH_DEFAULT, "indexerTask");
 
-//  char rpm[10] = "";
-  task_t indexerTsk = task_create(indexerTask, (void*)"PROS", TASK_PRIORITY_DEFAULT,
-                             TASK_STACK_DEPTH_DEFAULT, "indexerTask");
+  task_t controllerUpdate = task_create(controller_update_task, (void *)"PROS", TASK_PRIORITY_DEFAULT,
+                                        TASK_STACK_DEPTH_DEFAULT, "controllerUpdate");
 
-  task_t controllerUpdate = task_create(controller_update_task, (void*)"PROS", TASK_PRIORITY_DEFAULT,
-                                                    TASK_STACK_DEPTH_DEFAULT, "controllerUpdate");
-
-// accelZ_init = abs(adi_analog_read_calibrated(ACCELEROMETER_Z));
+  // accelZ_init = abs(adi_analog_read_calibrated(ACCELEROMETER_Z));
   // while(true){
   //   sprintf(rpm, "AccelZ: %d, %d",  (abs(adi_analog_read_calibrated(ACCELEROMETER_Z)) - accelZ_init),accelZ_init);// ,avgFilter_ult()p
   //   printf("%s\n",rpm);
@@ -176,106 +188,104 @@ void opcontrol() {
   //
   // }
 
-
-
-
-
-// if(motor_get_actual_velocity(9) >= desired && !atSpeed)
-//
-// if(atSpeed == 1)
-// {controller_rumble(CONTROLLER_MASTER, "-.-");}
+  // if(motor_get_actual_velocity(9) >= desired && !atSpeed)
+  //
+  // if(atSpeed == 1)
+  // {controller_rumble(CONTROLLER_MASTER, "-.-");}
 
   //ult = adi_ultrasonic_init(1, 2);
-	motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
-	motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
-	motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
-	motor_set_gearing(MOTOR_DRIVE_BACK_RIGHT, E_MOTOR_GEARSET_18);
-	motor_set_gearing(MOTOR_DESCORER, E_MOTOR_GEARSET_18);
-	motor_set_gearing(MOTOR_INTAKE, E_MOTOR_GEARSET_18);
-  motor_set_gearing(MOTOR_INDEXER, E_MOTOR_GEARSET_18);
-	motor_set_gearing(MOTOR_FLYWHEEL, E_MOTOR_GEARSET_36);
-  //adi_port_set_config ('F',E_ADI_DIGITAL_IN);
-  motor_set_reversed(8,0);
-  motor_set_reversed(10,0);
- 		flywheel_go(90);
-	while(true) {
-//  printf("%d\r\n",adi_analog_read_calibrated('F'));
-		left = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
-		right = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_RIGHT_Y);
 
-		intakeForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R1);
-		intakeBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R2);
+  motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DRIVE_BACK_RIGHT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DESCORER, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_INTAKE, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_INDEXER, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_FLYWHEEL, E_MOTOR_GEARSET_36);
+  //adi_port_set_config ('F',E_ADI_DIGITAL_IN);
+  motor_set_reversed(8, 0);
+  motor_set_reversed(10, 0);
+  flywheel_go(90);
+  while (true)
+  {
+    //  printf("%d\r\n",adi_analog_read_calibrated('F'));
+    left = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+    right = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_RIGHT_Y);
+
+    intakeForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R1);
+    intakeBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_R2);
 
     // indexerForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L1);
     // indexerBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2);
 
-		descorerForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_B);
+    descorerForward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_B);
     descorerBackward = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A);
 
-		flywheelIncrease = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP);
-		flywheelDecrease = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN);
+    flywheelIncrease = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_UP);
+    flywheelDecrease = controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_DOWN);
 
-		if(controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)) {
-			driveMult = 1;
-		} else if(controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_Y)) {
-			driveMult = 0.7;
-			//change low drive speed by changing (0.5) to something different
-		}
-      // sets the speed of the motors and how they should function
-		motor_move(MOTOR_DRIVE_FRONT_LEFT, left * driveMult);
-		motor_move(MOTOR_DRIVE_FRONT_RIGHT, -1 * right * driveMult);
-		motor_move(MOTOR_DRIVE_BACK_LEFT, left * driveMult);
-		motor_move(MOTOR_DRIVE_BACK_RIGHT, -1 * right * driveMult);
+    if (controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X))
+    {
+      driveMult = 1;
+    }
+    else if (controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_Y))
+    {
+      driveMult = 0.7;
+      //change low drive speed by changing (0.5) to something different
+    }
+    // sets the speed of the motors and how they should function
+    motor_move(MOTOR_DRIVE_FRONT_LEFT, left * driveMult);
+    motor_move(MOTOR_DRIVE_FRONT_RIGHT, -1 * right * driveMult);
+    motor_move(MOTOR_DRIVE_BACK_LEFT, left * driveMult);
+    motor_move(MOTOR_DRIVE_BACK_RIGHT, -1 * right * driveMult);
 
-		if (descorerForward == 1)
-			motor_move(MOTOR_DESCORER, descorerForward * 127);
-		else if (descorerBackward == 1)
-			motor_move(MOTOR_DESCORER, descorerBackward * -127);
-		else
-			motor_move(MOTOR_DESCORER, 0);
+    if (descorerForward == 1)
+      motor_move(MOTOR_DESCORER, descorerForward * 127);
+    else if (descorerBackward == 1)
+      motor_move(MOTOR_DESCORER, descorerBackward * -127);
+    else
+      motor_move(MOTOR_DESCORER, 0);
 
-		if (intakeForward == 1)
-			motor_move(MOTOR_INTAKE, intakeForward * 127);
-		else if (intakeBackward == 1)
-			motor_move(MOTOR_INTAKE, intakeBackward * -127);
-		 else if (taskindexeron != 1)
-		 	motor_move(MOTOR_INTAKE, 0);
+    if (intakeForward == 1)
+      motor_move(MOTOR_INTAKE, intakeForward * 127);
+    else if (intakeBackward == 1)
+      motor_move(MOTOR_INTAKE, intakeBackward * -127);
+    else if (taskindexeron != 1)
+      motor_move(MOTOR_INTAKE, 0);
 
-      while(controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2) == 1){}
+    while (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_L2) == 1)
+    {
+    }
 
-
-
-// 		if (indexerForward == 1){
-// index_until_shot();
-// //			motor_move(MOTOR_INDEXER, indexerForward * 127);
-//     }
-// 		else if (indexerBackward == 1)
-// 			motor_move(MOTOR_INDEXER, indexerBackward * -127);
-// 		else
-// 			motor_move(MOTOR_INDEXER, 0);
-       /**
+    // 		if (indexerForward == 1){
+    // index_until_shot();
+    // //			motor_move(MOTOR_INDEXER, indexerForward * 127);
+    //     }
+    // 		else if (indexerBackward == 1)
+    // 			motor_move(MOTOR_INDEXER, indexerBackward * -127);
+    // 		else
+    // 			motor_move(MOTOR_INDEXER, 0);
+    /**
 			 * sets the speed for the flywheel and makes it so once the button
 			 * is pressed the speed will stay at 127 and when the other button is
 			 * pressed the speed will go down to zero
 			 */
-		if (flywheelIncrease == 1)
-		flywheel_go(90);
-		  // motor_move(MOTOR_FLYWHEEL, flywheelIncrease * 127);
-		else if (flywheelDecrease == 1)
-		   motor_move(MOTOR_FLYWHEEL, flywheelDecrease * 0);
+    if (flywheelIncrease == 1)
+      flywheel_go(90);
+    // motor_move(MOTOR_FLYWHEEL, flywheelIncrease * 127);
+    else if (flywheelDecrease == 1)
+      motor_move(MOTOR_FLYWHEEL, flywheelDecrease * 0);
 
-
-			// if (!(count % 50)) {
-	    //   // Only print every 50ms, the controller text update rate is slow
-			// 	sprintf(rpm, "RPM: %.2f ", motor_get_actual_velocity(9));// ,avgFilter_ult()p
-			// 	printf("%s\n",rpm);
-			// 	controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
-			// 	delay(0);
-			//   controller_clear_line(E_CONTROLLER_MASTER, 0);
-	    // }
-	    // count++;
-	    delay(10);
-
-   }
-
+    // if (!(count % 50)) {
+    //   // Only print every 50ms, the controller text update rate is slow
+    // 	sprintf(rpm, "RPM: %.2f ", motor_get_actual_velocity(9));// ,avgFilter_ult()p
+    // 	printf("%s\n",rpm);
+    // 	controller_print(E_CONTROLLER_MASTER, 0, 0, rpm);
+    // 	delay(0);
+    //   controller_clear_line(E_CONTROLLER_MASTER, 0);
+    // }
+    // count++;
+    delay(10);
+  }
 }

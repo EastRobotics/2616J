@@ -8,7 +8,6 @@
 
 // #define timeout(start, tout) ((tout + start) < millis())
 
-
 #define mirror 1
 adi_ultrasonic_t ult;
 
@@ -16,50 +15,51 @@ void flywheel_go(float speed);
 
 void primary_autonomous()
 {
-char display[20];
-lv_obj_t *pscreen,*leftsensortitle, *leftsensor;
- leftsensortitle = lv_label_create(pscreen, NULL);
- adi_gyro_t gyro = adi_gyro_init('B',1.068);
-delay(1200);
-
+  // char display[20];
+  lv_obj_t *pscreen, *leftsensortitle, *leftsensor;
+  leftsensortitle = lv_label_create(pscreen, NULL);
+  // adi_gyro_t gyro = adi_gyro_init('B', 1.068);
+  // delay(2000);
 
   setup_chassis();
- setup_ops();
+
+
+
+  setup_ops();
 
   // Forward to First Ball Under Cap and get ball
   //chassis_move_absolute(-2500, -127);
 
+  pscreen = lv_cont_create(lv_scr_act(), NULL);
+  leftsensortitle = lv_label_create(pscreen, NULL);
+  // while(true){
 
-    pscreen = lv_cont_create(lv_scr_act(), NULL);
-    leftsensortitle = lv_label_create(pscreen, NULL);
-while(true){
-
-  sprintf(display," gyro %4.2f\n", adi_gyro_get(gyro));
-  lv_label_set_text(leftsensortitle, display);
-  lv_obj_align(leftsensortitle, leftsensor, LV_ALIGN_IN_TOP_MID, 0, 0);
-  delay(100);
-}
+  //   sprintf(display," gyro %4.2f\n", adi_gyro_get(gyro));
+  //   lv_label_set_text(leftsensortitle, display);
+  //   lv_obj_align(leftsensortitle, leftsensor, LV_ALIGN_IN_TOP_MID, 0, 0);
+  //   delay(100);
+  // }
   wait_move(2500, 150);
-  delay(500);
+  delay(250);
 
   // Return Back to Starting Position
   wait_move(-2580, -150);
   delay(250);
 
   // Turn to Face Flags
-  wait_turn(625, 127, mirror, 1000);
-  delay(1000);
-  tune_turn(90);
-  delay(150);
-
-while(true){}
-  // Move forward to first fire position
-  wait_move(1200, 135);
+  wait_turn(580, 90, mirror, 1000);
   delay(500);
+  // tune_turn(90);
+  // delay(150);
+
+  //while(true){}
+  // Move forward to first fire position
+  wait_move(1000, 135);
+  delay(200);
 
   // Fire the first ball at the top flag
   index_until_shota();
-  delay(500);
+  delay(200);
 
   // Forward to second ball fire position
   wait_move(1200, 135);
