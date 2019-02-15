@@ -40,6 +40,7 @@ void wait_move(int ticks, float p)
   {
     delay(20);
   }
+  chassis_move(0);
 }
 
 extern int accelZ_init;

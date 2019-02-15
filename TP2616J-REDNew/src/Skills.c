@@ -9,12 +9,12 @@
 // #define timeout(start, tout) ((tout + start) < millis())
 
 
-#define mirror false
+#define mirror 1
 adi_ultrasonic_t ult;
 
 void flywheel_go(float speed);
 
-void primary_autonomous()
+void skills()
 {
 
   setup_chassis();
@@ -31,11 +31,11 @@ void primary_autonomous()
   delay(500);
 
   // Turn to Face Flags
-  wait_turn(650, -127, -mirror, 1000);
+  wait_turn(635, 127, mirror, 1000);
   delay(500);
 
   // Move forward to first fire position
-  wait_move(100, 127);
+  wait_move(3700, 127);
   delay(500);
 
   // Fire the first ball at the top flag
@@ -43,7 +43,7 @@ void primary_autonomous()
   delay(1000);
 
   // Forward to second ball fire position
-  wait_move(100, 127);
+  wait_move(1200, 127);
   delay(200);
 
   // Fire the second ball at the middle flag

@@ -17,11 +17,11 @@
 #define KI 0.001f
 #define KD 0.1f
 
-#define turn 625
+#define turn 621
 #define forward1 1250
 #define backward1 1235
 #define forward2 310
-#define forward3 350
+#define forward3 400
 #define turnf 700
 #define forward4 300
 #define STOPTIP 100
@@ -29,11 +29,11 @@
 #define backcap  -1850
 
 
-#define turnf2 650
-#define fwdcap2  1200
-#define cflagturn 300
+#define turnf2 550
+#define fwdcap2  1300
+#define cflagturn 250
 #define bflag2 2480
-#define lfturn 270
+#define lfturn 200
 
 
 #define WALLDISTANCE 3
@@ -169,27 +169,37 @@ void autonomous() {
   dest = posit + 9000.0;
   printf("start motors\r\n");
  motor_move(MOTOR_FLYWHEEL, 127);
-  wait_motor_move_ac(10, forward1, 127, 200);
+ wait_motor_move_ac(10, 1300, 127, 200);
+ set_motors(0);
+ delay(1000);
 
-  set_motors(0);
-  delay(1000);
+//Backward after Getting Ball, Does a Wall Reset
+ wait_motor_move_ac(10, -2900, -115, 200);
+ set_motors(0);
+ delay(200);
 
-  wait_motor_move_ac(10, -backward1, -127, 200);
-  set_motors(0);
+//Forward after Wall Reset
+ wait_motor_move_ac(10, 150, 100, 200);
+ set_motors(0);
+ delay(200);
 
-  delay(1000);
+  // wait_motor_move_ac(10, forward1, 127, 200);
+  //
+  // set_motors(0);
+  // delay(1000);
+  //
+  // wait_motor_move_ac(10, -backward1, -127, 200);
+  // set_motors(0);
+  //
+  // delay(1000);
  // motor_tare_position(10);
-  motor_move_relative(10,turn, 127);
-  motor_move_relative(4, -turn, -127);
-  motor_move_relative(8, turn, 127);
-  motor_move_relative(2, -turn, -127);
-  while(motor_get_target_position(10) > motor_get_position(10))
-{
-//  avgFilter_ult();
-  printf("turn - %f - %f\r\n",motor_get_target_position(10),motor_get_position(10));
-  delay(20);
-}
-delay(1000);
+
+  motor_move_relative(2, -turn, -115);
+  motor_move_relative(10, turn, 115);
+  motor_move_relative(8, turn, 115);
+  motor_move_relative(4, -turn, -115);
+  motor_tare_position(10);
+delay(500);
 
 
 printf("turn\r\n");
@@ -197,9 +207,9 @@ motor_tare_position(10);
 wait_motor_move_ac(10, forward2, 127, 200);
   set_motors(0);
   printf("shoot\r\n");
-delay(1000);
+delay(500);
  motor_move_relative(MOTOR_INDEXER, 1000, 127);//(MOTOR_INDEXER, 127);
- delay(1000);
+ delay(500);
  motor_tare_position(10);
  wait_motor_move_ac(10, forward3, 127, 200);
  set_motors(-30);
@@ -258,10 +268,11 @@ wait_motor_move2(10, backcap, -110,10);
 // delay(500);10
 
   motor_move(MOTOR_INTAKE, -127);
-  wait_motor_move2(10, fwdcap2, 110,10);
-   
+  wait_motor_move2(10, fwdcap2, 90, 10);
+
 //delay(200);
 motor_tare_position(10);
+delay(800);
 motor_move_relative(10, cflagturn, 127);
 motor_move_relative(4, -cflagturn, -127);
 motor_move_relative(8, cflagturn, 127);
@@ -283,8 +294,9 @@ motor_move_relative(2, -lfturn, -127);
    {  printf("turnval = %d motorpos = %f \n\r",turnf,motor_get_position(10));
   delay(10);}
   delay(100);
-wait_motor_move2(10, 200, 80,10);
-  delay(2000);
+wait_motor_move2(10, 300, 80,10);
+  delay(700);
+  wait_motor_move_ac(10, -500, -127, 200);
   //   set_motors(0);
   // while(true){
   //   printf("Pushbutton - %d\r\n",adi_digital_read('A'));
