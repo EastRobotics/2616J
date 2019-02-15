@@ -8,42 +8,61 @@
 
 // #define timeout(start, tout) ((tout + start) < millis())
 
-
-#define mirror false
+#define mirror 1
 adi_ultrasonic_t ult;
 
 void flywheel_go(float speed);
 
 void primary_autonomous()
 {
+  // char display[20];
+  lv_obj_t *pscreen, *leftsensortitle, *leftsensor;
+  leftsensortitle = lv_label_create(pscreen, NULL);
+  // adi_gyro_t gyro = adi_gyro_init('B', 1.068);
+  // delay(2000);
 
   setup_chassis();
+
+
+
   setup_ops();
 
   // Forward to First Ball Under Cap and get ball
   //chassis_move_absolute(-2500, -127);
 
-  wait_move(2500, 160);
-  delay(500);
+  pscreen = lv_cont_create(lv_scr_act(), NULL);
+  leftsensortitle = lv_label_create(pscreen, NULL);
+  // while(true){
+
+  //   sprintf(display," gyro %4.2f\n", adi_gyro_get(gyro));
+  //   lv_label_set_text(leftsensortitle, display);
+  //   lv_obj_align(leftsensortitle, leftsensor, LV_ALIGN_IN_TOP_MID, 0, 0);
+  //   delay(100);
+  // }
+  wait_move(2500, 150);
+  delay(250);
 
   // Return Back to Starting Position
-  wait_move(-2580, -160);
-  delay(500);
+  wait_move(-2580, -150);
+  delay(250);
 
   // Turn to Face Flags
-  wait_turn(650, -127, -mirror, 1000);
+  wait_turn(580, 90, mirror, 1000);
   delay(500);
+  // tune_turn(90);
+  // delay(150);
 
+  //while(true){}
   // Move forward to first fire position
-  wait_move(100, 127);
-  delay(500);
+  wait_move(1000, 135);
+  delay(200);
 
   // Fire the first ball at the top flag
   index_until_shota();
-  delay(1000);
+  delay(200);
 
   // Forward to second ball fire position
-  wait_move(100, 127);
+  wait_move(1200, 135);
   delay(200);
 
   // Fire the second ball at the middle flag
@@ -51,12 +70,12 @@ void primary_autonomous()
   delay(200);
 
   // Turn Slightly to miss post
-  wait_turn(120, 127, mirror, 1000);
-  delay(200);
+  wait_turn(100, 127, mirror, 1000);
+  delay(100);
 
-  // Forward to turn the bottom flag
+  // Forward to the bottom flag
   wait_move(1250, 90); // Need to check accellormeter
-  delay(200);
+  delay(100);
 
   // turn slightly before backing out
   // wait_turn(200, 127, mirror, 800);
@@ -76,7 +95,7 @@ void primary_autonomous()
   wait_move(1200, 110);
 
   // Turn Towards the center flags
-  wait_turn(300, 127, mirror, 800);
+  wait_turn(300, 150, mirror, 800);
 
   // Shoot ball if we have any
   //index_until_shota();

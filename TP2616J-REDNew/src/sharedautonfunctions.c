@@ -1,11 +1,13 @@
 #include "main.h"
 
 #define timeout(start, tout) ((tout + start) < millis())
+#define between(value, min, max) ((value < max) && (value > min))
 #define BALLFIREA 2000
 
 int left_mg[] = {MOTOR_DRIVE_FRONT_LEFT, MOTOR_DRIVE_BACK_LEFT};
 int right_mg[] = {MOTOR_DRIVE_FRONT_RIGHT, MOTOR_DRIVE_BACK_RIGHT};
 
+adi_gyro_t gyro;
 void chassis_move(int velo)
 {
   motor_move(left_mg[0], velo);
@@ -30,6 +32,14 @@ void chassis_tare(void)
   motor_tare_position(right_mg[1]);
 }
 
+void chassis_adjust_speed(int speed)
+{
+  motor_modify_profiled_velocity(right_mg[0], (speed));
+  motor_modify_profiled_velocity(left_mg[0], (speed));
+  motor_modify_profiled_velocity(right_mg[1], (speed));
+  motor_modify_profiled_velocity(left_mg[1], (speed));
+}
+
 void wait_move(int ticks, float p)
 {
   int starttime = millis();
@@ -39,6 +49,10 @@ void wait_move(int ticks, float p)
   while (fabs(motor_get_position(left_mg[0])) < fabs((float)(ticks)) && !timeout(starttime, 3000))
   {
     delay(20);
+    if (fabs((float)(ticks)) - fabs(motor_get_position(left_mg[0])) < (0.2 * fabs((float)(ticks))))
+    {
+      chassis_adjust_speed(p / 2);
+    }
   }
   chassis_move(0);
 }
@@ -58,6 +72,13 @@ void wait_turn(int trn, int speed, int dir, int tout)
   while (fabs(motor_get_position(left_mg[0])) < fabs((float)(trn)) && !timeout(starttime, 1000))
   {
     delay(20);
+    if (fabs(trn * 0.2) > (abs(trn) - fabs(motor_get_position(left_mg[0]))))
+    {
+      motor_modify_profiled_velocity(right_mg[0], dir * (speed / 2));
+      motor_modify_profiled_velocity(left_mg[0], dir * (-speed / 2));
+      motor_modify_profiled_velocity(right_mg[1], dir * (speed / 2));
+      motor_modify_profiled_velocity(left_mg[1], dir * (-speed / 2));
+    }
   }
 }
 void setup_chassis(void)
@@ -113,4 +134,74 @@ void index_until_shota()
   }
   motor_move(MOTOR_INDEXER, 0);
   motor_move(MOTOR_INTAKE, 0);
+}
+
+void tune_turn(double degrees, int speed, int dir)
+{
+  while (!between(adi_gyro_get(gyro), (degrees * 10) - 30, (degrees * 10) + 30))
+  {
+    printf(" gyro %4.2f   %4.2f  %s\n", adi_gyro_get(gyro), degrees, (!between(adi_gyro_get('B'), (degrees * 10.0) + 30.0, (degrees * 10.0) - 30.0)) ? "stop" : " ");
+    motor_move(right_mg[0], dir * -speed);
+    motor_move(left_mg[0], dir * speed);
+    motor_move(right_mg[1], dir * -speed);
+    motor_move(left_mg[1], dir * speed);
+    delay(5);
+  }
+  chassis_move(0);
+}
+
+lv_obj_t *pscreen, *leftsensortitle;
+static lv_style_t style;
+void warning_screen(char *message)
+{
+
+  lv_style_copy(&style, &lv_style_plain);
+  style.text.color = LV_COLOR_BLACK;
+  style.body.main_color = LV_COLOR_ORANGE;
+
+  pscreen = lv_cont_create(lv_scr_act(), NULL);
+  leftsensortitle = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_size(pscreen, LV_HOR_RES, LV_VER_RES);
+  lv_obj_set_style(pscreen, &style);
+
+  lv_label_set_text(leftsensortitle, message);
+  lv_obj_align(pscreen, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(leftsensortitle, pscreen, LV_ALIGN_CENTER, 0, 0);
+}
+
+void setup_monitor(void)
+{
+  lv_style_copy(&style, &lv_style_plain);
+  style.text.color = LV_COLOR_RED;
+  style.body.main_color = LV_COLOR_BLACK;
+
+  pscreen = lv_cont_create(lv_scr_act(), NULL);
+  leftsensortitle = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_size(pscreen, LV_HOR_RES, LV_VER_RES);
+  lv_obj_set_style(pscreen, &style);
+
+  //lv_label_set_text(leftsensortitle, message);
+  lv_obj_align(pscreen, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(leftsensortitle, pscreen, LV_ALIGN_CENTER, 0, 0);
+}
+
+void output_monitor(char *message)
+{
+  lv_label_set_text(leftsensortitle, message);
+}
+void sharedfunct_library_init()
+{
+
+  warning_screen("Gyro Initializing! Do not touch Robot!");
+
+  gyro = adi_gyro_init('B', 1.17795); //needs calibration value for gyro
+  delay(2000);
+}
+
+bool motion_limited(float limitvalue)
+{
+
+  int draw = (motor_get_current_draw(right_mg[0]) + motor_get_current_draw(right_mg[1]) + motor_get_current_draw(left_mg[0]) + motor_get_current_draw(left_mg[1])) / 4;
+  int velocity = (motor_get_actual_velocity(right_mg[0]) + motor_get_actual_velocity(right_mg[1]) + motor_get_actual_velocity(left_mg[0]) + motor_get_actual_velocity(left_mg[1])) / 4;
+  return ((abs(draw / (int)velocity) < limitvalue) ? false : true);
 }

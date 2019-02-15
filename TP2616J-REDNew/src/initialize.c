@@ -15,6 +15,9 @@ void on_center_button() {
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+
+
 void initialize() {
 //adi_analog_calibrate('F');
   adi_analog_calibrate(ACCELEROMETER_X); //calibrates the x axis input
@@ -26,7 +29,11 @@ void initialize() {
   accelZ_init = adi_analog_read_calibrated(ACCELEROMETER_Z);
   line_init = adi_analog_read('F');
   printf("Init %d", accelZ_init);
-  adi_port_set_config('F', E_ADI_ANALOG_IN);
+   adi_port_set_config('F', E_ADI_ANALOG_IN);
+
+  // adi_gyro_init('B', 1.685);
+
+  // delay(1200);
   	// pros::ADIAnalogIn sensore ('E');
     // pros::ADIAnalogIn sensorc ('C');
     // pros::ADIAnalogIn sensord ('D');
@@ -52,5 +59,6 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
-  matchmanager();
+ // sharedfunct_library_init();
+ // matchmanager();
 }

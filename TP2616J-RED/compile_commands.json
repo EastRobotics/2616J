@@ -24,8 +24,8 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/initialize.c.o",
-            "src\\initialize.c"
+            "bin/slewRate.c.o",
+            "src\\slewRate.c"
         ],
         "directory": "C:\\Users\\Matthew\\Documents\\github\\2616J\\tp2616j-red",
         "file": "src\\initialize.c"
@@ -55,8 +55,8 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/opcontrol.c.o",
-            "src\\opcontrol.c"
+            "bin/initialize.c.o",
+            "src\\initialize.c"
         ],
         "directory": "C:\\Users\\Matthew\\Documents\\github\\2616J\\tp2616j-red",
         "file": "src\\opcontrol.c"
@@ -86,8 +86,8 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/slewRate.c.o",
-            "src\\slewRate.c"
+            "bin/autonomous.c.o",
+            "src\\autonomous.c"
         ],
         "directory": "C:\\Users\\Matthew\\Documents\\github\\2616J\\tp2616j-red",
         "file": "src\\slewRate.c"
