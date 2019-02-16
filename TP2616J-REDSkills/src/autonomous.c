@@ -172,7 +172,7 @@ set_motors(0);
   turn_left(638, 127, 1000);
 
 //Platform Reset
-  drive_straight(10, -300, -115, 200);
+  drive_straight(10, -250, -115, 200);
   set_motors(0);
   delay(500);
 
