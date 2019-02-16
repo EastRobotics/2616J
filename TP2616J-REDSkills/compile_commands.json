@@ -117,37 +117,6 @@
             "-fdiagnostics-color",
             "--std=gnu11",
             "-o",
-            "bin/autonomous.c.o",
-            "src\\autonomous.c"
-        ],
-        "directory": "C:\\Users\\Matthew\\Documents\\github\\2616J\\TP2616J-REDSkills",
-        "file": "src\\autonomous.c"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-target",
-            "armv7ar-none-none-eabi",
-            "-fno-ms-extensions",
-            "-fno-ms-compatibility",
-            "-fno-delayed-template-parsing",
-            "-isystemc:\\users\\matthew\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
-            "-isystemc:\\users\\matthew\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
-            "-isystemc:\\users\\matthew\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
-            "-iquote./include",
-            "-iquote./include/./",
-            "-mcpu=cortex-a9",
-            "-mfpu=neon-fp16",
-            "-mfloat-abi=softfp",
-            "-D_POSIX_THREADS",
-            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
-            "-Os",
-            "-ffunction-sections",
-            "-fdata-sections",
-            "-fdiagnostics-color",
-            "--std=gnu11",
-            "-o",
             "bin/opcontrol.c.o",
             "src\\opcontrol.c"
         ],
@@ -183,6 +152,37 @@
             "src\\autonomous.c"
         ],
         "directory": "C:\\Users\\Matthew\\Documents\\github\\2616J\\tp2616j-redskills",
+        "file": "src\\autonomous.c"
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-target",
+            "armv7ar-none-none-eabi",
+            "-fno-ms-extensions",
+            "-fno-ms-compatibility",
+            "-fno-delayed-template-parsing",
+            "-isystemc:\\users\\matthew\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include",
+            "-isystemc:\\users\\matthew\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/include-fixed",
+            "-isystemc:\\users\\matthew\\appdata\\local\\programs\\pros\\toolchain\\usr\\bin\\../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/include",
+            "-iquote./include",
+            "-iquote./include/./",
+            "-mcpu=cortex-a9",
+            "-mfpu=neon-fp16",
+            "-mfloat-abi=softfp",
+            "-D_POSIX_THREADS",
+            "-D_UNIX98_THREAD_MUTEX_ATTRIBUTES",
+            "-Os",
+            "-ffunction-sections",
+            "-fdata-sections",
+            "-fdiagnostics-color",
+            "--std=gnu11",
+            "-o",
+            "bin/autonomous.c.o",
+            "src\\autonomous.c"
+        ],
+        "directory": "C:\\Users\\Matthew\\Documents\\github\\2616J\\TP2616J-REDSkills",
         "file": "src\\autonomous.c"
     }
 ]

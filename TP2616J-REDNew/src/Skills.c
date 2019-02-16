@@ -23,11 +23,11 @@ void skills()
   // Forward to First Ball Under Cap and get ball
   //chassis_move_absolute(-2500, -127);
 
-  wait_move(2500, 160);
+  wait_move(2500, 160,0);
   delay(500);
 
   // Return Back to Starting Position
-  wait_move(-2580, -160);
+  wait_move(-2580, -160,0);
   delay(500);
 
   // Turn to Face Flags
@@ -35,7 +35,7 @@ void skills()
   delay(500);
 
   // Move forward to first fire position
-  wait_move(3700, 127);
+  wait_move(3700, 127,0);
   delay(500);
 
   // Fire the first ball at the top flag
@@ -43,7 +43,7 @@ void skills()
   delay(1000);
 
   // Forward to second ball fire position
-  wait_move(1200, 127);
+  wait_move(1200, 127,0);
   delay(200);
 
   // Fire the second ball at the middle flag
@@ -55,7 +55,7 @@ void skills()
   delay(200);
 
   // Forward to turn the bottom flag
-  wait_move(1250, 90); // Need to check accellormeter
+  wait_move(1250, 90,0); // Need to check accellormeter
   delay(200);
 
   // turn slightly before backing out
@@ -63,7 +63,7 @@ void skills()
   // delay(100);
 
   // Back Out to forward cap position
-  wait_move(-1850, -110);
+  wait_move(-1850, -110,0);
   delay(130);
 
   // Turn to face cap
@@ -73,7 +73,7 @@ void skills()
   motor_move(MOTOR_INTAKE, -127);
 
   // Forward to flip cap
-  wait_move(1200, 110);
+  wait_move(1200, 110,0);
 
   // Turn Towards the center flags
   wait_turn(300, 127, mirror, 800);
@@ -84,7 +84,7 @@ void skills()
 
   stop_intake();
   // move forward to hit the lower flag
-  wait_move(2600, 110);
+  wait_move(2600, 110,0);
 
   // Turn into the lower flag
 
@@ -93,6 +93,6 @@ void skills()
   delay(100);
 
   // move forward to push lower flag
-  wait_move(200, 80);
+  wait_move(200, 80,0);
   delay(2000);
 }

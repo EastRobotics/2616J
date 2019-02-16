@@ -8,6 +8,7 @@ int left_mg[] = {MOTOR_DRIVE_FRONT_LEFT, MOTOR_DRIVE_BACK_LEFT};
 int right_mg[] = {MOTOR_DRIVE_FRONT_RIGHT, MOTOR_DRIVE_BACK_RIGHT};
 
 adi_gyro_t gyro;
+bool motion_limited(float limitvalue);
 void chassis_move(int velo)
 {
   motor_move(left_mg[0], velo);
@@ -40,13 +41,13 @@ void chassis_adjust_speed(int speed)
   motor_modify_profiled_velocity(left_mg[1], (speed));
 }
 
-void wait_move(int ticks, float p)
+void wait_move(int ticks, float p, float limitvalue)
 {
   int starttime = millis();
   chassis_tare();
   // int sp = (int)motor_get_position(left_mg[0]);
   chassis_move_absolute(ticks, p);
-  while (fabs(motor_get_position(left_mg[0])) < fabs((float)(ticks)) && !timeout(starttime, 3000))
+  while (fabs(motor_get_position(left_mg[0])) < fabs((float)(ticks)) && !timeout(starttime, 3000) && !motion_limited(limitvalue))
   {
     delay(20);
     if (fabs((float)(ticks)) - fabs(motor_get_position(left_mg[0])) < (0.2 * fabs((float)(ticks))))
@@ -203,5 +204,7 @@ bool motion_limited(float limitvalue)
 
   int draw = (motor_get_current_draw(right_mg[0]) + motor_get_current_draw(right_mg[1]) + motor_get_current_draw(left_mg[0]) + motor_get_current_draw(left_mg[1])) / 4;
   int velocity = (motor_get_actual_velocity(right_mg[0]) + motor_get_actual_velocity(right_mg[1]) + motor_get_actual_velocity(left_mg[0]) + motor_get_actual_velocity(left_mg[1])) / 4;
-  return ((abs(draw / (int)velocity) < limitvalue) ? false : true);
+  printf("d-%d v-%d\n",draw,velocity );
+
+  return (limitvalue==0?false:(abs(draw / (int)velocity) < limitvalue) ? false : true);
 }

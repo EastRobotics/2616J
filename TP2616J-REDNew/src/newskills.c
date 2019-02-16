@@ -11,9 +11,9 @@
 #define mirror 1
 adi_ultrasonic_t ult;
 
-void flywheel_go(float speed);
+// void flywheel_go(float speed);
 
-void primary_autonomous()
+void horseshit()
 {
   // char display[20];
   lv_obj_t *pscreen, *leftsensortitle, *leftsensor;
@@ -39,6 +39,7 @@ void primary_autonomous()
   //   lv_obj_align(leftsensortitle, leftsensor, LV_ALIGN_IN_TOP_MID, 0, 0);
   //   delay(100);
   // }
+
   wait_move(2500, 150, 0);
   delay(250);
 
@@ -54,7 +55,7 @@ void primary_autonomous()
 
   //while(true){}
   // Move forward to first fire position
-  wait_move(1000, 135, 0);
+  wait_move(4200, 135, 0);
   delay(200);
 
   // Fire the first ball at the top flag
@@ -68,16 +69,17 @@ void primary_autonomous()
   // Fire the second ball at the middle flag
   index_until_shota(); //(MOTOR_INDEXER, 127);
   delay(200);
-printf("second shot\n");
+
   // Turn Slightly to miss post
   wait_turn(100, 127, mirror, 1000);
   delay(100);
 
   // Forward to the bottom flag
-  printf("wall tap\n");
-  wait_move(1250, 90, 40); // Need to check accellormeter
+  wait_move(1250, 90, 20); // Need to check accellormeter
   delay(100);
 
+
+while(true){}
   // turn slightly before backing out
   // wait_turn(200, 127, mirror, 800);
   // delay(100);
@@ -87,7 +89,7 @@ printf("second shot\n");
   delay(130);
 
   // Turn to face cap
-  wait_turn(-650, 127, mirror, 800);
+  wait_turn(650, 127, mirror, 800);
 
   // Reverse the intake to flip cap
   motor_move(MOTOR_INTAKE, -127);

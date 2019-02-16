@@ -255,7 +255,7 @@ set_motors(0);
   drive_straight(10, -1000, -210, 200);
   set_motors(0);
   delay(1000);
-  drive_straight(10, -4540, -210, 200);
+  drive_straight(10, -4570, -210, 200);
   set_motors(0);
   delay(1000);
   }
