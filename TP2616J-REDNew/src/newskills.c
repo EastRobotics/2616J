@@ -13,8 +13,7 @@ adi_ultrasonic_t ult;
 
 // void flywheel_go(float speed);
 
-void horseshit()
-{
+void horseshit(){
   // char display[20];
   lv_obj_t *pscreen, *leftsensortitle, *leftsensor;
   leftsensortitle = lv_label_create(pscreen, NULL);

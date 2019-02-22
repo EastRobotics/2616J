@@ -3,6 +3,6 @@ void skills(void);
 
 void autonomous()
 {
-  go_platform();
+  primary_autonomous();
   //red_back_auton();
 }

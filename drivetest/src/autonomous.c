@@ -1,5 +1,19 @@
 #include "main.h"
 
+/**
+ * Runs the user autonomous code. This function will be started in its own task
+ * with the default priority and stack size whenever the robot is enabled via
+ * the Field Management System or the VEX Competition Switch in the autonomous
+ * mode. Alternatively, this function may be called in initialize or opcontrol
+ * for non-competition testing purposes.
+ *
+ * If the robot is disabled or communications is lost, the autonomous task
+ * will be stopped. Re-enabling the robot will restart the task, not re-start it
+ * from where it left off.
+ */
+
+  #include "main.h"
+
 #define timeout(start, tout) ((tout + start) < millis())
 #define between(value, min, max) ((value < max) && (value > min))
 #define BALLFIREA 2000
@@ -9,17 +23,6 @@ int right_mg[] = {MOTOR_DRIVE_FRONT_RIGHT, MOTOR_DRIVE_BACK_RIGHT};
 
 adi_gyro_t gyro;
 bool motion_limited(float limitvalue);
-void setup_chassis(void)
-{
-  motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
-  motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
-  motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
-  motor_set_gearing(MOTOR_DRIVE_BACK_RIGHT, E_MOTOR_GEARSET_18);
-
-  motor_set_reversed(10, 1);
-  motor_set_reversed(8, 1);
-}
-
 void chassis_move(int velo)
 {
   motor_move(left_mg[0], velo);
@@ -58,8 +61,7 @@ void wait_move(int ticks, float p, float limitvalue)
   chassis_tare();
   // int sp = (int)motor_get_position(left_mg[0]);
   chassis_move_absolute(ticks, p);
-  while (fabs(motor_get_position(left_mg[0])) < fabs((float)(ticks)) && !motion_limited(limitvalue))
-   // && !timeout(starttime, 3000)
+  while (fabs(motor_get_position(left_mg[0])) < fabs((float)(ticks)) && !timeout(starttime, 3000) && !motion_limited(limitvalue))
   {
     delay(20);
     if (fabs((float)(ticks)) - fabs(motor_get_position(left_mg[0])) < (0.2 * fabs((float)(ticks))))
@@ -93,6 +95,16 @@ void wait_turn(int trn, int speed, int dir, int tout)
       motor_modify_profiled_velocity(left_mg[1], dir * (-speed / 2));
     }
   }
+}
+void setup_chassis(void)
+{
+  motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_DRIVE_BACK_RIGHT, E_MOTOR_GEARSET_18);
+
+  motor_set_reversed(10, 1);
+  motor_set_reversed(8, 1);
 }
 
 void setup_ops(void)
@@ -209,4 +221,27 @@ bool motion_limited(float limitvalue)
   printf("d-%d v-%d\n",draw,velocity );
 
   return (limitvalue==0?false:(abs(draw / (int)velocity) < limitvalue) ? false : true);
+}
+void autonomous() {
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);
+wait_move(-1000, -100, 40);
+wait_move(1000, 100, 40);  
 }

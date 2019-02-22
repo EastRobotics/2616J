@@ -3,5 +3,5 @@ void skills(void);
 
 void autonomous()
 {
-  red_back_auton();
+ primary_autonomous();
 }

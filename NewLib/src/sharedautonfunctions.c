@@ -232,7 +232,7 @@ void go_platform(void)
     motor_move(right_mg[0], 200);
     motor_move(left_mg[1], -200);
     motor_move(right_mg[1], 200);
-    delay(25);
+    delay(10);
   }
 
   chassis_move(0);

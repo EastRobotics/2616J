@@ -6,7 +6,7 @@
 #define MOTOR_INTAKE 20
 #define MOTOR_INDEXER 6
 #define MOTOR_FLYWHEEL 9
-#define MOTOR_DESCORER 17
+#define MOTOR_DESCORER 16
 #define ACCELEROMETER_X 'D'
 #define ACCELEROMETER_Y 'D' //calibrates the y axis input
 #define ACCELEROMETER_Z 'D'

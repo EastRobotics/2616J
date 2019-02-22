@@ -18,6 +18,6 @@ void index_until_shota(void);
 void tune_turn(double);
 void warning_screen(char *message);
 bool motion_limited(float);
-void go_platform(void)
+void go_platform(void);
 #define BALLFIRE 2000
 #endif //_TEAMFUNCTIONS
