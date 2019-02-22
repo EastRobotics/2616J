@@ -204,8 +204,14 @@ void sharedfunct_library_init()
 bool motion_limited(float limitvalue)
 {
 
-  int draw = (motor_get_current_draw(right_mg[0]) + motor_get_current_draw(right_mg[1]) + motor_get_current_draw(left_mg[0]) + motor_get_current_draw(left_mg[1])) / 4;
-  int velocity = (motor_get_actual_velocity(right_mg[0]) + motor_get_actual_velocity(right_mg[1]) + motor_get_actual_velocity(left_mg[0]) + motor_get_actual_velocity(left_mg[1])) / 4;
+  int draw = (motor_get_current_draw(right_mg[0]) +
+  motor_get_current_draw(right_mg[1]) +
+  motor_get_current_draw(left_mg[0]) +
+  motor_get_current_draw(left_mg[1])) / 4;
+  int velocity = (motor_get_actual_velocity(right_mg[0]) +
+  motor_get_actual_velocity(right_mg[1]) +
+  motor_get_actual_velocity(left_mg[0]) +
+  motor_get_actual_velocity(left_mg[1])) / 4;
   printf("d-%d v-%d\n",draw,velocity );
 
   return (limitvalue==0?false:(abs(draw / (int)velocity) < limitvalue) ? false : true);
