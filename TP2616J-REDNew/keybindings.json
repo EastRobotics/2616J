@@ -1,7 +1,0 @@
-// Place your key bindings in this file to override the defaults
-[{
-    "key": "ctrl+u",
-    "command": "workbench.action.tasks.runTask",
-    "args": "PROSV5 UPLOAD"
-}
-]
