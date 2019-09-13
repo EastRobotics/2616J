@@ -9,7 +9,7 @@ void on_center_button() {}
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  adi_port_set_config('A', E_ADI_ANALOG_IN);
+  adi_port_set_config('A', E_ADI_DIGITAL_IN);
 }
 
 /**
