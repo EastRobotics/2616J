@@ -17,7 +17,7 @@ OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO *
  void set_motorso(int speed) {
    motor_move(MOTOR_DRIVE_FRONT_LEFT,speed);
    motor_move(MOTOR_DRIVE_FRONT_RIGHT,-speed);
-   motor_move(MOTOR_DRIVE_BACK_RIGHT,-speed);
+   motor_move(MOTOR_DRIVE_BACK_RIGHT,-speed); 
    motor_move(MOTOR_DRIVE_BACK_LEFT,speed);
  }
 
