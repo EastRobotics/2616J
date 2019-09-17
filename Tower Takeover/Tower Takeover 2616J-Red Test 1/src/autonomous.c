@@ -52,32 +52,30 @@ int taskindexeron;
   }
 }
 
-  void autonomous() {
-    double posit, dest;
-    char rpm[20];
+void autonomous() {
+  double posit, dest;
+  char rpm[20];
 
-    motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
-  	motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
-  	motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
-  	motor_set_gearing(MOTOR_DRIVE_BACK_RIGHT, E_MOTOR_GEARSET_18);
-  	motor_set_gearing(MOTOR_LIFT, E_MOTOR_GEARSET_36);
-  	motor_set_gearing(MOTOR_INTAKE_LEFT, E_MOTOR_GEARSET_18);
-    motor_set_gearing(MOTOR_INTAKE_RIGHT, E_MOTOR_GEARSET_18);
-  	motor_set_gearing(MOTOR_ANGLER, E_MOTOR_GEARSET_36);
+  motor_set_gearing(MOTOR_DRIVE_FRONT_LEFT, E_MOTOR_GEARSET_18);
+	motor_set_gearing(MOTOR_DRIVE_BACK_LEFT, E_MOTOR_GEARSET_18);
+	motor_set_gearing(MOTOR_DRIVE_FRONT_RIGHT, E_MOTOR_GEARSET_18);
+	motor_set_gearing(MOTOR_DRIVE_BACK_RIGHT, E_MOTOR_GEARSET_18);
+	motor_set_gearing(MOTOR_LIFT, E_MOTOR_GEARSET_36);
+	motor_set_gearing(MOTOR_INTAKE_LEFT, E_MOTOR_GEARSET_18);
+  motor_set_gearing(MOTOR_INTAKE_RIGHT, E_MOTOR_GEARSET_18);
+	motor_set_gearing(MOTOR_ANGLER, E_MOTOR_GEARSET_36);
 
-    motor_set_reversed(10, 1);
-    motor_set_reversed(8, 1);
-
-// Flywheel and Intake Start
-   // motor_move(MOTOR_FLYWHEEL, 127);
-   motor_move(MOTOR_INTAKE_LEFT, 127);
-   motor_move(MOTOR_INTAKE_RIGHT, -127);
+  motor_set_reversed(10, 1);
+  motor_set_reversed(8, 1);
 
   posit = motor_get_position(10);
   dest = posit + 9000.0;
   printf("start motors\r\n");
 
-  drive_straight(10, 1450, 127, 200);
+  motor_move(MOTOR_INTAKE_LEFT, -127);
+  motor_move(MOTOR_INTAKE_RIGHT, 127);
+
+  drive_straight(10, 1460, 127, 200);
   set_motors(0);
   delay(750);
 
@@ -87,46 +85,46 @@ int taskindexeron;
 
   turn_left(650, 90, 750);
 
-  printf("turn\r\n");
-motor_tare_position(10);
-drive_straight(10, 1400, 127, 200);
-set_motors(0);
-delay(750);
+  motor_tare_position(10);
+  drive_straight(10, 1400, 127, 200);
+  set_motors(0);
+  delay(750);
 
- motor_move(MOTOR_INTAKE_LEFT, 0);
- motor_move(MOTOR_INTAKE_RIGHT, 0);
- drive_straight(10, -500, -100, 200);
- set_motors(0);
- delay(750);
+  drive_straight(10, -500, -100, 200);
+  set_motors(0);
+  delay(750);
 
+  turn_right(650, 127, 100);
 
- turn_right(650, 127, 100);
+  drive_straight(10, 600, 127, 200);
+  set_motors(0);
+  delay(750);
 
- drive_straight(10, 600, 127, 200);
- set_motors(0);
- delay(750);
+  drive_straight(10, -1500, -127, 200);
+  set_motors(0);
+  delay(750);
 
- drive_straight(10, -1500, -127, 200);
- set_motors(0);
- delay(750);
+  drive_straight(10, 50, 127, 200);
+  set_motors(0);
+  delay(750);
 
- drive_straight(10, 50, 127, 200);
- set_motors(0);
- delay(750);
+  motor_move(MOTOR_INTAKE_LEFT, 0);
+  motor_move(MOTOR_INTAKE_RIGHT, 0);
+  motor_move_relative(MOTOR_INTAKE_LEFT,)
 
- turn_right(634, 100, 500);
+  turn_right(634, 100, 500);
 
- drive_straight(10, 2000, 127, 200);
- set_motors(0);
- delay(500);
+  drive_straight(10, 2000, 127, 200);
+  set_motors(0);
+  delay(500);
 
- motor_move(MOTOR_ANGLER, 500);
- delay(1000);
- motor_move(MOTOR_INTAKE_LEFT, -127);
- motor_move(MOTOR_INTAKE_RIGHT, 127);
- delay(50);
+  motor_move(MOTOR_ANGLER, 500);
+  delay(1000);
+  motor_move(MOTOR_INTAKE_LEFT, -127);
+  motor_move(MOTOR_INTAKE_RIGHT, 127);
+  delay(50);
 
- drive_straight(10, -1000, 127, 200);
- set_motors(0);
- delay(500);
+  drive_straight(10, -1000, 127, 200);
+  set_motors(0);
+  delay(500);
 }
