@@ -64,7 +64,6 @@ static lv_obj_t *win;
 void initialize()
 {
 
-	auton_picker();
 }
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -168,22 +167,9 @@ void auton_picker()
 void auton_stack_red()
 {
 
-	static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
-	lv_label_set_text(auton_label, "Stack Red Auton Started");
-	lv_obj_set_pos(auton_label, 100, 100);
-}
-
-/*
-
-* Stacking Blue Auton
-
-*/
-void auton_stack_blue()
-{
-
-	static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
-	lv_label_set_text(auton_label, "Stack Blue Auton Started");
-	lv_obj_set_pos(auton_label, 100, 100);
+	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
+	// lv_label_set_text(auton_label, "Stack Red Auton Started");
+	// lv_obj_set_pos(auton_label, 100, 100);
 
 	angler.moveVoltage(-1000);
 	lift.moveVoltage(-1200);
@@ -194,50 +180,123 @@ void auton_stack_blue()
 	pros::delay(100);
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(-100); //backward
+	drive.tank(-100, -100);
 
 	intake.moveVoltage(-12000); //outake
 
 	pros::delay(1000);
 
+	drive.stop();
+
 	intake.moveVoltage(12000); //intake
 	pros::delay(150);
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(1450); //forward
+	drive.moveDistance(1300);//forward
 
 	pros::delay(100);
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(-500); //backward
+	drive.moveDistance(-500);//backward
 
-	intake.moveVoltage(0); //stop intake
+	intake.moveVoltage(0);//stop intake
 
 	drive.setMaxVelocity(75);
-	drive.turnAngle(-355); //turn left
+	drive.turnAngle(355);//turn right
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(730); //forward
+	drive.moveDistance(730);//forward
 
 	intake.moveVoltage(-4000);
 	pros::delay(480);
 	intake.moveVoltage(0);
 
-	if (abs(angler.getPosition()) <= 1300)
-	{ //stack the cubes
-		angler.moveVoltage(12000);
-	}
-	else if (abs(angler.getPosition()) > 1300 && abs(angler.getPosition()) <= 1500)
-	{
-		angler.moveVoltage(3000);
-	}
-	else if (abs(angler.getPosition()) > 1500)
-	{
-		angler.moveVoltage(1000);
+	if (abs(angler.getPosition())<=1300) {//stack the cubes
+		 angler.moveVoltage(12000);
+
+	} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+	 angler.moveVoltage(3000);
+
+	} else if(abs(angler.getPosition())>1500) {
+	 angler.moveVoltage(1000);
 	}
 	pros::delay(2500);
 
-	drive.moveDistance(-500);
+	drive.setMaxVoltage(20);
+	drive.moveDistance(25);
+
+	drive.moveDistance(-500);//move backward
+
+}
+
+/*
+
+* Stacking Blue Auton
+
+*/
+void auton_stack_blue()
+{
+
+	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
+	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
+	// lv_obj_set_pos(auton_label, 100, 100);
+
+	angler.moveVoltage(-1000);
+lift.moveVoltage(-1200);
+
+drive.setMaxVelocity(100);
+drive.moveDistance(100); //forward
+
+pros::delay(100);
+
+drive.setMaxVelocity(100);
+drive.tank(-100, -100);
+
+intake.moveVoltage(-12000); //outake
+
+pros::delay(1000);
+
+drive.stop();
+
+intake.moveVoltage(12000); //intake
+pros::delay(150);
+
+drive.setMaxVelocity(100);
+drive.moveDistance(1300);//forward
+
+pros::delay(100);
+
+drive.setMaxVelocity(100);
+drive.moveDistance(-500);//backward
+
+intake.moveVoltage(0);//stop intake
+
+drive.setMaxVelocity(75);
+drive.turnAngle(-355);//turn left
+
+drive.setMaxVelocity(100);
+drive.moveDistance(730);//forward
+
+intake.moveVoltage(-4000);
+pros::delay(480);
+intake.moveVoltage(0);
+
+if (abs(angler.getPosition())<=1300) {//stack the cubes
+	 angler.moveVoltage(12000);
+
+} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+ angler.moveVoltage(3000);
+
+} else if(abs(angler.getPosition())>1500) {
+ angler.moveVoltage(1000);
+}
+pros::delay(2500);
+
+drive.setMaxVoltage(20);
+drive.moveDistance(25);
+
+drive.moveDistance(-500);//move backward
+
 }
 
 /*
@@ -247,9 +306,31 @@ void auton_stack_blue()
 */
 void auton_push()
 {
-	static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
-	lv_label_set_text(auton_label, "Push Auton Started");
-	lv_obj_set_pos(auton_label, 100, 100);
+	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
+	// lv_label_set_text(auton_label, "Push Auton Started");
+	// lv_obj_set_pos(auton_label, 100, 100);
+
+	angler.moveVoltage(-1000);
+  lift.moveVoltage(-1000);
+
+  drive.setMaxVelocity(100);
+  drive.moveDistance(200); //backward
+
+  drive.setMaxVelocity(100);
+  drive.moveDistance(-500); //backward
+
+  pros::delay(100);
+
+  drive.setMaxVelocity(100);
+  drive.moveDistance(300); //forward
+
+
+  intake.moveVoltage(-12000); //outake
+  pros::delay(800);
+
+  intake.moveVoltage(0);
+
+
 }
 
 /**
@@ -264,6 +345,7 @@ void auton_push()
 
 void competition_initialize()
 {
+
 	auton_picker();
 }
 
@@ -301,9 +383,10 @@ void autonomous()
 	case 3:
 		auton_push();
 		break;
-	default:
-		auton_push();
 	}
+while(true){
+	pros::delay(50);
+}
 }
 
 /*
@@ -322,134 +405,123 @@ void autonomous()
 
 // Chassis Control9ler - lets us drive the robot around with open- or closed-loop control
 
-void opcontrol()
-{
+void opcontrol() {
 
-	//------------------------------------------------------------------------------
-	char s[30];
+//------------------------------------------------------------------------------
+char s[30];
 
-	pros::Task my_cpp_task(my_task_fn, (void *)"PROS", "My Task");
+ pros::Task my_cpp_task (my_task_fn, (void*)"PROS", "My Task");
 
-	ControllerButton IntakeInButton(ControllerDigital::R1);
-	ControllerButton IntakeOutButton(ControllerDigital::R2);
+ lv_obj_set_size(scr, 476, 272);
+ lv_img_set_src(img_var, &red_flower);
+ lv_obj_set_pos(img_var, 0, 0);
+ //	static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
+// lv_label_set_text(auton_label, "");
+// lv_obj_set_pos(auton_label, 100, 100);
+ pros::delay(100);
 
-	ControllerButton AnglerUpButton(ControllerDigital::up);
-	ControllerButton AnglerDownButton(ControllerDigital::down);
+ ControllerButton IntakeInButton(ControllerDigital::R1);
+ ControllerButton IntakeOutButton(ControllerDigital::R2);
 
-	ControllerButton LiftUpButton(ControllerDigital::L1);
-	ControllerButton LiftDownButton(ControllerDigital::L2);
+ ControllerButton AnglerUpButton(ControllerDigital::up);
+ ControllerButton AnglerDownButton(ControllerDigital::down);
 
-	ControllerButton DoubleTower(ControllerDigital::A);
-	//------------------------------------------------------------------------------
-	intake.setBrakeMode(AbstractMotor::brakeMode::brake);
-	angler.setBrakeMode(AbstractMotor::brakeMode::brake);
-	lift.setBrakeMode(AbstractMotor::brakeMode::brake);
-	angler.tarePosition();
-	int count = 0;
-	//------------------------------------------------------------------------------
-	while (true)
-	{
+ ControllerButton LiftUpButton(ControllerDigital::L1);
+ ControllerButton LiftDownButton(ControllerDigital::L2);
+
+  ControllerButton DoubleTower(ControllerDigital::A);
+	drive.setMaxVoltage(12000);
+//------------------------------------------------------------------------------
+intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+angler.setBrakeMode(AbstractMotor::brakeMode::brake);
+lift.setBrakeMode(AbstractMotor::brakeMode::brake);
+//angler.tarePosition();
+int count =0;
+//------------------------------------------------------------------------------
+	while (true) {
 		drive.tank(masterController.getAnalog(ControllerAnalog::leftY),
-				   masterController.getAnalog(ControllerAnalog::rightY));
-		//------------------------------------------------------------------------------
-		if (IntakeInButton.isPressed())
-		{
-			intake.moveVoltage(12000);
-			lift.moveVoltage(-1000);
-			count = 0;
-			//resets counter to 0
-		}
-		else if (IntakeOutButton.isPressed())
-		{
+						masterController.getAnalog(ControllerAnalog::rightY));
+//------------------------------------------------------------------------------
+   if(IntakeInButton.isPressed())
+	 {
+		 intake.moveVoltage(12000);
+		 lift.moveVoltage(-1000);
+     count =0;
+		 //resets counter to 0
+
+	} else if(IntakeOutButton.isPressed()){
 			count++;
 
-			if (count < 100)
-			{
-				intake.moveVoltage(-6000);
-			}
-			else if (IntakeOutButton.isPressed())
-			{
-				intake.moveVoltage(-12000);
-			}
-			else if (IntakeInButton.isPressed())
-			{
-				count = 0;
-			}
-		}
-		else
-		{
-			intake.moveVoltage(0);
-		}
-		//------------------------------------------------------------------------------
-		if (LiftUpButton.isPressed() && abs(angler.getPosition()) < 600)
-		{
-			angler.moveVoltage(12000);
+	 if(count < 100){
+		 intake.moveVoltage(-6000);
+
+	 }else if(IntakeOutButton.isPressed()){
+		 intake.moveVoltage(-12000);
+
+	 }else if(IntakeInButton.isPressed()){
+		 count=0;
+	 }
+
+	 }else{
+		 intake.moveVoltage(0);
+	 }
+//------------------------------------------------------------------------------
+  if(LiftUpButton.isPressed() && abs(angler.getPosition())<600){
+      angler.moveVoltage(12000);
 			pros::delay(100);
 			lift.moveVoltage(12000);
 			//cout  << "button;"
-		}
-		else if (LiftUpButton.isPressed())
-		{
-			lift.moveVoltage(12000);
-		}
-		else if (LiftDownButton.isPressed())
-		{
-			lift.moveVoltage(-12000);
-		}
-		else
-		{
-			lift.moveVoltage(-800); //runs down lift constantly
-		}
-		//------------------------------------------------------------------------------
-		if (AnglerUpButton.isPressed())
-		{
-			//sprintf(s,"%f",angler.getPosition());
-			//masterController.setText(0, 0, s);
-			//Display position of (MotorGroup) on controller
-			if (abs(angler.getPosition()) <= 1400)
-			{
-				angler.moveVoltage(12000);
-			}
-			else if (abs(angler.getPosition()) > 1400 && abs(angler.getPosition()) <= 1550)
-			{
-				angler.moveVoltage(6000);
-			}
-			else if (abs(angler.getPosition()) > 1550)
-			{
-				angler.moveVoltage(3000);
-			}
-		}
-		else if (AnglerDownButton.isPressed())
-		{
-			angler.moveVoltage(-12000);
-		}
-		else if (LiftDownButton.isPressed())
-		{
-			pros::delay(300);
-			angler.moveVoltage(-12000);
-		}
-		else
-		{
-			angler.moveVoltage(0);
-		}
-		//------------------------------------------------------------------------------
-		if (DoubleTower.isPressed())
-		{
-			intake.tarePosition();
-			intake.moveRelative(-750, 100);
-			pros::delay(500);
-		}
-		//------------------------------------------------------------------------------
-		pros::delay(20);
+
+	}else if(LiftUpButton.isPressed()){
+		lift.moveVoltage(12000);
+
+	}else if(LiftDownButton.isPressed()){
+    lift.moveVoltage(-12000);
+
+	}else{
+		lift.moveVoltage(-800);//runs down lift constantly
 	}
+//------------------------------------------------------------------------------
+ if(AnglerUpButton.isPressed())
+	 {
+	   //sprintf(s,"%f",angler.getPosition());
+  	 //masterController.setText(0, 0, s);
+     //Display position of (MotorGroup) on controller
+		 if (abs(angler.getPosition())<=1400) {
+			  angler.moveVoltage(12000);
+
+		 } else if (abs(angler.getPosition())>1400 && abs(angler.getPosition())<=1550) {
+ 		 	angler.moveVoltage(6000);
+
+		} else if(abs(angler.getPosition())>1450) {
+			angler.moveVoltage(3000);
+		}
+
+	 } else if(AnglerDownButton.isPressed()){
+		  angler.moveVoltage(-12000);
+
+	 } else if(LiftDownButton.isPressed()){
+		 pros::delay(300);
+		 angler.moveVoltage(-12000);
+
+	 }else{
+		 angler.moveVoltage(0);
+	 }
+//------------------------------------------------------------------------------
+if(DoubleTower.isPressed()){
+intake.tarePosition();
+intake.moveRelative(-750, 100);
+pros::delay(500);
+
+}
+//------------------------------------------------------------------------------
+	pros::delay(20);
+ }
 }
 
 /**
 
 Broken Ports:13,14
-TO DO LIST
-1. Auton Ajustments
-2. IntakeOut Speed ajustments
 
 cd "C:\Users\bstar\git\2616J\2616J-TT1 - BLUE"
 prosv5 make
