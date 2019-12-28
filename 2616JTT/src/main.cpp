@@ -7,6 +7,7 @@
 #include "display/lv_conf.h"
 
 extern char _PROS_COMPILE_DIRECTORY[30];
+pros::ADIDigitalIn AutonButton(1);
 void auton_picker();
 
 /**
@@ -61,59 +62,84 @@ static lv_res_t null_handler(lv_obj_t *obj)
 
 static lv_obj_t *win;
 
-void initialize()
-{
 
-}
 /**
  * Runs while the robot is in the disabled state of Field Management System or
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
- */
-void disabled() {}
+ *///---------------------------------------------------------------------------
+void disabled() {
+}
 
 LV_IMG_DECLARE(red_flower);
 LV_IMG_DECLARE(bluemask);
 LV_IMG_DECLARE(blue_circle);
 LV_IMG_DECLARE(push_cube);
 LV_IMG_DECLARE(stack_cube);
+LV_IMG_DECLARE(bigstack_mask);
 lv_obj_t *scr = lv_cont_create(lv_scr_act(), NULL);
 lv_obj_t *img_var = lv_img_create(scr, NULL);
 
 lv_obj_t *img_push = lv_img_create(scr, NULL);
 lv_obj_t *img_stack = lv_img_create(scr, NULL);
 lv_obj_t *img_blue = lv_img_create(scr, NULL);
+lv_obj_t *img_bigstack = lv_img_create(scr, NULL);
 
+void initialize()
+{
+	LV_IMG_DECLARE(red_flower);
+	lv_obj_set_size(scr, 476, 272);
+	lv_img_set_src(img_var, &red_flower);
+	lv_obj_set_pos(img_var, 0, 0);
+}
+//------------------------------------------------------------------------------
 static lv_res_t event_handler(lv_obj_t *obj)
 {
 	autonid++;
-	if (autonid > 3)
+	if (autonid > 5)
 	{
 		autonid = 1;
 	}
 	printf("A=%d\n", autonid);
 	if (autonid == 1)
 	{
+		lv_obj_set_hidden(img_stack, 1);
+		lv_obj_set_hidden(img_push, 1);
+		lv_obj_set_hidden(img_blue, 1);
+		lv_obj_set_hidden(img_bigstack, 0);
+	}
+	if (autonid == 2)
+	{
+		lv_obj_set_hidden(img_stack, 1);
+		lv_obj_set_hidden(img_push, 1);
+		lv_obj_set_hidden(img_blue, 0);
+		lv_obj_set_hidden(img_bigstack, 0);
+	}
+	if (autonid == 3)
+	{
 		lv_obj_set_hidden(img_stack, 0);
 		lv_obj_set_hidden(img_push, 1);
 		lv_obj_set_hidden(img_blue, 1);
+		lv_obj_set_hidden(img_bigstack, 1);
 	}
-	if (autonid == 2)
+	if (autonid == 4)
 	{
 		lv_obj_set_hidden(img_stack, 0);
 		lv_obj_set_hidden(img_push, 1);
 		lv_obj_set_hidden(img_blue, 0);
+		lv_obj_set_hidden(img_bigstack, 1);
 	}
-	if (autonid == 3)
+	if (autonid == 5)
 	{
 		lv_obj_set_hidden(img_stack, 1);
 		lv_obj_set_hidden(img_push, 0);
 		lv_obj_set_hidden(img_blue, 1);
+		lv_obj_set_hidden(img_bigstack, 1);
 	}
 	pros::delay(50);
 	return LV_RES_OK;
 }
-
+//------------------------------------------------------------------------------
 void auton_picker()
 {
 	pros::delay(100);
@@ -128,19 +154,24 @@ void auton_picker()
 	pstyle->image.color = {0x0, 0x0, 0x0, 0xff};
 	lv_img_set_style(img_push, pstyle);
 	lv_img_set_style(img_stack, pstyle);
+	lv_img_set_style(img_bigstack, pstyle);
 
 	lv_obj_set_hidden(img_stack, 1);
+	lv_obj_set_hidden(img_bigstack, 1);
 	lv_obj_set_hidden(img_blue, 1);
 	lv_img_set_src(img_blue, &bluemask);
 	lv_img_set_src(img_push, &push_cube);
 	lv_img_set_src(img_stack, &stack_cube);
+	lv_img_set_src(img_bigstack, &bigstack_mask);
 	lv_obj_set_pos(img_blue, 0, 0);
 	lv_obj_set_pos(img_push, 0, 0);
 	lv_obj_set_pos(img_stack, 0, 0);
+  lv_obj_set_pos(img_bigstack, 0, 0);
 
-	lv_obj_set_hidden(img_stack, 0);
+	lv_obj_set_hidden(img_stack, 1);
 	lv_obj_set_hidden(img_push, 1);
 	lv_obj_set_hidden(img_blue, 1);
+	lv_obj_set_hidden(img_bigstack, 0);
 
 	lv_obj_t *btn = lv_btn_create(lv_scr_act(), NULL);
 
@@ -154,33 +185,33 @@ void auton_picker()
 	lv_btn_set_style(btn, LV_BTN_STATE_PR, &bstyle);
 	while (true)
 	{
+		if (AutonButton.get_new_press()) {
+			event_handler(NULL);
 		pros::delay(50);
-	}
+	  }
+  }
 }
-
 /*
 
 * Stacking Red Auton
 
-*/
-
+*///----------------------------------------------------------------------------
 void auton_stack_red()
 {
-
 	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
-	// lv_label_set_text(auton_label, "Stack Red Auton Started");
+	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
 	// lv_obj_set_pos(auton_label, 100, 100);
 
 	angler.moveVoltage(-1000);
 	lift.moveVoltage(-1200);
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(100); //forward
+	drive.moveDistance(80); //forward
 
 	pros::delay(100);
 
 	drive.setMaxVelocity(100);
-	drive.tank(-100, -100);
+	drive.tank(-80, -100);
 
 	intake.moveVoltage(-12000); //outake
 
@@ -192,12 +223,12 @@ void auton_stack_red()
 	pros::delay(150);
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(1300);//forward
+	drive.moveDistance(1200);//forward
 
 	pros::delay(100);
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(-500);//backward
+	drive.moveDistance(-330);//backward
 
 	intake.moveVoltage(0);//stop intake
 
@@ -205,20 +236,20 @@ void auton_stack_red()
 	drive.turnAngle(355);//turn right
 
 	drive.setMaxVelocity(100);
-	drive.moveDistance(730);//forward
+	drive.moveDistance(710);//forward
 
 	intake.moveVoltage(-4000);
-	pros::delay(480);
+	pros::delay(240);
 	intake.moveVoltage(0);
 
 	if (abs(angler.getPosition())<=1300) {//stack the cubes
-		 angler.moveVoltage(12000);
+	 angler.moveVoltage(12000);
 
 	} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
-	 angler.moveVoltage(3000);
+	angler.moveVoltage(3000);
 
 	} else if(abs(angler.getPosition())>1500) {
-	 angler.moveVoltage(1000);
+	angler.moveVoltage(1000);
 	}
 	pros::delay(2500);
 
@@ -228,82 +259,211 @@ void auton_stack_red()
 	drive.moveDistance(-500);//move backward
 
 }
-
-/*
-
-* Stacking Blue Auton
-
-*/
-void auton_stack_blue()
+//------------------------------------------------------------------------------
+void auton_big_stack()
 {
-
 	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
 	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
 	// lv_obj_set_pos(auton_label, 100, 100);
 
 	angler.moveVoltage(-1000);
-lift.moveVoltage(-1200);
+	lift.moveVoltage(-1200);
 
-drive.setMaxVelocity(100);
-drive.moveDistance(100); //forward
+	drive.setMaxVelocity(100);
+	drive.moveDistance(80); //forward
 
-pros::delay(100);
+	pros::delay(100);
 
-drive.setMaxVelocity(100);
-drive.tank(-100, -100);
+	drive.setMaxVelocity(100);
+	drive.tank(-80, -100);
 
-intake.moveVoltage(-12000); //outake
+	intake.moveVoltage(-12000); //outake
 
-pros::delay(1000);
+	pros::delay(1000);
 
-drive.stop();
+	drive.stop();
 
-intake.moveVoltage(12000); //intake
-pros::delay(150);
+	intake.moveVoltage(12000); //intake
+	pros::delay(150);
 
-drive.setMaxVelocity(100);
-drive.moveDistance(1300);//forward
+	drive.setMaxVelocity(100);
+	drive.moveDistance(1200);//forward
+	pros::delay(100);
+	//above stays the same
 
-pros::delay(100);
 
-drive.setMaxVelocity(100);
-drive.moveDistance(-500);//backward
 
-intake.moveVoltage(0);//stop intake
+  //new stuff of backing up added above in space
+	//code below is correct
 
-drive.setMaxVelocity(75);
-drive.turnAngle(-355);//turn left
+  intake.moveVoltage(12000); //intake
+  pros::delay(150);
 
-drive.setMaxVelocity(100);
-drive.moveDistance(730);//forward
+  drive.setMaxVelocity(100);
+  drive.moveDistance(1200);//forward
+  pros::delay(100);
 
-intake.moveVoltage(-4000);
-pros::delay(480);
-intake.moveVoltage(0);
+  drive.setMaxVelocity(100);
+  drive.moveDistance(-330);//backward
 
-if (abs(angler.getPosition())<=1300) {//stack the cubes
+  intake.moveVoltage(0);//stop intake
+
+	drive.setMaxVelocity(75);
+	drive.turnAngle(355);//turn right
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(710);//forward
+
+	intake.moveVoltage(-4000);//outake slightly
+	pros::delay(240);
+	intake.moveVoltage(0);
+
+	if (abs(angler.getPosition())<=1300) {//stack the cubes
 	 angler.moveVoltage(12000);
 
-} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
- angler.moveVoltage(3000);
+	} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+	angler.moveVoltage(3000);
 
-} else if(abs(angler.getPosition())>1500) {
- angler.moveVoltage(1000);
+	} else if(abs(angler.getPosition())>1500) {
+	angler.moveVoltage(1000);
+	}
+	pros::delay(2500);
+
+	drive.setMaxVoltage(20);//slight nudge
+	drive.moveDistance(25);
+
+	drive.moveDistance(-500);//move backward
+
 }
-pros::delay(2500);
+//------------------------------------------------------------------------------
+void auton_stack_blue(){
+	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
+	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
+	// lv_obj_set_pos(auton_label, 100, 100);
 
-drive.setMaxVoltage(20);
-drive.moveDistance(25);
+	angler.moveVoltage(-1000);
+	lift.moveVoltage(-1200);
 
-drive.moveDistance(-500);//move backward
+	drive.setMaxVelocity(100);
+	drive.moveDistance(80); //forward
+
+	pros::delay(100);
+
+	drive.setMaxVelocity(100);
+	drive.tank(-80, -100);
+
+	intake.moveVoltage(-12000); //outake
+
+	pros::delay(1000);
+
+	drive.stop();
+
+	intake.moveVoltage(12000); //intake
+	pros::delay(150);
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(1200);//forward
+
+	pros::delay(100);
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(-330);//backward
+
+	intake.moveVoltage(0);//stop intake
+
+	drive.setMaxVelocity(75);
+	drive.turnAngle(-355);//turn left
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(710);//forward
+
+	intake.moveVoltage(-4000);
+	pros::delay(240);
+	intake.moveVoltage(0);
+
+	if (abs(angler.getPosition())<=1300) {//stack the cubes
+	 angler.moveVoltage(12000);
+
+	} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+	angler.moveVoltage(3000);
+
+	} else if(abs(angler.getPosition())>1500) {
+	angler.moveVoltage(1000);
+	}
+	pros::delay(2500);
+
+	drive.setMaxVoltage(20);
+	drive.moveDistance(25);
+
+	drive.moveDistance(-500);//move backward
 
 }
+//------------------------------------------------------------------------------
+void auton_big_stack_blue()
+{
+	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
+	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
+	// lv_obj_set_pos(auton_label, 100, 100);
 
-/*
+	angler.moveVoltage(-1000);
+	lift.moveVoltage(-1200);
 
-* Pushing Auton
+	drive.setMaxVelocity(100);
+	drive.moveDistance(80); //forward
 
-*/
+	pros::delay(100);
+
+	drive.setMaxVelocity(100);
+	drive.tank(-80, -100);
+
+	intake.moveVoltage(-12000); //outake
+
+	pros::delay(1000);
+
+	drive.stop();
+
+	intake.moveVoltage(12000); //intake
+	pros::delay(150);
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(1200);//forward
+
+	pros::delay(100);
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(-330);//backward
+
+	intake.moveVoltage(0);//stop intake
+
+	drive.setMaxVelocity(75);
+	drive.turnAngle(-355);//turn left
+
+	drive.setMaxVelocity(100);
+	drive.moveDistance(710);//forward
+
+	intake.moveVoltage(-4000);
+	pros::delay(240);
+	intake.moveVoltage(0);
+
+	if (abs(angler.getPosition())<=1300) {//stack the cubes
+	 angler.moveVoltage(12000);
+
+	} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+	angler.moveVoltage(3000);
+
+	} else if(abs(angler.getPosition())>1500) {
+	angler.moveVoltage(1000);
+	}
+	pros::delay(2500);
+
+	drive.setMaxVoltage(20);
+	drive.moveDistance(25);
+
+	drive.moveDistance(-500);//move backward
+
+}
+//------------------------------------------------------------------------------
+
 void auton_push()
 {
 	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
@@ -332,7 +492,7 @@ void auton_push()
 
 
 }
-
+//------------------------------------------------------------------------------
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
  * Management System or the VEX Competition Switch. This is intended for
@@ -345,7 +505,6 @@ void auton_push()
 
 void competition_initialize()
 {
-
 	auton_picker();
 }
 
@@ -369,18 +528,24 @@ void competition_initialize()
 //   {4_in, 9.0_in}
 // //distance between the center of the front drive wheels
 // );
-
+//------------------------------------------------------------------------------
 void autonomous()
 {
 	switch (autonid)
 	{
 	case 1:
-		auton_stack_red();
+		auton_big_stack();
 		break;
 	case 2:
-		auton_stack_blue();
+		auton_big_stack_blue();
 		break;
 	case 3:
+		auton_stack_red();
+		break;
+	case 4:
+		auton_stack_blue();
+		break;
+	case 5:
 		auton_push();
 		break;
 	}
@@ -388,7 +553,7 @@ while(true){
 	pros::delay(50);
 }
 }
-
+//------------------------------------------------------------------------------
 /*
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -411,13 +576,15 @@ void opcontrol() {
 char s[30];
 
  pros::Task my_cpp_task (my_task_fn, (void*)"PROS", "My Task");
+ lv_obj_t *img_var = lv_img_create(scr, NULL);
 
+pros::delay(100);
+
+LV_IMG_DECLARE(red_flower);
  lv_obj_set_size(scr, 476, 272);
  lv_img_set_src(img_var, &red_flower);
  lv_obj_set_pos(img_var, 0, 0);
- //	static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
-// lv_label_set_text(auton_label, "");
-// lv_obj_set_pos(auton_label, 100, 100);
+
  pros::delay(100);
 
  ControllerButton IntakeInButton(ControllerDigital::R1);
@@ -487,14 +654,28 @@ int count =0;
 	   //sprintf(s,"%f",angler.getPosition());
   	 //masterController.setText(0, 0, s);
      //Display position of (MotorGroup) on controller
-		 if (abs(angler.getPosition())<=1400) {
-			  angler.moveVoltage(12000);
+		//  if (abs(angler.getPosition())<=1400) {
+		// 	  angler.moveVoltage(12000);
+		//
+		//  } else if (abs(angler.getPosition())>1400 && abs(angler.getPosition())<=1450) {
+ 		//  	angler.moveVoltage(6000);
+		//
+		// } else if(abs(angler.getPosition())>1450) {
+		// 	angler.moveVoltage(3000);
+		// }5-40% do full speed
+		// 20%-40% - use equation
 
-		 } else if (abs(angler.getPosition())>1400 && abs(angler.getPosition())<=1550) {
- 		 	angler.moveVoltage(6000);
-
-		} else if(abs(angler.getPosition())>1450) {
-			angler.moveVoltage(3000);
+		int switchPos = 750;
+		if (angler.getPosition() <= switchPos) {
+			angler.moveVoltage(12000);
+		} else {
+			angler.moveVoltage(
+				int(
+					(
+						(1-pow((1/(2100.0-switchPos))*(angler.getPosition()-switchPos),2))
+					)*12000.0
+				)
+			);
 		}
 
 	 } else if(AnglerDownButton.isPressed()){
@@ -518,12 +699,3 @@ pros::delay(500);
 	pros::delay(20);
  }
 }
-
-/**
-
-Broken Ports:13,14
-
-cd "C:\Users\bstar\git\2616J\2616J-TT1 - BLUE"
-prosv5 make
-prosv5 upload --slot 3 --name TTBlueStack
-*/
