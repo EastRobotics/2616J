@@ -7,8 +7,11 @@
 #include "display/lv_conf.h"
 
 extern char _PROS_COMPILE_DIRECTORY[30];
+int LIFT_BOTTOM = 50; // TODO Make this the constant thing I forget how
 pros::ADIDigitalIn AutonButton(1);
 void auton_picker();
+bool did_move_up = false; // Used to only call move up code when first pressed
+bool doing_move_down = false; // Used to automatically move angler down
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -649,45 +652,65 @@ int count =0;
 		lift.moveVoltage(-800);//runs down lift constantly
 	}
 //------------------------------------------------------------------------------
+
  if(AnglerUpButton.isPressed())
 	 {
-	   //sprintf(s,"%f",angler.getPosition());
-  	 //masterController.setText(0, 0, s);
-     //Display position of (MotorGroup) on controller
-		//  if (abs(angler.getPosition())<=1400) {
-		// 	  angler.moveVoltage(12000);
+		 if (!did_move_up) {
+			 did_move_up = true;
+			 angler.moveAbsolute(2121, 127);
+		 }
+		// int switchPos = 1100; // Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+		// int minSpeed = 3000; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
+		// float a = 1200.0; // Higher value = higher speed for longer when going up
 		//
-		//  } else if (abs(angler.getPosition())>1400 && abs(angler.getPosition())<=1450) {
- 		//  	angler.moveVoltage(6000);
-		//
-		// } else if(abs(angler.getPosition())>1450) {
-		// 	angler.moveVoltage(3000);
-		// }5-40% do full speed
-		// 20%-40% - use equation
+		// if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
+		// 	angler.moveVoltage(12000);
+		// } else { // Do equation from switchPos until endif
+		// 	// Calculate speed based on angle
+		// 	int angleSpeed = int(
+		// 		(
+		// 			(1-pow((1/(a))*(angler.getPosition()-switchPos),2))
+		// 		)*12000.0
+		// 	);
+		// 	// Ensure speed is at least minSpeed
+		// 	angleSpeed = (angleSpeed > minSpeed) ? angleSpeed : minSpeed;
+		// 	// Set speed to the lift
+		// 	angler.moveVoltage(angleSpeed);
+		// }
 
-		int switchPos = 750;
-		if (angler.getPosition() <= switchPos) {
-			angler.moveVoltage(12000);
-		} else {
-			angler.moveVoltage(
-				int(
-					(
-						(1-pow((1/(2100.0-switchPos))*(angler.getPosition()-switchPos),2))
-					)*12000.0
-				)
-			);
-		}
+	} else {
+		did_move_up = false;
+		if(AnglerDownButton.isPressed() && !(doing_move_down)){
+			doing_move_down = true;
+		//  if (angler.getPosition() > LIFT_BOTTOM) {
+		//   angler.moveVoltage(-12000);
+		// } else {
+		// 	angler.moveVoltage(0);
+		// }
 
-	 } else if(AnglerDownButton.isPressed()){
-		  angler.moveVoltage(-12000);
 
-	 } else if(LiftDownButton.isPressed()){
+	} else if(LiftDownButton.isPressed() && !(doing_move_down)){
 		 pros::delay(300);
-		 angler.moveVoltage(-12000);
+		 doing_move_down = true;
+		//  if (angler.getPosition() > LIFT_BOTTOM) {
+		//   angler.moveVoltage(-12000);
+		// } else {
+		// 	angler.moveVoltage(0);
+		// }
 
-	 }else{
+	 }
+
+	 if (doing_move_down){
+		 if (angler.getPosition() > LIFT_BOTTOM) {
+			 angler.moveVoltage(-12000);
+		 } else {
+			 angler.moveVoltage(0);
+			 doing_move_down = false;
+		 }
+	 } else {
 		 angler.moveVoltage(0);
 	 }
+ }
 //------------------------------------------------------------------------------
 if(DoubleTower.isPressed()){
 intake.tarePosition();
