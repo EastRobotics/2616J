@@ -45,12 +45,13 @@ void my_task_fn(void *param)
 	char s[30];
 	while (1 == 1)
 	{
-
-		sprintf(s, "AE:%05.1f IE:%05.1f CE%d ", angler.getEfficiency(), intake.getEfficiency(), x++);
+		sprintf(s, "");
+		//sprintf(s, "I%d (%.2f) A%d (%.2f)", intake.isOverTemp(), intake.getTemperature(), angler.isOverTemp(), angler.getTemperature());
+		//sprintf(s, "AE:%05.1f IE:%05.1f CE%d ", angler.getEfficiency(), intake.getEfficiency(), x++);
 		// masterController.setText(2,1, "               ");
 		masterController.setText(2, 1, s);
 		pros::lcd::set_text(6, s);
-		pros::delay(100);
+		pros::delay(4000);
 	}
 	//Display position of (MotorGroup) on controller
 }
@@ -655,28 +656,28 @@ int count =0;
 
  if(AnglerUpButton.isPressed())
 	 {
-		 if (!did_move_up) {
-			 did_move_up = true;
-			 angler.moveAbsolute(2121, 127);
-		 }
-		// int switchPos = 1100; // Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
-		// int minSpeed = 3000; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
-		// float a = 1200.0; // Higher value = higher speed for longer when going up
-		//
-		// if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
-		// 	angler.moveVoltage(12000);
-		// } else { // Do equation from switchPos until endif
-		// 	// Calculate speed based on angle
-		// 	int angleSpeed = int(
-		// 		(
-		// 			(1-pow((1/(a))*(angler.getPosition()-switchPos),2))
-		// 		)*12000.0
-		// 	);
-		// 	// Ensure speed is at least minSpeed
-		// 	angleSpeed = (angleSpeed > minSpeed) ? angleSpeed : minSpeed;
-		// 	// Set speed to the lift
-		// 	angler.moveVoltage(angleSpeed);
-		// }
+		 // if (!did_move_up) {
+			//  did_move_up = true;
+			//  angler.moveAbsolute(2121, 100);
+		 // }
+		int switchPos = 1100; // Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+		int minSpeed = 1500; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
+		float a = 1000.0; // Higher value = higher speed for longer when going up
+
+		if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
+			angler.moveVoltage(12000);
+		} else { // Do equation from switchPos until endif
+			// Calculate speed based on angle
+			int angleSpeed = int(
+				(
+					(1-pow((1/(a))*(angler.getPosition()-switchPos),2))
+				)*12000.0
+			);
+			// Ensure speed is at least minSpeed
+			angleSpeed = (angleSpeed > minSpeed) ? angleSpeed : minSpeed;
+			// Set speed to the lift
+			angler.moveVoltage(angleSpeed);
+		}
 
 	} else {
 		did_move_up = false;
