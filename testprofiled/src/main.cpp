@@ -1,6 +1,13 @@
 #include "main.h"
 #include "2616j.h"
+#define US_LEFT_EMIT 3
+#define US_LEFT_REC 4
+#define US_BACK_EMIT 5
+#define US_BACK_REC 6
+#define US_RIGHT_EMIT 7
+#define US_RIGHT_REC 8
 
+okapi::Controller masterController;
 /**
  * A callback function for LLEMU's center button.
  *
@@ -85,6 +92,41 @@ void autonomous() {}
  MotorGroup lift({-MOTOR_LIFT});
 
 void opcontrol() {
+
+	// okapi::AverageFilter<10> avgFilter;
+ // pros::ADIAnalogIn sensor (8);
+ // while(true){
+	//  pros::delay(10);
+	//    std::cout << "Sensor Reading:" << avgFilter.filter(sensor.get_value())<< "Millis:" << pros::millis()<<"\n";
+ // };
+
+//}
+int l;
+int b;
+
+pros::ADIUltrasonic ultraLeft (US_LEFT_EMIT,US_LEFT_REC);
+pros::ADIUltrasonic ultraRight (US_RIGHT_EMIT,US_RIGHT_REC);
+pros::ADIUltrasonic ultraBack (US_BACK_EMIT,US_BACK_REC);
+
+while(true){
+char st[30];
+sprintf(st, "");
+l = ultraLeft.get_value();
+b = ultraBack.get_value();
+ sprintf(st, "%d   %d",l,b);
+ pros::lcd::print(1,"R%d\n",ultraRight.get_value());
+ pros::lcd::print(2,"L%d\n",ultraLeft.get_value());
+ pros::lcd::print(3,"B%d\n",ultraBack.get_value());
+
+ //sprintf(s, "AE:%05.1f IE:%05.1f CE%d ", angler.getEfficiency(), intake.getEfficiency(), x++);
+ // masterController.setText(2,1, "               ");
+ masterController.setText(2, 1, st);
+ //pros::lcd::set_text(6, st);
+ pros::delay(500);
+ // drive.stop();
+ // angler.moveVoltage(0);
+}
+
 	auto drive = ChassisControllerFactory::create(
 		leftmg, rightmg,
 		AbstractMotor::gearset::green,
