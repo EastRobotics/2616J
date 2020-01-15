@@ -12,6 +12,23 @@ pros::ADIDigitalIn AutonButton(1);
 void auton_picker();
 bool did_move_up = false; // Used to only call move up code when first pressed
 bool doing_move_down = false; // Used to automatically move angler down
+int kill_task = 0;
+
+LV_IMG_DECLARE(red_flower);
+LV_IMG_DECLARE(bluemask);
+LV_IMG_DECLARE(blue_circle);
+LV_IMG_DECLARE(push_cube);
+LV_IMG_DECLARE(stack_cube);
+LV_IMG_DECLARE(bigstack_mask);
+
+int l;
+int b;
+int r;
+
+pros::ADIUltrasonic ultraLeft (US_LEFT_EMIT,US_LEFT_REC);
+pros::ADIUltrasonic ultraRight (US_RIGHT_EMIT,US_RIGHT_REC);
+pros::ADIUltrasonic ultraBack (US_BACK_EMIT,US_BACK_REC);
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -61,12 +78,13 @@ void asynclift(void *param)
 {
 	taskwait = true;
   int movend = 2500;
-	int switchPos =1250; // Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+	int switchPos =1400; // Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
 	int minSpeed = 2500; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
-	float a = 2700.0; // Higher value = higher speed for longer when going up
+	float a = 2000.0; // Higher value = higher speed for longer when going up
 	float mult = .8;
 	while(taskwait == true){pros::delay(5);}
-  while(angler.getPosition()< movend){
+	intake.moveRelative(-50, 80);
+  while(angler.getPosition()< movend && !kill_task){
 	if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
 		angler.moveVoltage(12000);
 	} else { // Do equation from switchPos until endif
@@ -95,7 +113,12 @@ static lv_res_t null_handler(lv_obj_t *obj)
 }
 
 static lv_obj_t *win;
-
+// LV_IMG_DECLARE(red_flower);
+// LV_IMG_DECLARE(bluemask);
+// LV_IMG_DECLARE(blue_circle);
+// LV_IMG_DECLARE(push_cube);
+// LV_IMG_DECLARE(stack_cube);
+// LV_IMG_DECLARE(bigstack_mask);
 
 /**
  * Runs while the robot is in the disabled state of Field Management System or
@@ -105,12 +128,12 @@ static lv_obj_t *win;
 void disabled() {
 }
 
-LV_IMG_DECLARE(red_flower);
-LV_IMG_DECLARE(bluemask);
-LV_IMG_DECLARE(blue_circle);
-LV_IMG_DECLARE(push_cube);
-LV_IMG_DECLARE(stack_cube);
-LV_IMG_DECLARE(bigstack_mask);
+// LV_IMG_DECLARE(red_flower);
+// LV_IMG_DECLARE(bluemask);
+// LV_IMG_DECLARE(blue_circle);
+// LV_IMG_DECLARE(push_cube);
+// LV_IMG_DECLARE(stack_cube);
+// LV_IMG_DECLARE(bigstack_mask);
 lv_obj_t *scr = lv_cont_create(lv_scr_act(), NULL);
 lv_obj_t *img_var = lv_img_create(scr, NULL);
 
@@ -137,8 +160,8 @@ AbstractMotor::gearset::green,
 
 void initialize()
 {
-
-	LV_IMG_DECLARE(red_flower);
+//	LV_IMG_DECLARE(red_flower);
+pros::delay(200);
 	lv_obj_set_size(scr, 476, 272);
 	lv_img_set_src(img_var, &red_flower);
 	lv_obj_set_pos(img_var, 0, 0);
@@ -207,13 +230,14 @@ void auton_picker()
 	lv_img_set_style(img_stack, pstyle);
 	lv_img_set_style(img_bigstack, pstyle);
 
-	lv_obj_set_hidden(img_stack, 1);
-	lv_obj_set_hidden(img_bigstack, 1);
-	lv_obj_set_hidden(img_blue, 1);
+	// lv_obj_set_hidden(img_stack, 1);
+	// lv_obj_set_hidden(img_bigstack, 1);
+	// lv_obj_set_hidden(img_blue, 1);
 	lv_img_set_src(img_blue, &bluemask);
 	lv_img_set_src(img_push, &push_cube);
 	lv_img_set_src(img_stack, &stack_cube);
 	lv_img_set_src(img_bigstack, &bigstack_mask);
+
 	lv_obj_set_pos(img_blue, 0, 0);
 	lv_obj_set_pos(img_push, 0, 0);
 	lv_obj_set_pos(img_stack, 0, 0);
@@ -507,7 +531,7 @@ int atimerstart = pros::millis();
 	pros::delay(100);
 
 	drive.setMaxVelocity(110);
-	drive.tank(80, 50);
+	drive.tank(80, 80);
 
 	intake.moveVoltage(-12000); //outake
 
@@ -523,6 +547,7 @@ int atimerstart = pros::millis();
 	//pros::delay(100);
 
 	drive.setMaxVelocity(200);
+	intake.moveVoltage(1000);
 	// profileController.setTarget("A");
 	// profileController.waitUntilSettled();
 //	profileController.setTarget(direct==-1?"B":"A",direct==-1?false:true);
@@ -530,7 +555,7 @@ int atimerstart = pros::millis();
 	profileController.waitUntilSettled();
 	//profileController.setTarget("C");
 	//profileController.waitUntilSettled();
-
+	intake.moveVoltage(12000); //intake
 	drive.setMaxVelocity(100);
 	intake.moveVoltage(12000); //intake
 	pros::delay(50);
@@ -539,19 +564,27 @@ int atimerstart = pros::millis();
 	drive.moveDistance(-1400);//forward
 	pros::delay(50);
 
+
+	l = ultraLeft.get_value();
+	b = ultraBack.get_value();
+	r = ultraRight.get_value();
+
+	intake.moveVoltage(1000);
+
 	drive.setMaxVelocity(115);
-	drive.moveDistance(630);//backward
+	drive.moveDistance(direct==1?b-l:b-r);//backward
 
 	intake.moveVoltage(0);//stop intake
 
 	drive.setMaxVelocity(75);
-	drive.turnAngle(direct * 355);//turn left
+
+	drive.turnAngle(direct * 340);//turn left
 
 	drive.setMaxVelocity(100);
    taskwait = false;
 
 //	angler.moveRelative(750, 10000);
-	drive.moveDistanceAsync(-520);//forward
+	drive.moveDistanceAsync(-425);//forward
 
 	// intake.moveVoltage(-4000);//outake slightly
 	// pros::delay(100);
@@ -560,19 +593,11 @@ int atimerstart = pros::millis();
 
 	//angler.moveAbsolute(1800, 2500);
 
-	// if (abs(angler.getPosition())<=1300) {//stack the cubes
-	//  angler.moveVoltage(12000);
-	//
-	// } else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
-	// angler.moveVoltage(3000);
-	//
-	// } else if(abs(angler.getPosition())>1500) {
-	// angler.moveVoltage(1000);
-	// }
+
 	pros::delay(1200);
 
-	// drive.setMaxVoltage(20);//slight nudge
-	// drive.moveDistance(-25);
+	drive.setMaxVoltage(20);//slight nudge
+	drive.moveDistance(-25);
 
 	drive.moveDistance(100);//move backward
 
@@ -659,7 +684,7 @@ profileController.generatePath({
 // 	Point{0.5_ft, 0_ft, 0_deg}}, // The next point in the profile, 3 feet forward
 //
 // 	"C" // Profile name
-//
+
 
 	auton_picker();
 }
@@ -728,12 +753,8 @@ while(true){
 
 void opcontrol() {
 
-	// auto drive = ChassisControllerFactory::create(
-	// 	leftmg, rightmg,
-	// 	AbstractMotor::gearset::green,
-	// 	{4_in, 9.0_in}
-	// 	//distance between the center of the front drive wheels9
-	// );
+kill_task = 1;
+
 bleftmg.setReversed(0);
 brightmg.setReversed(1);
 //------------------------------------------------------------------------------
@@ -769,7 +790,7 @@ LV_IMG_DECLARE(red_flower);
 intake.setBrakeMode(AbstractMotor::brakeMode::brake);
 angler.setBrakeMode(AbstractMotor::brakeMode::brake);
 lift.setBrakeMode(AbstractMotor::brakeMode::brake);
-//angler.tarePosition();
+
 int count =0;
 //------------------------------------------------------------------------------
 	while (true) {

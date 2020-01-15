@@ -8,6 +8,13 @@
 #define MOTOR_INTAKE_RIGHT 21
 #define MOTOR_INTAKE_LEFT 18
 
+#define US_LEFT_EMIT 3
+#define US_LEFT_REC 4
+#define US_BACK_EMIT 5
+#define US_BACK_REC 6
+#define US_RIGHT_EMIT 7
+#define US_RIGHT_REC 8
+
 /**
 BROKEN PORTS: 1,16,19, 8
 1->16->
