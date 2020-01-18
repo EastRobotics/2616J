@@ -5,7 +5,7 @@
 #define MOTOR_DRIVE_BACK_LEFT 17
 #define MOTOR_ANGLER 10
 #define MOTOR_LIFT 7
-#define MOTOR_INTAKE_RIGHT 21
+#define MOTOR_INTAKE_RIGHT 3
 #define MOTOR_INTAKE_LEFT 18
 
 #define US_LEFT_EMIT 3
@@ -20,4 +20,5 @@ BROKEN PORTS: 1,16,19, 8
 1->16->
 19->17
 8-> 7
+21->3
 */
