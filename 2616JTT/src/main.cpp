@@ -431,7 +431,8 @@ int atimerstart = pros::millis();
 	pros::delay(100);
 
 	drive.setMaxVelocity(110);
-	drive.tank(80, 80);
+	//drive.tank(80, 80);
+	drive.moveDistanceAsync(200);
 
 	intake.moveVoltage(-12000); //outake
 
@@ -443,7 +444,7 @@ int atimerstart = pros::millis();
 	//pros::delay(100);
    angler.moveVoltage(0);
 	drive.setMaxVelocity(100);
-	drive.moveDistance(-1200);//forward
+	drive.moveDistance(-775);//forward
 	//pros::delay(100);
 
 	drive.setMaxVelocity(200);
@@ -478,7 +479,7 @@ int atimerstart = pros::millis();
 
 	drive.setMaxVelocity(75);
 
-	drive.turnAngle(direct * 310);//turn left
+	drive.turnAngle(direct * 335);//turn left
 	intake.moveVoltage(0);
 	drive.setMaxVelocity(100);
   taskwait = false;
@@ -503,8 +504,8 @@ int atimerstart = pros::millis();
 	drive.moveDistance(-25);
 
 	drive.setMaxVoltage(12000);
-	drive.moveDistance(500);//move backward
-
+	drive.moveDistance(400);//move backward
+  //drive.moveDistance(80);
 	int atimerend = pros::millis();
  int atimetotal = atimerend - atimerstart;
  char st[30];
@@ -583,7 +584,7 @@ void competition_initialize()
 	pros::Task angle_task (asynclift, (void*)"angle", "AngleTask");
 	profileController.generatePath({
 	Point{0_ft, 0_ft, 0_deg},  // Profile starting position, this will normally be (0, 0, 0)
-	Point{1_ft, 3.2_ft, 0_deg}}, // The next point in the profile, 3 feet forward
+	Point{1.25_ft, 2.5_ft, 0_deg}}, // The next point in the profile, 3 feet forward
 	"B" // Profile name
 );
 
