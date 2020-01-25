@@ -6,6 +6,8 @@
 #include "display/lvgl.h"
 #include "display/lv_conf.h"
 
+pros::Imu inertsensor(9);
+
 extern char _PROS_COMPILE_DIRECTORY[30];
 int LIFT_BOTTOM = 60; // TODO Make this the constant thing I forget how
 pros::ADIDigitalIn AutonButton(1);
@@ -48,6 +50,25 @@ Motor angler(-MOTOR_ANGLER);
 MotorGroup intake({MOTOR_INTAKE_RIGHT, -MOTOR_INTAKE_LEFT});
 
 MotorGroup lift({-MOTOR_LIFT});
+
+int maxVelocity =200;
+
+void driveVector(const double iforwardSpeed, const double iyaw) {
+  // This code is taken from WPIlib. All credit goes to them. Link:
+  // https://github.com/wpilibsuite/allwpilib/blob/master/wpilibc/src/main/native/cpp/Drive/DifferentialDrive.cpp#L73
+  const double forwardSpeed = std::clamp(iforwardSpeed, -1.0, 1.0);
+  const double yaw = std::clamp(iyaw, -1.0, 1.0);
+	  double leftOutput = forwardSpeed + yaw;
+  double rightOutput = forwardSpeed - yaw;
+  if (const double maxInputMag = std::max<double>(std::abs(leftOutput), std::abs(rightOutput));
+      maxInputMag > 1) {
+    leftOutput /= maxInputMag;
+    rightOutput /= maxInputMag;
+  }
+
+leftmg.moveVelocity(static_cast<int16_t>(leftOutput * maxVelocity ));
+rightmg.moveVelocity(static_cast<int16_t>(rightOutput * maxVelocity));
+}
 
 // auto drive = ChassisControllerFactory::create(
 // 	leftmg, rightmg,
@@ -147,22 +168,32 @@ lv_obj_t *img_bigstack = lv_img_create(scr, NULL);
 
 MotorGroup bleftmg({-MOTOR_DRIVE_FRONT_LEFT, -MOTOR_DRIVE_BACK_LEFT});
 MotorGroup brightmg({MOTOR_DRIVE_FRONT_RIGHT, MOTOR_DRIVE_BACK_RIGHT});
-auto drive = ChassisControllerFactory::create(
-bleftmg, brightmg,
-AbstractMotor::gearset::green,
-{4_in, 9.0_in});
 
-	auto profileController = AsyncControllerFactory::motionProfile(
-	0.90,  // Maximum linear velocity of the Chassis in m/s
-	2.0,  // Maximum linear acceleration of the Chassis in m/s/s
-	8.0, // Maximum linear jerk of the Chassis in m/s/s/s
-	drive // Chassis Controller
-);
+auto drive =	ChassisControllerBuilder()
+			 .withMotors(
+					bleftmg, brightmg )   // Right motors are 3 & 4
+			 .withDimensions(AbstractMotor::gearset::green, {{4_in, 9_in}, imev5GreenTPR})
+			 .build();
+// auto drive = ChassisControllerFactory::create(
+// bleftmg, brightmg,
+// AbstractMotor::gearset::green,
+// {4_in, 9.0_in});
+
+// 	auto profileController = AsyncControllerFactory::motionProfile(
+// 	0.90,  // Maximum linear velocity of the Chassis in m/s
+// 	2.0,  // Maximum linear acceleration of the Chassis in m/s/s
+// 	8.0, // Maximum linear jerk of the Chassis in m/s/s/s
+// 	drive // Chassis Controller
+// );
 
 
 void initialize()
 {
 //	LV_IMG_DECLARE(red_flower);
+
+inertsensor.reset();
+   while(inertsensor.is_calibrating()){pros::delay(5);}
+
 pros::delay(200);
 	lv_obj_set_size(scr, 476, 272);
 	lv_img_set_src(img_var, &red_flower);
@@ -275,12 +306,17 @@ void auton_picker()
 *///----------------------------------------------------------------------------
 void auton_stack_red()
 {
-	auto drive = ChassisControllerFactory::create(
-		leftmg, rightmg,
-		AbstractMotor::gearset::green,
-		{4_in, 9.0_in}
-		//distance between the center of the front drive wheels9
-	);
+	auto drive =	ChassisControllerBuilder()
+				 .withMotors(
+								leftmg, rightmg )   // Right motors are 3 & 4
+				 .withDimensions(AbstractMotor::gearset::green, {{4_in, 9_in}, imev5GreenTPR})
+				 .build();
+	// auto drive = ChassisControllerFactory::create(
+	// 	leftmg, rightmg,
+	// 	AbstractMotor::gearset::green,
+	// 	{4_in, 9.0_in}
+	// 	//distance between the center of the front drive wheels9
+	// );
 	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
 	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
 	// lv_obj_set_pos(auton_label, 100, 100);
@@ -288,38 +324,38 @@ void auton_stack_red()
 	angler.moveVoltage(-1000);
 	lift.moveVoltage(-1200);
 
-	drive.setMaxVelocity(100);
-	drive.moveDistance(80); //forward
+	drive->setMaxVelocity(100);
+	drive->moveDistance(80_mm); //forward
 
 	pros::delay(100);
 
-	drive.setMaxVelocity(100);
-	drive.tank(-80, -100);
+	drive->setMaxVelocity(100);
+	drive->getModel()->tank(-80, -100);
 
 	intake.moveVoltage(-12000); //outake
 
 	pros::delay(1000);
 
-	drive.stop();
+	drive->stop();
 
 	intake.moveVoltage(12000); //intake
 	pros::delay(150);
 
-	drive.setMaxVelocity(100);
-	drive.moveDistance(1200);//forward
+	drive->setMaxVelocity(100);
+	drive->moveRaw(1200);//forward
 
 	pros::delay(100);
 
-	drive.setMaxVelocity(100);
-	drive.moveDistance(-330);//backward
+	drive->setMaxVelocity(100);
+	drive->moveRaw(-330);//backward
 
 	intake.moveVoltage(0);//stop intake
 
-	drive.setMaxVelocity(75);
-	drive.turnAngle(355);//turn right
+	drive->setMaxVelocity(75);
+	drive->turnRaw(355);//turn right
 
-	drive.setMaxVelocity(100);
-	drive.moveDistance(710);//forward
+	drive->setMaxVelocity(100);
+	drive->moveDistance(710_mm);//forward
 
 	intake.moveVoltage(-4000);
 	pros::delay(240);
@@ -336,12 +372,36 @@ void auton_stack_red()
 	}
 	pros::delay(2500);
 
-	drive.setMaxVoltage(20);
-	drive.moveDistance(25);
+	drive->setMaxVelocity(20);
+	drive->moveDistance(25_mm);
 
-	drive.moveDistance(-500);//move backward
+	drive->moveDistance(-500_mm);//move backward
 
 }
+
+void big_ol_deploy(void){
+	angler.moveVoltage(-1000);
+	lift.moveVoltage(-1200);
+
+	// drive->setMaxVelocity(100);
+	// drive->moveDistance(-80); //forward
+
+	pros::delay(100);
+
+	drive->setMaxVelocity(110);
+	//drive->tank(80, 80);
+	drive->moveDistanceAsync(-200_mm);
+
+	intake.moveVoltage(-12000); //outake
+
+	pros::delay(500);
+
+	drive->stop();
+
+	intake.moveVoltage(12000); //intake
+}
+
+
 //------------------------------------------------------------------------------
 void auton_stack_blue(int direct){
 	// auto drive = ChassisControllerFactory::create(
@@ -355,42 +415,69 @@ void auton_stack_blue(int direct){
 	// lv_obj_set_pos(auton_label, 100, 100);
 	bleftmg.setReversed(0);
 	brightmg.setReversed(1);
+  big_ol_deploy();
+	pros::delay(500);
+	// angler.moveVoltage(-1000);
+	// lift.moveVoltage(-900);
+	//
+	// drive->setMaxVelocity(100);
+	// drive->moveDistance(80_mm); //forward
+	//
+	// pros::delay(100);
+	//
+	// drive->setMaxVelocity(100);
+	// drive->getModel()->tank(-80, -100);
+	//
+	// intake.moveVoltage(-12000); //outake
+	//
+	// pros::delay(1000);
+	//
+	// drive->stop();
+	//
+	// intake.moveVoltage(12000); //intake
+	// pros::delay(150);
 
-	angler.moveVoltage(-1000);
-	lift.moveVoltage(-1200);
-
-	drive.setMaxVelocity(100);
-	drive.moveDistance(80); //forward
+	drive->setMaxVelocity(80);
+	drive->moveDistance(900_mm);//forward
 
 	pros::delay(100);
 
-	drive.setMaxVelocity(100);
-	drive.tank(-80, -100);
+	driveVector(.3, 1*direct);
+	if(direct==1){
+	while(inertsensor.get_rotation()< 10){pros::delay(10);}
+}else{
+	while(inertsensor.get_rotation()> -10){pros::delay(10);}
+}
+  drive->moveDistance(1.1_ft);
+  pros::delay(200);
+	drive->moveDistance(-1.1_ft);
+	if(direct==1){
+	drive->turnAngle(-20_deg);
+}else{
+	drive->turnAngle(20_deg);
+}
+//		driveVector(.1, -1);
+//	while(inertsensor.get_rotation()>5){pros::delay(8);}
 
-	intake.moveVoltage(-12000); //outake
+		intake.moveVoltage(0);//stop intake
+	drive->setMaxVelocity(150);
+	drive->moveDistance(-1.5_ft);//backward
 
-	pros::delay(1000);
 
-	drive.stop();
 
-	intake.moveVoltage(12000); //intake
-	pros::delay(150);
+	 pros::delay(250);
+//	drive->setMaxVelocity();
+	driveVector(.5, direct==1?-1:1);
+//	while(inertsensor.get_rotation()> direct==1?-90:90){pros::delay(10);}
+	if(direct==1){
+	while(inertsensor.get_rotation()> -90){pros::delay(10);}
+}else{
+	while(inertsensor.get_rotation()< 90){pros::delay(10);}
+}
+//	drive->turnRaw(direct * -355);//turn left
 
-	drive.setMaxVelocity(100);
-	drive.moveDistance(1200);//forward
-
-	pros::delay(100);
-
-	drive.setMaxVelocity(100);
-	drive.moveDistance(-330);//backward
-
-	intake.moveVoltage(0);//stop intake
-
-	drive.setMaxVelocity(75);
-	drive.turnAngle(direct * -355);//turn left
-
-	drive.setMaxVelocity(100);
-	drive.moveDistance(710);//forward
+	drive->setMaxVelocity(100);
+	drive->moveDistance(400_mm);//forward
 
 	intake.moveVoltage(-4000);
 	pros::delay(240);
@@ -407,10 +494,10 @@ void auton_stack_blue(int direct){
 	}
 	pros::delay(2500);
 
-	drive.setMaxVoltage(20);
-	drive.moveDistance(25);
+	drive->setMaxVelocity(100);
+	drive->moveDistance(25_mm);
 
-	drive.moveDistance(-500);//move backward
+	drive->moveDistance(-500_mm);//move backward
 
 }
 
@@ -425,44 +512,58 @@ int atimerstart = pros::millis();
 	angler.moveVoltage(-1000);
 	lift.moveVoltage(-1200);
 
-	// drive.setMaxVelocity(100);
-	// drive.moveDistance(-80); //forward
+	// drive->setMaxVelocity(100);
+	// drive->moveDistance(-80); //forward
 
 	pros::delay(100);
 
-	drive.setMaxVelocity(110);
-	//drive.tank(80, 80);
-	drive.moveDistanceAsync(200);
+	drive->setMaxVelocity(110);
+	//drive->tank(80, 80);
+	drive->moveDistanceAsync(200_mm);
 
 	intake.moveVoltage(-12000); //outake
 
 	pros::delay(500);
 
-	drive.stop();
+	drive->stop();
 
 	intake.moveVoltage(12000); //intake
 	//pros::delay(100);
    angler.moveVoltage(0);
-	drive.setMaxVelocity(100);
-	drive.moveDistance(-775);//forward
+	drive->setMaxVelocity(100);
+	drive->moveDistance(-775_mm);//forward_mm
 	//pros::delay(100);
 
-	drive.setMaxVelocity(200);
+	drive->setMaxVelocity(200);
 	intake.moveVoltage(1000);
 	// profileController.setTarget("A");
 	// profileController.waitUntilSettled();
 //	profileController.setTarget(direct==-1?"B":"A",direct==-1?false:true);
-	profileController.setTarget(direct==1?"B":"A");
-	profileController.waitUntilSettled();
+	// profileController.setTarget(direct==1?"B":"A");
+	// profileController.waitUntilSettled();
 	//profileController.setTarget("C");
 	//profileController.waitUntilSettled();
+
+	driveVector(1,0);
+	while(leftmg.getPosition() < 65){pros::delay(5);}
+	driveVector(1,-0.6);
+	while(inertsensor.get_rotation() < 40){pros::delay(5);}
+	driveVector(1,0);
+	while(leftmg.getPosition() < 50){pros::delay(5);}
+
+	driveVector(1,0.6);
+	while(inertsensor.get_rotation()> 0){pros::delay(5);}
+	driveVector(1,0);
+	while(leftmg.getPosition() < 200){pros::delay(5);}
+
+
 	intake.moveVoltage(12000); //intake
-	drive.setMaxVelocity(100);
+	drive->setMaxVelocity(100);
 	intake.moveVoltage(12000); //intake
 	pros::delay(50);
 
-	drive.setMaxVelocity(100);
-	drive.moveDistance(-1400);//forward
+	drive->setMaxVelocity(100);
+	drive->moveDistance(-1400_mm);//forward
 	pros::delay(50);
   intake.moveVoltage(0);
 
@@ -472,27 +573,27 @@ int atimerstart = pros::millis();
 
 	intake.moveVoltage(700);
 	intake.setBrakeMode(AbstractMotor::brakeMode::hold);
-	drive.setMaxVelocity(115);
-	drive.moveDistance(direct==1?b-l:b-r);//backward
+	drive->setMaxVelocity(115);
+	drive->moveRaw((direct==1?b-l:b-r));//backward
 
 
 
-	drive.setMaxVelocity(75);
+	drive->setMaxVelocity(75);
 
-	drive.turnAngle(direct * 335);//turn left
+	drive->turnRaw(direct * 335);//turn left
 	intake.moveVoltage(0);
-	drive.setMaxVelocity(100);
+	drive->setMaxVelocity(100);
   taskwait = false;
 
 
 //	angler.moveRelative(750, 10000);
-	drive.moveDistanceAsync(-400);//forward
+	drive->moveRawAsync(-400);//forward
 
 	//intake.moveRelative(600,-200);
 
 	// intake.moveVoltage(-4000);//outake slightly
 	// pros::delay(100);
-	drive.waitUntilSettled();
+	drive->waitUntilSettled();
 	intake.moveVoltage(0);
 
 	//angler.moveAbsolute(1800, 2500);
@@ -500,12 +601,12 @@ int atimerstart = pros::millis();
 
 	pros::delay(1200);
 
-	drive.setMaxVoltage(20);//slight nudge
-	drive.moveDistance(-25);
+	drive->setMaxVelocity(20);//slight nudge
+	drive->moveRaw(-25);
 
-	drive.setMaxVoltage(12000);
-	drive.moveDistance(400);//move backward
-  //drive.moveDistance(80);
+	drive->setMaxVelocity(12000);
+	drive->moveRaw(0);//move backward
+  //drive->moveDistance(80);
 	int atimerend = pros::millis();
  int atimetotal = atimerend - atimerstart;
  char st[30];
@@ -516,7 +617,7 @@ int atimerstart = pros::millis();
 	masterController.setText(2, 1, st);
 	pros::lcd::set_text(6, st);
   // pros::delay(2000);
-	// drive.stop();
+	// drive->stop();
 	// angler.moveVoltage(0);
   // intake.moveVoltage(0);
   // kill_task = 1;
@@ -524,12 +625,12 @@ int atimerstart = pros::millis();
 	// angler.moveRelative(1500,-200);
 	// pros::delay(2000);
 	// 	angler.moveVoltage(0);
-  // drive.turnAngle(direct * 300);
+  // drive->turnAngle(direct * 300);
   // int totaldistance =1300;
 	// b = ultraBack.get_value();
 	// pros::delay(1000);
 	// //intake.moveVoltage(12000);
-	// drive.moveDistance(-1 *(totaldistance - 	b)) ;
+	// drive->moveDistance(-1 *(totaldistance - 	b)) ;
 
 }
 //------------------------------------------------------------------------------
@@ -550,16 +651,16 @@ void auton_push()
 	angler.moveVoltage(-1000);
   lift.moveVoltage(-1000);
 
-  drive.setMaxVelocity(100);
-  drive.moveDistance(200); //backward
+  drive->setMaxVelocity(100);
+  drive->moveRaw(200); //backward
 
-  drive.setMaxVelocity(100);
-  drive.moveDistance(-500); //backward
+  drive->setMaxVelocity(100);
+  drive->moveRaw(500); //backward
 
   pros::delay(100);
 
-  drive.setMaxVelocity(100);
-  drive.moveDistance(300); //forward
+  drive->setMaxVelocity(100);
+  drive->moveRaw(300); //forward
 
 
   intake.moveVoltage(-12000); //outake
@@ -582,18 +683,18 @@ void auton_push()
 void competition_initialize()
 {
 	pros::Task angle_task (asynclift, (void*)"angle", "AngleTask");
-	profileController.generatePath({
-	Point{0_ft, 0_ft, 0_deg},  // Profile starting position, this will normally be (0, 0, 0)
-	Point{1.25_ft, 2.5_ft, 0_deg}}, // The next point in the profile, 3 feet forward
-	"B" // Profile name
-);
+// 	profileController.generatePath({
+// 	Point{0_ft, 0_ft, 0_deg},  // Profile starting position, this will normally be (0, 0, 0)
+// 	Point{1.25_ft, 2.5_ft, 0_deg}}, // The next point in the profile, 3 feet forward
+// 	"B" // Profile name
+// );
 
-profileController.generatePath({
-		Point{1_ft, 0_ft, 0_deg},
-	Point{0_ft, 3.2_ft, 0_deg}},  // Profile starting position, this will normally be (0, 0, 0)
-// The next point in the profile, 3 feet forward
-"A" // Profile name
-);
+// profileController->generatePath({
+// 		Point{1_ft, 0_ft, 0_deg},
+// 	Point{0_ft, 3.2_ft, 0_deg}},  // Profile starting position, this will normally be (0, 0, 0)
+// // The next point in the profile, 3 feet forward
+// "A" // Profile name
+// );
 // profileController.generatePath({
 // 	Point{0_ft, 0_ft, 0_deg},  // Profile starting position, this will normally be (0, 0, 0)
 // 	Point{0.5_ft, 0_ft, 0_deg}}, // The next point in the profile, 3 feet forward
@@ -701,7 +802,7 @@ LV_IMG_DECLARE(red_flower);
  ControllerButton LiftDownButton(ControllerDigital::L2);
 
   ControllerButton DoubleTower(ControllerDigital::A);
-	drive.setMaxVoltage(12000);
+	drive->setMaxVelocity(12000);
 //------------------------------------------------------------------------------
 intake.setBrakeMode(AbstractMotor::brakeMode::brake);
 angler.setBrakeMode(AbstractMotor::brakeMode::brake);
@@ -710,7 +811,7 @@ lift.setBrakeMode(AbstractMotor::brakeMode::brake);
 int count =0;
 //------------------------------------------------------------------------------
 	while (true) {
-		drive.tank(masterController.getAnalog(ControllerAnalog::leftY),
+		drive->getModel()->tank(masterController.getAnalog(ControllerAnalog::leftY),
 						masterController.getAnalog(ControllerAnalog::rightY));
 //------------------------------------------------------------------------------
 if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
@@ -764,10 +865,10 @@ if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
 			//  did_move_up = true;
 			//  angler.moveAbsolute(2121, 100);
 		 // }
-		int switchPos =1250; // Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
-		int minSpeed = 2500; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
+		int switchPos =2500;// Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+		int minSpeed = 5000; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
 		float a = 2300.0; // Higher value = higher speed for longer when going up
-		float mult = .7; // Once shape is achieved with a, allows you to slow down the overall curve
+		float mult = 0.7; // Once shape is achieved with a, allows you to slow down the overall curve
 
 		if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
 			angler.moveVoltage(12000);
