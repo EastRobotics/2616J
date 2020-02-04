@@ -18,10 +18,6 @@ int kill_task = 0;
 extern char _PROS_COMPILE_DIRECTORY[30];
 #define LIFT_BOTTOM 60
 
-void auton_picker();
-// bool did_move_up = false; // Used to only call move up code when first pressed
-// bool doing_move_down = false; // Used to automatically move angler down
-
 int x;
 
 okapi::Controller masterController;
