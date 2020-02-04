@@ -15,8 +15,36 @@ lv_obj_t* img_stack = lv_img_create(scr, NULL);
 lv_obj_t* img_blue = lv_img_create(scr, NULL);
 lv_obj_t* img_bigstack = lv_img_create(scr, NULL);
 
+#define BSTACK_CB 0x1
+#define BLUE_MASK 0x2
+#define PUSH_CB 0x4
+#define STACK_CB 0x8
 
-static lv_res_t event_handler(lv_obj_t * obj) {
+int states[] = {
+  PUSH_CB,
+  BSTACK_CB,
+  BSTACK_CB | BLUE_MASK,
+  STACK_CB,
+  STACK_CB  | BLUE_MASK,
+  PUSH_CB
+};
+
+void set_state(int mask) {
+  lv_obj_set_hidden(img_stack,
+      mask & STACK_CB
+  );
+  lv_obj_set_hidden(img_push,
+      mask & PUSH_CB
+  );
+  lv_obj_set_hidden(img_blue, 
+      mask & BLUE_MASK
+  );
+  lv_obj_set_hidden(img_bigstack,
+      mask & BSTACK_CB
+  );
+}
+
+static lv_res_t event_handler(lv_obj_t* obj) {
     autonid++;
     if (autonid > 5) {
         autonid = 1;
@@ -24,43 +52,10 @@ static lv_res_t event_handler(lv_obj_t * obj) {
     #ifdef DEBUG
     printf("A=%d\n", autonid);
     #endif
-    if (autonid == 1) {
-        lv_obj_set_hidden(img_stack, 1);
-        lv_obj_set_hidden(img_push, 1);
-        lv_obj_set_hidden(img_blue, 1);
-        lv_obj_set_hidden(img_bigstack, 0);
-    }
-    if (autonid == 2) {
-        lv_obj_set_hidden(img_stack, 1);
-        lv_obj_set_hidden(img_push, 1);
-        lv_obj_set_hidden(img_blue, 0);
-        lv_obj_set_hidden(img_bigstack, 0);
-    }
-    if (autonid == 3) {
-        lv_obj_set_hidden(img_stack, 0);
-        lv_obj_set_hidden(img_push, 1);
-        lv_obj_set_hidden(img_blue, 1);
-        lv_obj_set_hidden(img_bigstack, 1);
-    }
-    if (autonid == 4) {
-        lv_obj_set_hidden(img_stack, 0);
-        lv_obj_set_hidden(img_push, 1);
-        lv_obj_set_hidden(img_blue, 0);
-        lv_obj_set_hidden(img_bigstack, 1);
-    }
-    if (autonid == 5) {
-        lv_obj_set_hidden(img_stack, 1);
-        lv_obj_set_hidden(img_push, 0);
-        lv_obj_set_hidden(img_blue, 1);
-        lv_obj_set_hidden(img_bigstack, 1);
-    }
+    set_state(states[autonid]);
     pros::delay(50);
     return LV_RES_OK;
 }
-#define BIG_STACK_CB 0x1
-#define BLUE_MASK 0x2
-#define PUSH_CB 0x4
-#define STACK_CB 0x8
 
 void auton_picker() {
     pros::delay(200);
