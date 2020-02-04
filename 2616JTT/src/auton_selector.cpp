@@ -90,10 +90,7 @@ void auton_picker() {
     lv_obj_set_pos(img_stack, 0, 0);
     lv_obj_set_pos(img_bigstack, 0, 0);
 
-    lv_obj_set_hidden(img_stack, 1);
-    lv_obj_set_hidden(img_push, 1);
-    lv_obj_set_hidden(img_blue, 1);
-    lv_obj_set_hidden(img_bigstack, 0);
+    set_state(states[1]);
 
     lv_obj_t * btn = lv_btn_create(lv_scr_act(), NULL);
 
