@@ -1,2 +1,2 @@
-.vscode
-*.json
+.bin
+.elf
