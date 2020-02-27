@@ -2,9 +2,9 @@
 #include "2616J.h"
 #include "string.h"
 #include "pros/apix.h"
-
 #include "display/lvgl.h"
 #include "display/lv_conf.h"
+#include "motorTemps.hpp"
 
 pros::Imu inertsensor(9);
 
@@ -26,6 +26,7 @@ LV_IMG_DECLARE(bigstack_mask);
 int l;
 int b;
 int r;
+AverageFilter<3> usfilt;
 
 pros::ADIUltrasonic ultraLeft (US_LEFT_EMIT,US_LEFT_REC);
 pros::ADIUltrasonic ultraRight (US_RIGHT_EMIT,US_RIGHT_REC);
@@ -78,6 +79,7 @@ rightmg.moveVelocity(static_cast<int16_t>(rightOutput * maxVelocity));
 // );
 int x;
 okapi::Controller masterController;
+//pros::Controller controller(pros::E_CONTROLLER_MASTER);
 void my_task_fn(void *param)
 {
 	char s[30];
@@ -127,6 +129,8 @@ void asynclift(void *param)
 
 pros::Task angle_task (asynclift, (void*)"angle", "AngleTask");
 static int autonid;
+
+pros::Task showTemps_task (showTemps, (void *)0x0, "TempShower");
 
 static lv_res_t null_handler(lv_obj_t *obj)
 {
@@ -203,7 +207,7 @@ pros::delay(200);
 static lv_res_t event_handler(lv_obj_t *obj)
 {
 	autonid++;
-	if (autonid > 5)
+	if (autonid > 7)
 	{
 		autonid = 1;
 	}
@@ -238,11 +242,25 @@ static lv_res_t event_handler(lv_obj_t *obj)
 	}
 	if (autonid == 5)
 	{
-		lv_obj_set_hidden(img_stack, 1);
+		lv_obj_set_hidden(img_stack, 0);
 		lv_obj_set_hidden(img_push, 0);
 		lv_obj_set_hidden(img_blue, 1);
 		lv_obj_set_hidden(img_bigstack, 1);
 	}
+  if (autonid == 6)
+  {
+    lv_obj_set_hidden(img_stack, 0);
+    lv_obj_set_hidden(img_push, 0);
+    lv_obj_set_hidden(img_blue, 0);
+    lv_obj_set_hidden(img_bigstack, 1);
+  }
+  if (autonid == 7)
+  {
+    lv_obj_set_hidden(img_stack, 1);
+    lv_obj_set_hidden(img_push, 0);
+    lv_obj_set_hidden(img_blue, 1);
+    lv_obj_set_hidden(img_bigstack, 1);
+  }
 	pros::delay(50);
 	return LV_RES_OK;
 }
@@ -388,7 +406,7 @@ void big_ol_deploy(void){
 
 	pros::delay(100);
 
-	drive->setMaxVelocity(110);
+	drive->setMaxVelocity(120);
 	//drive->tank(80, 80);
 	drive->moveDistanceAsync(-200_mm);
 
@@ -415,8 +433,8 @@ void auton_stack_blue(int direct){
 	// lv_obj_set_pos(auton_label, 100, 100);
 	bleftmg.setReversed(0);
 	brightmg.setReversed(1);
-  big_ol_deploy();
-	pros::delay(500);
+  big_ol_deploy();//deploy
+	pros::delay(100);
 	// angler.moveVoltage(-1000);
 	// lift.moveVoltage(-900);
 	//
@@ -442,31 +460,46 @@ void auton_stack_blue(int direct){
 
 	pros::delay(100);
 
-	driveVector(.3, 1*direct);
+  intake.moveVoltage(0);//stop intake
+
+	driveVector(.25, 1*direct);
 	if(direct==1){
-	while(inertsensor.get_rotation()< 10){pros::delay(10);}
+	while(inertsensor.get_rotation()< 7){pros::delay(10);}
 }else{
-	while(inertsensor.get_rotation()> -10){pros::delay(10);}
+	while(inertsensor.get_rotation()> -7){pros::delay(10);}
 }
+
+intake.moveVoltage(12000);//start intake at max voltage
+// pros::delay(50);
+// intake.moveVoltage(0);
+
   drive->moveDistance(1.1_ft);
   pros::delay(200);
+
+  intake.moveVoltage(1200);//run intake low speed
+
 	drive->moveDistance(-1.1_ft);
 	if(direct==1){
-	drive->turnAngle(-20_deg);
+	drive->turnAngle(-27_deg);
 }else{
-	drive->turnAngle(20_deg);
+	drive->turnAngle(27_deg);
 }
 //		driveVector(.1, -1);
-//	while(inertsensor.get_rotation()>5){pros::delay(8);}
+//	while(ine,rtsensor.get_rotation()>5){pros::delay(8);}
 
-		intake.moveVoltage(0);//stop intake
+	intake.moveVoltage(0);//intake stop
 	drive->setMaxVelocity(150);
-	drive->moveDistance(-1.5_ft);//backward
+	//drive->moveDistance(-1.25_ft);//backward
 
-
+  drive->getModel()->forward(-100);//backward
+for(int x=0;x<3;x++){usfilt.filter(ultraBack.get_value());}
+while(usfilt.filter(ultraBack.get_value())>800){pros::delay(10);}
+//controller.print(2,0,"%d",usfilt.filter(ultraBack.get_value()));}
+drive->stop();
 
 	 pros::delay(250);
 //	drive->setMaxVelocity();
+
 	driveVector(.5, direct==1?-1:1);
 //	while(inertsensor.get_rotation()> direct==1?-90:90){pros::delay(10);}
 	if(direct==1){
@@ -474,14 +507,14 @@ void auton_stack_blue(int direct){
 }else{
 	while(inertsensor.get_rotation()< 90){pros::delay(10);}
 }
+
 //	drive->turnRaw(direct * -355);//turn left
-
 	drive->setMaxVelocity(100);
-	drive->moveDistance(400_mm);//forward
+	drive->moveDistance(360_mm);//forward
 
-	intake.moveVoltage(-4000);
-	pros::delay(240);
-	intake.moveVoltage(0);
+	// intake.moveVoltage(-4000);//outake a little bit for stacking purposes
+	// pros::delay(240);
+	// intake.moveVoltage(0);
 
 	if (abs(angler.getPosition())<=1300) {//stack the cubes
 	 angler.moveVoltage(12000);
@@ -492,11 +525,12 @@ void auton_stack_blue(int direct){
 	} else if(abs(angler.getPosition())>1500) {
 	angler.moveVoltage(1000);
 	}
-	pros::delay(2500);
+	pros::delay(2000);
 
 	drive->setMaxVelocity(100);
-	drive->moveDistance(25_mm);
+	drive->moveDistance(25_mm);//the nudge
 
+  drive->setMaxVelocity(100);
 	drive->moveDistance(-500_mm);//move backward
 
 }
@@ -587,7 +621,7 @@ int atimerstart = pros::millis();
 
 
 //	angler.moveRelative(750, 10000);
-	drive->moveRawAsync(-400);//forward
+	drive->moveRawAsync(-350);//forward
 
 	//intake.moveRelative(600,-200);
 
@@ -652,7 +686,7 @@ void auton_push()
   lift.moveVoltage(-1000);
 
   drive->setMaxVelocity(100);
-  drive->moveRaw(200); //backward
+  drive->moveRaw(-300); //backward
 
   drive->setMaxVelocity(100);
   drive->moveRaw(500); //backward
@@ -664,9 +698,74 @@ void auton_push()
 
 
   intake.moveVoltage(-12000); //outake
-  pros::delay(800);
+  pros::delay(400);
 
   intake.moveVoltage(0);
+
+
+}
+//------------------------------------------------------------------------------
+//
+//
+//------------------------------------------------------------------------------
+void auton_front(int direct)
+{
+  bleftmg.setReversed(0);
+	brightmg.setReversed(1);
+  big_ol_deploy();//deploy
+  pros::delay(100);
+
+  intake.moveVoltage(11000);
+  drive->setMaxVelocity(100);
+  drive->moveDistance(520_mm);//drive forward and collect cubes
+  pros::delay(100);
+
+  driveVector(.25, 1*direct);
+  if(direct==1){
+  while(inertsensor.get_rotation()< 35){pros::delay(10);}//turn 90 degrees left
+  }else{
+  while(inertsensor.get_rotation()> -35){pros::delay(10);}
+  }
+  pros::delay(100);
+
+  drive->setMaxVelocity(100);//drive forward collecting cubes
+  drive->moveDistance(2.6_ft);
+  pros::delay(100);
+
+  intake.moveVoltage(1200);//run intake at a very low speed
+
+  drive->setMaxVelocity(100);
+  drive->moveDistance(-2.4_ft);//move backward towards goal
+  pros::delay(100);
+
+  driveVector(.125, direct==1?-1:1);//turn towards the goal
+//	while(inertsensor.get_rotation()> direct==1?-90:90){pros::delay(10);}
+	 if(direct==1){
+  	while(inertsensor.get_rotation()> -70){pros::delay(10);}
+  }else{
+  	while(inertsensor.get_rotation()< 70){pros::delay(10);}
+  }
+
+  intake.moveVoltage(0);
+  drive->setMaxVelocity(100);
+  drive->moveDistance(240_mm);//forward towards goal
+
+  if (abs(angler.getPosition())<=1300) {//stack the cubes
+   angler.moveVoltage(12000);
+
+  } else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+  angler.moveVoltage(3000);
+
+  } else if(abs(angler.getPosition())>1500) {
+  angler.moveVoltage(1000);
+  }
+  pros::delay(2000);
+
+  drive->setMaxVelocity(100);
+  drive->moveDistance(25_mm);//the nudge
+
+  drive->setMaxVelocity(100);
+  drive->moveDistance(-500_mm);//move backward
 
 }
 //------------------------------------------------------------------------------
@@ -743,8 +842,14 @@ void autonomous()
 		auton_stack_blue(1);
 		break;
 	case 5:
-		auton_push();
+		auton_front(1);
 		break;
+  case 6:
+  		auton_front(-1);
+  		break;
+  case 7:
+    auton_push();
+    break;
 	}
 while(true){
 	pros::delay(50);
@@ -797,6 +902,7 @@ LV_IMG_DECLARE(red_flower);
 
  ControllerButton AnglerUpButton(ControllerDigital::up);
  ControllerButton AnglerDownButton(ControllerDigital::down);
+ ControllerButton Angler10UpButton(ControllerDigital::left);
 
  ControllerButton LiftUpButton(ControllerDigital::L1);
  ControllerButton LiftDownButton(ControllerDigital::L2);
@@ -814,32 +920,26 @@ int count =0;
 		drive->getModel()->tank(masterController.getAnalog(ControllerAnalog::leftY),
 						masterController.getAnalog(ControllerAnalog::rightY));
 //------------------------------------------------------------------------------
-if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
-   if(IntakeInButton.isPressed())
-	 {
-		 intake.moveVoltage(12000);
-		 lift.moveVoltage(-1000);
+if (IntakeOutButton.changedToPressed()){
+  count =pros::millis();
+}
 
-		 //resets counter to 0
+if(IntakeInButton.isPressed() && IntakeOutButton.isPressed()){
+		 intake.moveVoltage(-11999);//run intake out fast
 
-	} else if(IntakeOutButton.isPressed()){
-
-
-	 if(pros::millis() - count < 2000){
-		 intake.moveVoltage(-6000);
+	} else if(IntakeInButton.isPressed()){
+		 intake.moveVoltage(11999);//run intake in
+     lift.moveVoltage(-1000);//run lift down
 
 	 }else if(IntakeOutButton.isPressed()){
-		 intake.moveVoltage(-12000);
-}
-	 // }else if(IntakeInButton.isPressed()){
-		//  count=0;
-	 // }
+		 intake.moveVoltage(-6000);
+     drive->getModel()->forward(-300);//run intake out slow
 
-	 }else{
+  }else{
 		 intake.moveVoltage(0);
 	 }
 //------------------------------------------------------------------------------
-  if(LiftUpButton.isPressed() && abs(angler.getPosition())<700){
+  if(LiftUpButton.isPressed() && abs(angler.getPosition())<1200){
       angler.moveVoltage(12000);
 			pros::delay(100);
 			lift.moveVoltage(12000);
@@ -852,23 +952,21 @@ if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
     // lift.moveVoltage(-12000);
 		// pros::delay(400);
 		// doing_move_down = true;
-
-	}else{
+	} else {
 		lift.moveVoltage(-800);//runs down lift constantly
 	}
 //------------------------------------------------------------------------------
 
- if(AnglerUpButton.isPressed())
-	 {
+ if(AnglerUpButton.isPressed()){
 		 intake.setBrakeMode(AbstractMotor::brakeMode::coast);
 		 // if (!did_move_up) {
 			//  did_move_up = true;
 			//  angler.moveAbsolute(2121, 100);
 		 // }
-		int switchPos =2500;// Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
-		int minSpeed = 5000; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
-		float a = 2300.0; // Higher value = higher speed for longer when going up
-		float mult = 0.7; // Once shape is achieved with a, allows you to slow down the overall curve
+		int switchPos = 2600;// Ecoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+		int minSpeed = 4500; // Minimum voltage to send to the lift. May be lower if knocking over stack or wobbly and changing a makes no change
+		float a = 2200.0; // Higher value = higher speed for longer when going up
+		float mult = 2.0; // Once shape is achieved with a, allows you to slow down the overall curve
 
 		if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
 			angler.moveVoltage(12000);
@@ -884,7 +982,31 @@ if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
 			// Set speed to the lift
 			angler.moveVoltage(angleSpeed);
 		}
+  } else if (Angler10UpButton.isPressed()) {
+    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+    // if (!did_move_up) {
+     //  did_move_up = true;
+     //  angler.moveAbsolute(2121, 100);
+    // }
+   int switchPos = 2500;// Ecoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+   int minSpeed = 5000; // Minimum voltage to send to the lift. May be lower if knocking over stack or wobbly and changing a makes no change
+   float a = 2300.0; // Higher value = higher speed for longer when going up
+   float mult = 0.7; // Once shape is achieved with a, allows you to slow down the overall curve
 
+   if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
+     angler.moveVoltage(12000);
+   } else { // Do equation from switchPos until endif
+     // Calculate speed based on angle
+     int angleSpeed = int(
+       (
+         (1-pow((1/(a))*(angler.getPosition()),2))
+       )*12000.0*mult
+     );
+     // Ensure speed is at least minSpeed
+     angleSpeed = (angleSpeed > minSpeed) ? angleSpeed : minSpeed;
+     // Set speed to the lift
+     angler.moveVoltage(angleSpeed);
+   }
 	} else {
 		intake.setBrakeMode(AbstractMotor::brakeMode::brake);
 		did_move_up = false;
@@ -923,7 +1045,8 @@ if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
 //------------------------------------------------------------------------------
 if(DoubleTower.isPressed()){
 int startmillis = pros::millis();
-while (avgFilter.filter(sensor.get_value())< 1500 && (pros::millis() - startmillis) < 800){
+
+while (avgFilter.filter(sensor.get_value())< 1900 && (pros::millis() - startmillis) < 1500){
 	 pros::delay(10); // Warning: may cause locking
 	 intake.moveVoltage(-6000);
 }
