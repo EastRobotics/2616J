@@ -41,6 +41,8 @@ pros::ADIUltrasonic ultraBack (US_BACK_EMIT,US_BACK_REC);
  */
 MotorGroup leftmg({MOTOR_DRIVE_FRONT_LEFT, MOTOR_DRIVE_BACK_LEFT});
 MotorGroup rightmg({-MOTOR_DRIVE_FRONT_RIGHT, -MOTOR_DRIVE_BACK_RIGHT});
+Motor rightBack(-MOTOR_DRIVE_BACK_RIGHT);
+Motor leftBack(MOTOR_DRIVE_BACK_LEFT);
 
 MotorGroup drive1({-MOTOR_DRIVE_FRONT_LEFT, -MOTOR_DRIVE_BACK_LEFT, -MOTOR_DRIVE_FRONT_RIGHT, -MOTOR_DRIVE_BACK_RIGHT});
 MotorGroup turnLeft({-MOTOR_DRIVE_FRONT_LEFT, -MOTOR_DRIVE_BACK_LEFT, MOTOR_DRIVE_FRONT_RIGHT, MOTOR_DRIVE_BACK_RIGHT});
@@ -189,8 +191,16 @@ auto drive =	ChassisControllerBuilder()
 // 	8.0, // Maximum linear jerk of the Chassis in m/s/s/s
 // 	drive // Chassis Controller
 // );
-
-
+void wall_reset_back(){
+drive->getModel()->forward(-100);
+pros::delay(100);
+ while(bleftmg.getEfficiency()  > 1.0 && brightmg.getEfficiency()  > 1.0 ){
+	 pros::lcd::print(2, "e  %lf",bleftmg.getEfficiency() );
+//	printf("%f\n",bleftmg.getEfficiency() );
+	pros::delay(100);
+ }
+drive->stop();
+}
 void initialize()
 {
 //	LV_IMG_DECLARE(red_flower);
@@ -422,9 +432,7 @@ void big_ol_deploy(void){
 
 //------------------------------------------------------------------------------
 void auton_stack_blue(int direct){
-
-  //pros::Imu inertsensor(9);
-	// auto drive = ChassisControllerFactory::create(
+  // auto drive = ChassisControllerFactory::create(
 	// 	leftmg, rightmg,
 	// 	AbstractMotor::gearset::green,
 	// 	{4_in, 9.0_in}
@@ -433,9 +441,6 @@ void auton_stack_blue(int direct){
 	// static lv_obj_t *auton_label = lv_label_create(lv_scr_act(), NULL);
 	// lv_label_set_text(auton_label, "Stack Blue Auton Started");
 	// lv_obj_set_pos(auton_label, 100, 100);
-
-  inertsensor.reset();
-     while(inertsensor.is_calibrating()){pros::delay(5);}
 	bleftmg.setReversed(0);
 	brightmg.setReversed(1);
   big_ol_deploy();//deploy
@@ -459,102 +464,278 @@ void auton_stack_blue(int direct){
 	//
 	// intake.moveVoltage(12000); //intake
 	// pros::delay(150);
-  intake.setBrakeMode(AbstractMotor::brakeMode::brake);
+
 	drive->setMaxVelocity(80);
-  double bumpturn = 20.0;
-  drive->moveDistance(1050_mm);//forward
-  drive->turnAngle(-25_deg);
- // leftmg.tarePosition();
- //   driveVector(0.8, -0.25);
- //   while(leftmg.getPosition()>600.0){pros::delay(10);}
- //   rightmg.tarePosition();
- //   driveVector(0.8, 0.25);
- //   while(rightmg.getPosition()>600.0){pros::delay(10);}
-
-
-	// while(inertsensor.get_heading()>  bumpturn*-1.0){pros::delay(5);}
-//  drive->moveDistance(100_mm);//
-//  drive->turnAngle(25_deg);
-//  pros::delay(1000);
-
-//driveVector(0.8, 0.8);
-  // driveVector(.15, 1*direct);
-  //
-  // while(inertsensor.get_heading() < 0){pros::delay(5);}
-  // drive->stop();
-
-  drive->moveDistance(500_mm);//forward
-     drive->turnAngle(25_deg);
-  drive->moveDistance(100_mm);//
-  // //   driveVector(.15, -1*direct);
-  // // while(inertsensor.get_heading()>  bumpturn){pros::delay(2);}
-  //   // drive->stop();
-   drive->turnAngle(25_deg);
-   drive->moveDistance(100_mm);
-   drive->turnAngle(-25_deg);
-  // drive->moveDistance(100_mm);//forward
-  // // driveVector(.15, -1*direct);
-  // while(inertsensor.get_heading() <0){pros::delay(5);}
-  // drive->stop();
 	drive->moveDistance(900_mm);//forward
 
 	pros::delay(100);
 
   intake.moveVoltage(0);//stop intake
 
-//	driveVector(.25, -1*direct);
+	driveVector(.25, 1*direct);
+	if(direct==1){
+	while(inertsensor.get_rotation()< 7){pros::delay(10);}
+}else{
+	while(inertsensor.get_rotation()> -7){pros::delay(10);}
+}
 
-//	while(inertsensor.get_rotation()> -5){pros::delay(5);}
-drive->turnAngle(-20_deg);
-  drive->stop();
-  drive->setMaxVelocity(100);
-  drive->moveDistance(400_mm);//forward
+intake.moveVoltage(12000);//start intake at max voltage
+// pros::delay(50);
+// intake.moveVoltage(0);
 
-  intake.moveVoltage(12000);
-  pros::delay(500);
-  intake.moveVoltage(0);
-  intake.setBrakeMode(AbstractMotor::brakeMode::coast);
-while(abs(angler.getPosition())<3000){
+  drive->moveDistance(1.1_ft);
+  pros::delay(200);
+
+  intake.moveVoltage(1200);//run intake low speed
+
+	drive->moveDistance(-1.0_ft);
+	if(direct==1){
+	drive->turnAngle(-27_deg);
+}else{
+	drive->turnAngle(27_deg);
+}
+//		driveVector(.1, -1);
+//	while(ine,rtsensor.get_rotation()>5){pros::delay(8);}
+
+	intake.moveVoltage(0);//intake stop
+	drive->setMaxVelocity(100);
+	//drive->moveDistance(-1.25_ft);//backward
+
+  drive->getModel()->forward(-100);//backward
+for(int x=0;x<3;x++){usfilt.filter(ultraBack.get_value());}
+while(usfilt.filter(ultraBack.get_value())>800){pros::delay(10);}
+//controller.print(2,0,"%d",usfilt.filter(ultraBack.get_value()));}
+drive->stop();
+
+	 pros::delay(500);
+//	drive->setMaxVelocity();
+
+	driveVector(.5, direct==1?-1:1);
+//	while(inertsensor.get_rotation()> direct==1?-90:90){pros::delay(10);}
+	if(direct==1){
+	while(inertsensor.get_rotation()> -90){pros::delay(10);}
+}else{
+	while(inertsensor.get_rotation()< 90){pros::delay(10);}
+}
+
+//	drive->turnRaw(direct * -355);//turn left
+	drive->setMaxVelocity(120);
+	drive->moveDistance(360_mm);//forward
+
+	// intake.moveVoltage(-4000);//outake a little bit for stacking purposes
+	// pros::delay(240);
+	// intake.moveVoltage(0);
+
 	if (abs(angler.getPosition())<=1300) {//stack the cubes
 	 angler.moveVoltage(12000);
 
 	} else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
-	angler.moveVoltage(9000);
+	angler.moveVoltage(3000);
 
 	} else if(abs(angler.getPosition())>1500) {
-	angler.moveVoltage(7000);
+	angler.moveVoltage(1000);
 	}
-}
-	pros::delay(500);
+	pros::delay(2000);
 
-pros::delay(2000);
+	drive->setMaxVelocity(100);
+	drive->moveDistance(25_mm);//the nudge
 
-	drive->setMaxVelocity(20);
-	drive->moveDistance(40_mm);//the nudge
-pros::delay(1000);
+//------------------------------------------------------------------------------
   drive->setMaxVelocity(100);
-	drive->moveDistance(-400_mm);//move backward
- drive->turnAngle(105_deg);
- // driveVector(.25, 1*direct);
-	// while(inertsensor.get_rotation()< 90){pros::delay(5);}
- // drive->stop();
- pros::delay(100);
-while(angler.getPosition()>50){angler.moveVoltage(-12000);}
- angler.moveVoltage(0);
-intake.moveVoltage(12000);
-  drive->getModel()->forward(100);
-for(int x=0;x<3;x++){usfilt.filter(ultraBack.get_value());}
-while(usfilt.filter(ultraBack.get_value())<1800){pros::delay(10);}
- drive->stop();
-intake.moveVoltage(0);
-  /*
-  */
+  drive->moveDistance(-500_mm);//move backward
+  pros::delay(200);
 
+  //towers start from here
 
+   drive->setMaxVelocity(30);
+   drive->turnAngle(-147_deg);//turn to face tower
+   pros::delay(200);
+
+   drive->setMaxVelocity(100);
+   //drive->moveRaw(-1100);//wall reset 1
+   wall_reset_back();
+   pros::delay(200);
+
+   angler.moveVoltage(-12000);
+   pros::delay(1400);
+   angler.moveVoltage(0);
+   pros::delay(100);
+   intake.moveVoltage(11000);//intake runs to collect cube to place in first tower
+
+   drive->setMaxVelocity(100);//drive towards the tower
+   drive->moveDistance(3.8_ft);
+   pros::delay(100);
+
+   intake.moveVoltage(0);
+
+   drive->setMaxVelocity(75);
+   drive->moveDistance(-300_mm);//back up slightly
+
+   intake.moveVoltage(-6000);//outake the cube into stacking position
+   pros::delay(400);
+   intake.moveVoltage(0);
+
+  while(abs(angler.getPosition()) <= 1200){
+    angler.moveVoltage(12000);//raise lift and angler
+    pros::delay(100);
+    lift.moveVoltage(12000);
+  }
+
+    angler.moveVoltage(0);
+    pros::delay(500);
+
+    lift.moveVoltage(2000);
+    drive->moveDistance(150_mm);//drive closer to goal slightly
+    intake.moveVoltage(-5000);//outake to place into goal
+
+    pros::delay(700);
+    drive->moveDistance(-10_mm);//backup
+
+    drive->turnAngle(-95_deg);//turn to face second stack
+    pros::delay(100);
+
+    angler.moveVoltage(10000);//move angler down
+    pros::delay(300);
+    angler.moveVoltage(0);
+
+    lift.moveVoltage(-12000);//move lift down
+    pros::delay(350);
+    lift.moveVoltage(-1500);
+
+    pros::delay(50);
+
+    drive->setMaxVelocity(100);
+    drive->moveRaw(-1400);//wall reset 2
+    pros::delay(200);
+
+    intake.moveVoltage(11000);
+    drive->setMaxVelocity(100);
+    drive->moveDistance(7.75_ft);//drive and collect second stack
+
+    pros::delay(50);
+    intake.moveVoltage(0);
+
+    drive->setMaxVelocity(100);
+    drive->moveDistance(-0.4_ft);//drive back a little
+
+    pros::delay(50);
+
+    drive->setMaxVelocity(100);
+    drive->turnAngle(-46_deg);//turn to face second goal
+    pros::delay(100);
+    intake.moveVoltage(8000);
+
+    pros::delay(50);
+
+    drive->setMaxVelocity(100);
+    drive->moveDistance(4.0_ft);//drive towards the goal
+    intake.moveVoltage(0);
+    pros::delay(50);
+
+    if (abs(angler.getPosition())<=1300) {//stack the cubes
+     angler.moveVoltage(12000);
+
+    } else if (abs(angler.getPosition())>1300 && abs(angler.getPosition())<=1500) {
+    angler.moveVoltage(6000);
+
+    } else if(abs(angler.getPosition())>1500) {
+    angler.moveVoltage(1500);
+    }
+    pros::delay(2000);
+
+    drive->setMaxVelocity(100);
+    drive->moveDistance(25_mm);//the nudge
+
+    drive->setMaxVelocity(100);
+    drive->moveDistance(-500_mm);//move backward
+    pros::delay(50);
+
+    angler.moveVoltage(-12000);
+    pros::delay(1500);
+    angler.moveVoltage(0);
+
+    drive->setMaxVelocity(30);
+    drive->turnAngle(50_deg);//turn to face wall
+    pros::delay(200);
+
+    angler.tarePosition();//tare the position
+
+    while(abs(angler.getPosition()) <= 1200){//bring angler and lift up
+      angler.moveVoltage(12000);
+      pros::delay(100);
+      lift.moveVoltage(12000);
+    }
+    angler.moveVoltage(0);
+    pros::delay(50);
+
+    drive->setMaxVelocity(100);
+    drive->moveRaw(1300);//wall reset 3
+    pros::delay(200);
+
+    drive->setMaxVelocity(100);
+    drive->moveDistance(-300_mm);//move backward from wall rest
+
+    pros::delay(50);
+
+    drive->setMaxVelocity(50);
+    drive->turnAngle(96_deg);//turn to face second tower
+
+    pros::delay(50);
+
+    lift.moveVoltage(-12000);//move lift down
+    pros::delay(350);
+    lift.moveVoltage(-1500);
+
+    pros::delay(50);
+
+    angler.moveVoltage(6000);//move angler down
+    pros::delay(100);
+    angler.moveVoltage(0);
+
+    pros::delay(50);
+
+    angler.moveVoltage(-12000);
+    pros::delay(1400);
+    angler.moveVoltage(0);
+    pros::delay(500);
+    intake.moveVoltage(11000);//intake runs to collect cube to place in first tower
+
+    drive->setMaxVelocity(100);//drive towards the tower
+    drive->moveDistance(3.0_ft);
+    pros::delay(10);
+
+    intake.moveVoltage(0);
+
+    drive->setMaxVelocity(50);
+    drive->moveDistance(-300_mm);//back up slightly
+
+    intake.moveVoltage(-6000);//outake the cube into stacking position
+    pros::delay(400);
+    intake.moveVoltage(0);
+
+    pros::delay(50);
+
+    angler.tarePosition();
+
+    while(abs(angler.getPosition()) <= 1200){
+      angler.moveVoltage(12000);//bring angler and lift up
+      pros::delay(100);
+      lift.moveVoltage(12000);
+    }
+
+    angler.moveVoltage(0);
+    pros::delay(500);
+
+    lift.moveVoltage(2000);
+    drive->moveDistance(150_mm);//drive closer to goal slightly
+    intake.moveVoltage(-7000);//outake to place into goal
+
+    pros::delay(500);
+
+    drive->setMaxVelocity(100);
+    drive->moveDistance(-500_mm);
 
 }
-
-
 
 //------------------------------------------------------------------------------
 void auton_big_stack_blue(int direct)
