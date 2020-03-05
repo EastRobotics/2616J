@@ -549,7 +549,7 @@ intake.moveVoltage(12000);//start intake at max voltage
 
   intake.moveVoltage(1200);//run intake low speed
 
-	drive->moveDistance(-1.0_ft);
+	drive->moveDistance(-1.1_ft);
 	if(direct==1){
 	drive->turnAngle(-27_deg);
 }else{
@@ -610,9 +610,9 @@ while(abs(angler.getPosition())<2100){
 // }}
 }
 
-	pros::delay(1000);
+	pros::delay(1100);
 
-	drive->setMaxVelocity(100);
+	drive->setMaxVelocity(50);
 	drive->moveDistance(25_mm);//the nudge
 
 //------------------------------------------------------------------------------
@@ -623,7 +623,7 @@ while(abs(angler.getPosition())<2100){
   //towers start from here
 
    drive->setMaxVelocity(75);
-   drive->turnAngle(-147_deg);//turn to face tower
+   drive->turnAngle(-144_deg);//turn to face tower
    pros::delay(200);
 
    drive->setMaxVelocity(100);
@@ -660,7 +660,7 @@ while(abs(angler.getPosition())<2100){
     pros::delay(700);
 
     lift.moveVoltage(2000);
-    intake.moveVoltage(-5000);//outake to place into tower
+    intake.moveVoltage(-4500);//outake to place into tower
 
     drive->setMaxVelocity(100);
     drive->moveDistance(150_mm);//drive towards to tower slightly
@@ -703,7 +703,7 @@ while(abs(angler.getPosition())<2100){
     pros::delay(50);
 
     drive->setMaxVelocity(100);
-    drive->turnAngle(-47_deg);//turn to face second goal
+    drive->turnAngle(-49_deg);//turn to face second goal
     pros::delay(100);
     intake.moveVoltage(8000);
 
@@ -765,7 +765,7 @@ while(abs(angler.getPosition())<2100){
     pros::delay(50);
 
     drive->setMaxVelocity(50);
-    drive->turnAngle(96_deg);//turn to face second tower
+    drive->turnAngle(98_deg);//turn to face second tower
 
     pros::delay(50);
 
@@ -815,7 +815,7 @@ while(abs(angler.getPosition())<2100){
 
     lift.moveVoltage(2000);
     drive->moveDistance(150_mm);//drive closer to goal slightly
-    intake.moveVoltage(-7000);//outake to place into goal
+    intake.moveVoltage(-5000);//outake to place into goal
 
     pros::delay(500);
 
@@ -1191,6 +1191,7 @@ LV_IMG_DECLARE(red_flower);
 
  ControllerButton AnglerUpButton(ControllerDigital::up);
  ControllerButton AnglerDownButton(ControllerDigital::down);
+ ControllerButton Angler10UpButton(ControllerDigital::left);
 
  ControllerButton LiftUpButton(ControllerDigital::L1);
  ControllerButton LiftDownButton(ControllerDigital::L2);
@@ -1208,61 +1209,78 @@ int count =0;
 		drive->getModel()->tank(masterController.getAnalog(ControllerAnalog::leftY),
 						masterController.getAnalog(ControllerAnalog::rightY));
 //------------------------------------------------------------------------------
-if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
-   if(IntakeInButton.isPressed())
-	 {
-		 intake.moveVoltage(12000);
-		 lift.moveVoltage(-1000);
+if (IntakeOutButton.changedToPressed()){
+  count =pros::millis();
+}
 
-		 //resets counter to 0
+if(IntakeInButton.isPressed() && IntakeOutButton.isPressed()){
+		 intake.moveVoltage(-11999);//run intake out fast
 
-	} else if(IntakeOutButton.isPressed()){
-
-
-	 if(pros::millis() - count < 2000){
-		 intake.moveVoltage(-6000);
+	} else if(IntakeInButton.isPressed()){
+		 intake.moveVoltage(11999);//run intake in
+     lift.moveVoltage(-1000);//run lift down
 
 	 }else if(IntakeOutButton.isPressed()){
-		 intake.moveVoltage(-12000);
-}
-	 // }else if(IntakeInButton.isPressed()){
-		//  count=0;
-	 // }
+		 intake.moveVoltage(-6000);
+     drive->getModel()->forward(-300);//run intake out slow
 
-	 }else{
+  }else{
 		 intake.moveVoltage(0);
 	 }
 //------------------------------------------------------------------------------
-  if(LiftUpButton.isPressed() && abs(angler.getPosition())<1000){
+  if(LiftUpButton.isPressed() && abs(angler.getPosition())<1200){
       angler.moveVoltage(12000);
-			pros::delay(100);
-			lift.moveVoltage(12000);
+      lift.moveVoltage(8000);
+	//		pros::delay(100);
+		//	lift.moveVoltage(12000);
 			//cout  << "button;"
 
-	}else if(LiftUpButton.isPressed()){
+	}else if(LiftUpButton.isPressed() && abs(angler.getPosition()) >= 1200){
+    angler.moveVoltage(0);
 		lift.moveVoltage(12000);
 
-	}else if(LiftDownButton.isPressed()){
-    // lift.moveVoltage(-12000);
-		// pros::delay(400);
-		// doing_move_down = true;
+	// }else if(LiftDownButton.isPressed() && abs(angler.getPosition()) <= 1300){
+  //  lift.moveVoltage(-12000);
+  //  doing_move_down = true;
 
-	}else{
-		lift.moveVoltage(-800);//runs down lift constantly
-	}
+}//else {
+//    lift.moveVoltage(-800);
+  //}
+
+  if(LiftDownButton.isPressed() && abs(lift.getPosition()) > 1200){
+    lift.moveVoltage(-12000);
+  //  doing_move_down = true;
+
+}else if(LiftDownButton.isPressed() && abs(lift.getPosition()) <= 1200){
+  if (angler.getPosition() > LIFT_BOTTOM) {
+    angler.moveVoltage(-12000);
+  }else if(AnglerDownButton.isPressed()){
+    angler.moveVoltage(0);
+  }
+  lift.moveVoltage(-12000);
+}else{
+
+  if(!AnglerUpButton.isPressed() && !AnglerDownButton.isPressed() &&!LiftUpButton.isPressed() && !LiftDownButton.isPressed()){
+angler.moveVoltage(0);
+lift.moveVoltage(0);
+}
+// if(!LiftUpButton.isPressed() && !LiftDownButton.isPressed()) {
+// //lift.moveVoltage(-1000);
+//// }
+}
+
 //------------------------------------------------------------------------------
 
- if(AnglerUpButton.isPressed())
-	 {
+ if(AnglerUpButton.isPressed()){
 		 intake.setBrakeMode(AbstractMotor::brakeMode::coast);
 		 // if (!did_move_up) {
 			//  did_move_up = true;
 			//  angler.moveAbsolute(2121, 100);
 		 // }
-		int switchPos =2500;// Encoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
-		int minSpeed = 5000; // Minimum voltage to send to the lift. Maybe lower if knocking over stack or wobbly and changing a makes no change
-		float a = 2300.0; // Higher value = higher speed for longer when going up
-		float mult = 0.7; // Once shape is achieved with a, allows you to slow down the overall curve
+		int switchPos = 2600;// Ecoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+		int minSpeed = 4500; // Minimum voltage to send to the lift. May be lower if knocking over stack or wobbly and changing a makes no change
+		float a = 2200.0; // Higher value = higher speed for longer when going up
+		float mult = 2.0; // Once shape is achieved with a, allows you to slow down the overall curve
 
 		if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
 			angler.moveVoltage(12000);
@@ -1278,41 +1296,54 @@ if (IntakeOutButton.changedToPressed()){ count =pros::millis(); }
 			// Set speed to the lift
 			angler.moveVoltage(angleSpeed);
 		}
+  } else if (Angler10UpButton.isPressed()) {
+    intake.setBrakeMode(AbstractMotor::brakeMode::coast);
+    // if (!did_move_up) {
+     //  did_move_up = true;
+     //  angler.moveAbsolute(2121, 100);
+    // }
+   int switchPos = 2500;// Ecoder value where equation kicks in and lift stops going full speed. Lower if knocking over, raise if not getting high enough
+   int minSpeed = 5000; // Minimum voltage to send to the lift. May be lower if knocking over stack or wobbly and changing a makes no change
+   float a = 2300.0; // Higher value = higher speed for longer when going up
+   float mult = 0.7; // Once shape is achieved with a, allows you to slow down the overall curve
 
+   if (angler.getPosition() <= switchPos) { // Do full speed until switchPos
+     angler.moveVoltage(12000);
+   } else { // Do equation from switchPos until endif
+     // Calculate speed based on angle
+     int angleSpeed = int(
+       (
+         (1-pow((1/(a))*(angler.getPosition()),2))
+       )*12000.0*mult
+     );
+     // Ensure speed is at least minSpeed
+     angleSpeed = (angleSpeed > minSpeed) ? angleSpeed : minSpeed;
+     // Set speed to the lift
+     angler.moveVoltage(angleSpeed);
+   }
 	} else {
 		intake.setBrakeMode(AbstractMotor::brakeMode::brake);
 		did_move_up = false;
-		if(AnglerDownButton.isPressed() && !(doing_move_down)){
-			doing_move_down = true;
+		if(AnglerDownButton.isPressed() ){ //&& !(doing_move_down)
+		//	doing_move_down = true;
+		  if (angler.getPosition() > LIFT_BOTTOM) {
+		  angler.moveVoltage(-12000);
+		} else {
+	 	angler.moveVoltage(0);
+		}
+	}
+
+	 // if (doing_move_down){
+   //   if (lift.getPosition() <300){
 		//  if (angler.getPosition() > LIFT_BOTTOM) {
-		//   angler.moveVoltage(-12000);
-		// } else {
-		// 	angler.moveVoltage(0);
-		// }
-
-
-	} else if(LiftDownButton.isPressed() && !(doing_move_down)){
-	 	 lift.moveVoltage(-12000);
-		 pros::delay(400);
-		 doing_move_down = true;
-		//  if (angler.getPosition() > LIFT_BOTTOM) {
-		//   angler.moveVoltage(-12000);
-		// } else {
-		// 	angler.moveVoltage(0);
-		// }
-
-	 }
-
-	 if (doing_move_down){
-		 if (angler.getPosition() > LIFT_BOTTOM) {
-			 angler.moveVoltage(-11000);
-		 } else {
-			 angler.moveVoltage(0);
-			 doing_move_down = false;
-		 }
-	 } else {
-		 angler.moveVoltage(0);
-	 }
+		// 	 angler.moveVoltage(-11000);
+		//  } else {
+		// 	 angler.moveVoltage(0);
+		// 	 doing_move_down = false;
+		//  }
+	 // } else {
+		//  angler.moveVoltage(0);
+	 // }}
  }
 //------------------------------------------------------------------------------
 if(DoubleTower.isPressed()){
